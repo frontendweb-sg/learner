@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
-export const COURSE_CATEGORY_TABLE = "course-category";
 
-export interface ICourseCategory {
+export const CATEGORY_TABLE = "category";
+export interface ICategory {
 	title: string;
 	description: string;
 	slug?: string;
@@ -9,9 +9,7 @@ export interface ICourseCategory {
 	active: boolean;
 }
 
-export interface ICourseCategoryDoc
-	extends Document<ICourseCategory>,
-		ICourseCategory {}
+export interface ICategoryDoc extends Document<ICategory>, ICategory {}
 const schema = new Schema(
 	{
 		title: { type: String, required: true, trim: true },
@@ -33,6 +31,6 @@ schema.virtual("id").get(function () {
 	return this._id.toHexString();
 });
 
-export const CourseCategory =
-	mongoose.models[COURSE_CATEGORY_TABLE] ||
-	mongoose.model<ICourseCategory>(COURSE_CATEGORY_TABLE, schema);
+export const Category =
+	mongoose.models[CATEGORY_TABLE] ||
+	mongoose.model<ICategory>(CATEGORY_TABLE, schema);

@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { CourseStatus } from "@/utils/types";
-import { COURSE_CATEGORY_TABLE } from "./course-category";
+import { COURSE_CATEGORY_TABLE } from "./category";
 import { CourseLevel } from "@/utils/enums";
 
 export const COURSE_TABLE = "Course";
