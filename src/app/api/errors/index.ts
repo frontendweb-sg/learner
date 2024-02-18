@@ -1,6 +1,12 @@
 import { AuthError } from "./auth-error";
 import { BadRequestError } from "./bad-request-error";
-import { DatabaseConnectionError } from "./database-error";
+import { DatabaseConnectionError } from "./database-connection-error";
 import { NotFoundError } from "./not-found-error";
-
-export { DatabaseConnectionError, AuthError, BadRequestError, NotFoundError };
+import { DatabaseError } from "./database-error";
+export {
+	DatabaseConnectionError,
+	AuthError,
+	BadRequestError,
+	NotFoundError,
+	DatabaseError,
+};

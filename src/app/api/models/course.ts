@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { CourseStatus } from "@/utils/types";
-import { COURSE_CATEGORY_TABLE } from "./category";
+import { CATEGORY_TABLE } from "./category";
 import { CourseLevel } from "@/utils/enums";
 
 export const COURSE_TABLE = "Course";
@@ -26,7 +26,7 @@ export interface ICourseDoc extends Document<ICourse>, ICourse {}
 
 const schema = new Schema(
 	{
-		category: { type: Schema.ObjectId, ref: COURSE_CATEGORY_TABLE },
+		category: { type: Schema.ObjectId, ref: CATEGORY_TABLE },
 		title: { type: String, required: true, trim: true },
 		slug: { type: String, required: true, trim: true },
 		excerpt: { type: String, default: "" },

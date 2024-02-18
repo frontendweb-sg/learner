@@ -9,6 +9,16 @@ interface Params {
 	params: { categoryId: string };
 }
 
+export async function GET(req: NextRequest, { params }: Params) {
+	await connectDb();
+	try {
+		const category = await Category.findById(params.categoryId);
+		return NextResponse.json(category, { status: 200 });
+	} catch (error) {
+		return errorHandler(error as CustomError);
+	}
+}
+
 /**
  * Category update handler
  * @param req
