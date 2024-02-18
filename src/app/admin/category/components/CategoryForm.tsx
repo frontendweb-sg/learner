@@ -5,6 +5,7 @@ import { ICategoryDoc } from "@/app/api/models/category";
 import { addCategory, updateCategory } from "../actions/actions";
 import { useRef } from "react";
 import { useFormState } from "react-dom";
+import { toast } from "react-toastify";
 
 export type CategoryFormProps = {
 	category?: ICategoryDoc;
@@ -23,12 +24,14 @@ function CategoryForm({ category }: CategoryFormProps) {
 			className="space-y-4"
 			action={async (formData: FormData) => {
 				formAction(formData);
+				toast.success(category?.id ? "Category updated" : "Category added");
 				if (state?.success) {
+					console.log("hi");
 					formRef.current?.reset();
 				}
 			}}
 			noValidate>
-			<input type="text" name="id" hidden value={category?.id} />
+			<input type="text" name="id" hidden defaultValue={category?.id} />
 			<input
 				name="title"
 				defaultValue={category?.title}

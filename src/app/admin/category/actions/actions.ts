@@ -14,7 +14,7 @@ import { ZodError, ZodIssue, z } from "zod";
 
 const CategorySchema = z.object({
 	title: z.string().min(3, { message: "Category name is required" }),
-	description: z.string().min(5, { message: "Description is required" }),
+	description: z.string().min(3, { message: "Description is required" }),
 });
 
 /**
@@ -27,7 +27,7 @@ export async function addCategory(prevState: any, formData: FormData) {
 	const body = Object.fromEntries(formData.entries());
 	try {
 		const data = CategorySchema.parse(body); // validate request body here
-
+		console.log("data", data);
 		const result = await http("/category", {
 			method: "POST",
 			body: JSON.stringify(data),
@@ -37,6 +37,7 @@ export async function addCategory(prevState: any, formData: FormData) {
 		return { success: true, data: result };
 	} catch (error) {
 		if (error instanceof ZodError) {
+			console.log("error", error.message);
 			return { success: false, errors: handleValidationError(error) };
 		}
 		return { message: "something went worng" };
