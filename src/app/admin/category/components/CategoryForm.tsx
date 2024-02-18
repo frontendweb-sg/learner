@@ -3,7 +3,7 @@
 import SubmitButton from "@/components/common/SubmitButton";
 import { ICategoryDoc } from "@/app/api/models/category";
 import { addCategory, updateCategory } from "../actions/actions";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "react-toastify";
 
@@ -18,19 +18,15 @@ function CategoryForm({ category }: CategoryFormProps) {
 		null,
 	);
 
+	useEffect(() => {
+		if (state?.success) {
+			formRef.current?.reset();
+			toast.success(category?.id ? "Category updated!" : "Category added");
+		}
+	}, [state]);
+
 	return (
-		<form
-			ref={formRef}
-			className="space-y-4"
-			action={async (formData: FormData) => {
-				formAction(formData);
-				toast.success(category?.id ? "Category updated" : "Category added");
-				if (state?.success) {
-					console.log("hi");
-					formRef.current?.reset();
-				}
-			}}
-			noValidate>
+		<form ref={formRef} className="space-y-4" action={formAction} noValidate>
 			<input type="text" name="id" hidden defaultValue={category?.id} />
 			<input
 				name="title"
