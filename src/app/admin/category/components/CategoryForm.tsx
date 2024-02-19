@@ -33,7 +33,9 @@ function CategoryForm({ category }: CategoryFormProps) {
 
 	return (
 		<form ref={formRef} className="space-y-4" action={formAction} noValidate>
-			<input type="text" name="id" hidden defaultValue={category?.id} />
+			{category?.id && (
+				<input type="text" name="id" hidden defaultValue={category?.id} />
+			)}
 			<input
 				name="title"
 				defaultValue={category?.title}
@@ -48,6 +50,9 @@ function CategoryForm({ category }: CategoryFormProps) {
 			/>
 			<p className="text-xs text-rose-600">{state?.errors?.["description"]}</p>
 			<SubmitButton>{category?.id ? "Update" : "Save"}</SubmitButton>
+			{state?.error && (
+				<p className="text-xs text-rose-600">{state.error.message}</p>
+			)}
 		</form>
 	);
 }

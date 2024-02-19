@@ -57,12 +57,11 @@ export async function DELETE(
 	{ params: { categoryId } }: Params,
 ) {
 	await connectDb();
-	console.log("categoryId", categoryId);
+
 	try {
 		await Category.findByIdAndDelete(categoryId);
 		return NextResponse.json({ categoryId }, { status: 200 });
 	} catch (error) {
-		console.log(error);
 		return errorHandler(error as CustomError);
 	}
 }
