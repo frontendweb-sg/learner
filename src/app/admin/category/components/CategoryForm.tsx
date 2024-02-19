@@ -6,12 +6,15 @@ import { addCategory, updateCategory } from "../actions/actions";
 import { useEffect, useRef } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "react-toastify";
+import { usePathname, useRouter } from "next/navigation";
 
 export type CategoryFormProps = {
 	category?: ICategoryDoc;
 };
 
 function CategoryForm({ category }: CategoryFormProps) {
+	const path = usePathname();
+	const router = useRouter();
 	const formRef = useRef<HTMLFormElement>(null);
 	const [state, formAction] = useFormState(
 		category?.id ? updateCategory : addCategory,
@@ -22,8 +25,11 @@ function CategoryForm({ category }: CategoryFormProps) {
 		if (state?.success) {
 			formRef.current?.reset();
 			toast.success(category?.id ? "Category updated!" : "Category added");
+			if (path == "/admin/category/" + category?.id) {
+				router.back();
+			}
 		}
-	}, [state]);
+	}, [state, router, path]);
 
 	return (
 		<form ref={formRef} className="space-y-4" action={formAction} noValidate>

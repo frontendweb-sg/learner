@@ -12,11 +12,6 @@ import { ZodError, ZodIssue, z } from "zod";
  * @returns
  */
 
-const CategorySchema = z.object({
-	title: z.string().min(3, { message: "Category name is required" }),
-	description: z.string().min(3, { message: "Description is required" }),
-});
-
 /**
  * Add category action
  * @param prevState
@@ -26,6 +21,10 @@ const CategorySchema = z.object({
 export async function addCategory(prevState: any, formData: FormData) {
 	const body = Object.fromEntries(formData.entries());
 	try {
+		const CategorySchema = z.object({
+			title: z.string().min(3, { message: "Category name is required" }),
+			description: z.string().min(3, { message: "Description is required" }),
+		});
 		const data = CategorySchema.parse(body); // validate request body here
 
 		const result = await http("/category", {
@@ -39,7 +38,7 @@ export async function addCategory(prevState: any, formData: FormData) {
 		if (error instanceof ZodError) {
 			return { success: false, errors: handleValidationError(error) };
 		}
-		return { succes: false, message: "something went worng" };
+		return { success: false, message: "something went worng" };
 	}
 }
 
@@ -52,23 +51,23 @@ export async function addCategory(prevState: any, formData: FormData) {
 export async function updateCategory(prevState: any, formData: FormData) {
 	const body = Object.fromEntries(formData.entries());
 	try {
+		const CategorySchema = z.object({
+			title: z.string().min(3, { message: "Category name is required" }),
+			description: z.string().min(3, { message: "Description is required" }),
+		});
 		const { id, ...rest } = body;
 		CategorySchema.parse(rest);
 		const result = await http("/category/" + id, {
 			method: "PUT",
 			body: JSON.stringify(rest),
 		});
+		revalidatePath("/admin/category");
 		return { success: true, data: result };
 	} catch (error) {
 		if (error instanceof ZodError) {
 			return { success: false, errors: handleValidationError(error) };
 		}
-		return { succes: false, message: "nom" };
-	} finally {
-		if (CategorySchema.safeParse(body).success) {
-			revalidatePath("/admin/category");
-			redirect("/admin/category", RedirectType.push);
-		}
+		return { success: false, message: "nom" };
 	}
 }
 
@@ -99,5 +98,23 @@ export async function getCategoryById(id: string) {
 		return response as ICategoryDoc;
 	} catch (error) {
 		console.log(error);
+	}
+}
+
+export async function deleteCategory(formData: FormData) {
+	try {
+		const id = formData.get("id");
+		console.log("id", id);
+		const response = await http(`/category/${id}`, {
+			method: "DELETE",
+		});
+
+		revalidatePath("/admin/category");
+		return { success: true, data: response };
+	} catch (error) {
+		if (error instanceof ZodError) {
+			return { success: false, errors: handleValidationError(error) };
+		}
+		return { success: false, message: "nom" };
 	}
 }

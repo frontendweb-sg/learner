@@ -1,5 +1,6 @@
 import CategoryForm from "./components/CategoryForm";
 import Link from "next/link";
+import CategoryDeleteButton from "./components/CategoryDeleteButton";
 import { ICategoryDoc } from "@/app/api/models/category";
 import { getCategories } from "./actions/actions";
 import { PenIcon } from "lucide-react";
@@ -18,10 +19,9 @@ async function Page() {
 					<Link href={`/admin/category/${category.id}`}>
 						<PenIcon size={16} />
 					</Link>
+					<CategoryDeleteButton categoryId={category.id} />
 				</div>
 			))}
-
-			{/* <DataTable rows={categories} /> */}
 		</div>
 	);
 }
