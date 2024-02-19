@@ -4,20 +4,8 @@ import { ICategoryDoc } from "@/app/api/models/category";
 import { http } from "@/components/network/http";
 import { handleValidationError } from "@/utils/action-error";
 import { revalidatePath } from "next/cache";
-import { RedirectType, redirect } from "next/navigation";
-import { ZodError, ZodIssue, z } from "zod";
+import { ZodError, z } from "zod";
 
-/**
- * Add category
- * @returns
- */
-
-/**
- * Add category action
- * @param prevState
- * @param formData
- * @returns
- */
 export async function addCategory(prevState: any, formData: FormData) {
 	const body = Object.fromEntries(formData.entries());
 	try {
@@ -42,12 +30,6 @@ export async function addCategory(prevState: any, formData: FormData) {
 	}
 }
 
-/**
- * Update category
- * @param id
- * @param formData
- * @returns
- */
 export async function updateCategory(prevState: any, formData: FormData) {
 	const body = Object.fromEntries(formData.entries());
 	try {
@@ -71,10 +53,9 @@ export async function updateCategory(prevState: any, formData: FormData) {
 	}
 }
 
-/**
- * Get categories
- */
-export async function getCategories(params?: string) {
+export async function getCategories(
+	params?: string,
+): Promise<ICategoryDoc[] | { error: any }> {
 	try {
 		let query = "";
 		if (params) {
@@ -83,9 +64,10 @@ export async function getCategories(params?: string) {
 		const response = await http<ICategoryDoc[]>(`/category${query}`, {
 			next: { revalidate: 0 },
 		});
+
 		return response;
 	} catch (error) {
-		console.log(error);
+		return { error: error };
 	}
 }
 

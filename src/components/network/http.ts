@@ -13,6 +13,6 @@ export async function http<T>(
 		...rest,
 	});
 
-	const data = (await response.json()) as T;
+	const data: T = await response.json();
 	return data;
 }

@@ -29,7 +29,7 @@ function CategoryForm({ category }: CategoryFormProps) {
 				router.back();
 			}
 		}
-	}, [state, router, path]);
+	}, [state, router, category, path]);
 
 	return (
 		<form ref={formRef} className="space-y-4" action={formAction} noValidate>

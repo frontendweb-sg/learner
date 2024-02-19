@@ -1,12 +1,8 @@
-import CategoryForm from "./components/CategoryForm";
-import Link from "next/link";
-import CategoryDeleteButton from "./components/CategoryDeleteButton";
-import { ICategoryDoc } from "@/app/api/models/category";
 import { getCategories } from "./actions/actions";
-import { PenIcon } from "lucide-react";
+import CategoryForm from "./components/CategoryForm";
 
 async function Page() {
-	const categories = (await getCategories()) as ICategoryDoc[];
+	const categories = await getCategories();
 
 	return (
 		<div>
