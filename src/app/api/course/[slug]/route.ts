@@ -39,19 +39,20 @@ export async function GET(req: NextRequest, { params }: Params) {
 export async function PUT(req: NextRequest, { params }: Params) {
 	await connectDb();
 	try {
-		const body = (await req.json()) as ICourse;
-		body.slug = slug(body.title);
-
+		const { hero, videoUrl, ...rest } = (await req.json()) as ICourseDoc;
+		rest.slug = slug(rest.title);
+		console.log(rest);
 		const course = await Course.findOneAndUpdate(
 			{
 				slug: params.slug,
 			},
-			{ $set: body },
+			{ $set: rest },
 			{ new: true },
 		);
-
+		console.log(course, "c");
 		return NextResponse.json(course, { status: 200 });
 	} catch (error) {
+		console.log(error);
 		return errorHandler(error as CustomError);
 	}
 }

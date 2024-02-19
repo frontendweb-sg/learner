@@ -55,6 +55,33 @@ export async function addCourse(prevState: any, formData: FormData) {
 	}
 }
 
+export async function updateCourse(prevState: any, formData: FormData) {
+	const { id, ...rest } = Object.fromEntries(formData.entries());
+	try {
+		const schema = z.object({
+			title: z.string().min(3, { message: "Course name is required!" }),
+			price: z.coerce.number(),
+			description: z.string(),
+			excerpt: z.string(),
+			level: z.string(),
+		});
+
+		const data = schema.parse(rest) as ICourseDoc;
+		const response = await http<ICourseDoc>("/course/" + id, {
+			method: "PUT",
+			body: JSON.stringify(data),
+		});
+		revalidatePath("/admin/courses/" + id);
+		return { success: true, data: response.data };
+	} catch (error) {
+		console.log(error);
+		if (error instanceof ZodError) {
+			return { success: false, errors: zodValidationError(error) };
+		}
+		return { success: true, error: error };
+	}
+}
+
 /**
  * Delete course action
  * @param formData

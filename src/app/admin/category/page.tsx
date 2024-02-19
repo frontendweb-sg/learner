@@ -6,7 +6,6 @@ import { deleteCategory, getCategories } from "./actions/actions";
 import { PenIcon } from "lucide-react";
 import DeleteButton from "@/components/common/DeleteButton";
 
-export const revalidate = 0;
 async function Page() {
 	const response = await getCategories();
 
