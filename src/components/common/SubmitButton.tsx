@@ -8,7 +8,7 @@ function SubmitButton({ children, ...rest }: SubmitButtonProps) {
 
 	return (
 		<Button disabled={pending} aria-disabled={pending} type="submit" {...rest}>
-			{pending ? "submitting..." : children}
+			{pending ? "loading..." : children}
 		</Button>
 	);
 }

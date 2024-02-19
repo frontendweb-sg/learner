@@ -1,11 +1,10 @@
 "use client";
+import SubmitButton from "./SubmitButton";
 import { ICourseDoc } from "@/app/api/models/course";
-import Button from "../ui/Button";
 import { TrashIcon } from "lucide-react";
 import { useTransition } from "react";
 import { toast } from "react-toastify";
 import { ActionError } from "@/utils/types";
-import { ResponseResult } from "../network/http";
 
 type DeleteButtonProps = {
 	id: string;
@@ -14,7 +13,8 @@ type DeleteButtonProps = {
 
 function DeleteButton({ id, formAction }: DeleteButtonProps) {
 	const [_, startTransition] = useTransition();
-	const deleteAction = async (formData: FormData) => {
+
+	const deleteAction = (formData: FormData) => {
 		const confirm = window.confirm("Are you sure?");
 		if (!confirm) return;
 
@@ -27,12 +27,14 @@ function DeleteButton({ id, formAction }: DeleteButtonProps) {
 			}
 		});
 	};
+
 	return (
 		<form action={deleteAction}>
 			<input type="text" hidden name="id" defaultValue={id} />
-			<Button type="submit">
+
+			<SubmitButton>
 				<TrashIcon />
-			</Button>
+			</SubmitButton>
 		</form>
 	);
 }

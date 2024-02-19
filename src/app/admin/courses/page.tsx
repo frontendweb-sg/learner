@@ -19,7 +19,7 @@ async function Page() {
 					<Link href={`/admin/courses/${course.id}`}>
 						<PencilIcon />
 					</Link>
-					<DeleteButton id={course.id} formAction={deleteCourse} />
+					<DeleteButton id={course.slug} formAction={deleteCourse} />
 				</div>
 			))}
 		</div>
