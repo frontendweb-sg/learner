@@ -1,5 +1,8 @@
+import { ICategoryDoc } from "@/app/api/models/category";
 import { getCategories } from "./actions/actions";
 import CategoryForm from "./components/CategoryForm";
+import { Link, PenIcon } from "lucide-react";
+import CategoryDeleteButton from "./components/CategoryDeleteButton";
 
 async function Page() {
 	const categories = await getCategories();

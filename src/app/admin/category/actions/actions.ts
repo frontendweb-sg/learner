@@ -53,9 +53,7 @@ export async function updateCategory(prevState: any, formData: FormData) {
 	}
 }
 
-export async function getCategories(
-	params?: string,
-): Promise<ICategoryDoc[] | { error: any }> {
+export async function getCategories(params?: string): Promise<ICategoryDoc[]> {
 	try {
 		let query = "";
 		if (params) {
@@ -67,7 +65,7 @@ export async function getCategories(
 
 		return response;
 	} catch (error) {
-		return { error: error };
+		return [];
 	}
 }
 
