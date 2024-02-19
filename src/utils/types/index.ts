@@ -1,3 +1,6 @@
+import { ResponseResult } from "@/components/network/http";
+import { ZodIssue } from "zod";
+
 export type CourseStatus = "new" | "draf" | "public";
 
 export type ColumnProps<T, K extends keyof T> = {
@@ -11,4 +14,10 @@ export type ColumnProps<T, K extends keyof T> = {
 export interface TableProps<T, K extends keyof T> {
 	columns?: Array<ColumnProps<T, K>>;
 	rows: Array<T>;
+}
+export interface ActionError<T> {
+	success: boolean;
+	data?: T | null;
+	error?: Error;
+	errors?: { [key: string]: string };
 }

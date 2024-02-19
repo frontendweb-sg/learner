@@ -9,8 +9,8 @@ import { z } from "zod";
  */
 
 export interface ResponseResult<T> {
-	error?: Error | null;
 	data: T | null;
+	error?: Error | null;
 }
 
 export async function http<T>(
@@ -42,7 +42,7 @@ export async function http<T>(
 		});
 
 		const data: T = await response.json();
-		if (response.status === 500) throw data;
+		if (![200, 201].includes(response.status)) throw data;
 
 		return {
 			data,

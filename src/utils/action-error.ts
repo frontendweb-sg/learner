@@ -9,3 +9,13 @@ export const handleValidationError = (error: ZodError) => {
 		{},
 	) as { [key: string]: string };
 };
+
+export const zodValidationError = (error: ZodError) => {
+	return error?.errors?.reduce(
+		(first, issue: ZodIssue) =>
+			Object.assign(first, {
+				[issue.path[0]]: issue.message,
+			}),
+		{},
+	) as { [key: string]: string };
+};

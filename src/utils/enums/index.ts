@@ -4,3 +4,9 @@ export enum CourseLevel {
 	Advanced = "advanced",
 	Expert = "expert",
 }
+
+export enum Status {
+	New = "new",
+	Draft = "draft",
+	Publish = "Publish",
+}
