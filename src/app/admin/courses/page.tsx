@@ -16,7 +16,7 @@ async function Page() {
 			{response.data?.map((course: ICourseDoc) => (
 				<div key={course.id}>
 					{course.title}
-					<Link href={`/admin/courses/${course.id}`}>
+					<Link href={`/admin/courses/${course.slug}`}>
 						<PencilIcon />
 					</Link>
 					<DeleteButton id={course.slug} formAction={deleteCourse} />

@@ -55,6 +55,11 @@ export async function addCourse(prevState: any, formData: FormData) {
 	}
 }
 
+/**
+ * Delete course action
+ * @param formData
+ * @returns
+ */
 export async function deleteCourse(formData: FormData) {
 	try {
 		const id = formData.get("id");
@@ -76,5 +81,25 @@ export async function deleteCourse(formData: FormData) {
 			};
 		}
 		return { success: false, error: error as Error };
+	}
+}
+
+/**
+ * Course by slug
+ * @param id
+ * @returns
+ */
+export async function getCourseBySlug(slug: string) {
+	try {
+		const response = await http<ICourseDoc>("/course/" + slug);
+		return { success: true, data: response };
+	} catch (error) {
+		return {
+			success: false,
+			data: {
+				error: error as Error,
+				data: null,
+			},
+		};
 	}
 }

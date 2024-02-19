@@ -1,6 +1,5 @@
 "use client";
 import SubmitButton from "./SubmitButton";
-import { ICourseDoc } from "@/app/api/models/course";
 import { TrashIcon } from "lucide-react";
 import { useTransition } from "react";
 import { toast } from "react-toastify";
