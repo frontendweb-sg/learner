@@ -6,12 +6,12 @@ import { useTransition } from "react";
 import { toast } from "react-toastify";
 import { ActionError } from "@/utils/types";
 
-type DeleteButtonProps = {
+type DeleteButtonProps<T> = {
 	id: string;
-	formAction: (formData: FormData) => Promise<ActionError<ICourseDoc>>;
+	formAction: (formData: FormData) => Promise<ActionError<T>>;
 };
 
-function DeleteButton({ id, formAction }: DeleteButtonProps) {
+function DeleteButton<T>({ id, formAction }: DeleteButtonProps<T>) {
 	const [_, startTransition] = useTransition();
 
 	const deleteAction = (formData: FormData) => {
@@ -23,7 +23,7 @@ function DeleteButton({ id, formAction }: DeleteButtonProps) {
 			if (data?.error) {
 				toast.error(data.error.message);
 			} else {
-				toast.success("Course deleted successfully!");
+				toast.success("Deleted successfully!");
 			}
 		});
 	};
@@ -31,7 +31,6 @@ function DeleteButton({ id, formAction }: DeleteButtonProps) {
 	return (
 		<form action={deleteAction}>
 			<input type="text" hidden name="id" defaultValue={id} />
-
 			<SubmitButton>
 				<TrashIcon />
 			</SubmitButton>

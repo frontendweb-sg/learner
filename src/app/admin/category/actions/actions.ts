@@ -2,7 +2,10 @@
 
 import { ICategoryDoc } from "@/app/api/models/category";
 import { ResponseResult, http } from "@/components/network/http";
-import { handleValidationError } from "@/utils/action-error";
+import {
+	handleValidationError,
+	zodValidationError,
+} from "@/utils/action-error";
 import { revalidatePath } from "next/cache";
 import { ZodError, z } from "zod";
 
@@ -98,6 +101,11 @@ export async function getCategoryById(id: string) {
 	} catch (error) {}
 }
 
+/**
+ * Delete category actions
+ * @param formData
+ * @returns
+ */
 export async function deleteCategory(formData: FormData) {
 	try {
 		const id = formData.get("id");
@@ -107,11 +115,14 @@ export async function deleteCategory(formData: FormData) {
 		});
 
 		revalidatePath("/admin/category");
-		return { success: true, data: response };
+		return { success: true, data: response.data };
 	} catch (error) {
 		if (error instanceof ZodError) {
-			return { success: false, errors: handleValidationError(error) };
+			return {
+				success: false,
+				errors: zodValidationError(error),
+			};
 		}
-		return { success: false, error };
+		return { success: false, error: error as Error };
 	}
 }
