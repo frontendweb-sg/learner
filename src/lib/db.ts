@@ -12,7 +12,7 @@ if (!cached) {
  * Database connection
  * @returns
  */
-console.log("uri", MONGODB_URI);
+
 export async function connectDb() {
 	if (cached.conn) return cached.conn;
 	try {

@@ -17,15 +17,11 @@ export async function POST(req: NextRequest) {
 		const body = (await req.json()) as ICategory;
 		body.slug = slug(body.title);
 
-		console.log("server result", body);
-
 		const categoryExist = await Category.findOne({ slug: body.slug });
 		if (categoryExist) throw new BadRequestError("Category already existed");
 
 		const category = new Category(body);
 		const result = await category.save();
-
-		console.log("server result", result);
 
 		return NextResponse.json(result, { status: 201 });
 	} catch (error) {

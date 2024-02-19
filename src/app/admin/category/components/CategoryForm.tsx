@@ -50,6 +50,9 @@ function CategoryForm({ category }: CategoryFormProps) {
 			/>
 			<p className="text-xs text-rose-600">{state?.errors?.["description"]}</p>
 			<SubmitButton>{category?.id ? "Update" : "Save"}</SubmitButton>
+			{state?.error && (
+				<p className="text-xs text-rose-600">{state.error.message}</p>
+			)}
 		</form>
 	);
 }

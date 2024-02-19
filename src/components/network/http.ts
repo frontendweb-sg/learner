@@ -40,14 +40,14 @@ export async function http<T>(
 			},
 			...rest,
 		});
+
 		const data: T = await response.json();
+		if (response.status === 500) throw data;
+
 		return {
 			data,
 		};
 	} catch (error) {
-		return {
-			data: null,
-			error: error as Error,
-		};
+		throw error;
 	}
 }
