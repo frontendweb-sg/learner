@@ -1,11 +1,9 @@
 "use client";
 import classNames from "classnames";
-import Link from "next/link";
-import { usePathname, useSelectedLayoutSegment } from "next/navigation";
+import NavItem from "@/components/common/NavItem";
+import Logo from "@/components/layout/Logo";
 import { SidebarMenu } from "./menu";
 import { IMenu } from "@/utils/types";
-import NavItem from "@/components/ui/NavItem";
-import Logo from "@/components/layout/Logo";
 
 type SidebarProps = React.HtmlHTMLAttributes<HTMLDivElement> & {
 	isOpen?: boolean;
@@ -31,29 +29,6 @@ function Sidebar({}: SidebarProps) {
 					</div>
 				);
 			})}
-			{/* {SidebarMenu.map((menu: IMenu) => {
-				return (
-					<>
-						<span className="mb-4 text-xs uppercase text-slate-400">
-							{menu.name}
-						</span>
-						<ul>
-							{menu.children?.map((submenu: IMenu) => (
-								<li
-									className={classNames("mb-2 rounded-md", {
-										"bg-slate-400": path === submenu.href,
-									})}>
-									<Link
-										className={classNames("block px-4 py-2")}
-										href={submenu.href!}>
-										{submenu.name}
-									</Link>
-								</li>
-							))}
-						</ul>
-					</>
-				);
-			})} */}
 		</aside>
 	);
 }

@@ -7,7 +7,12 @@ function SubmitButton({ children, ...rest }: SubmitButtonProps) {
 	const { pending } = useFormStatus();
 
 	return (
-		<Button disabled={pending} aria-disabled={pending} type="submit" {...rest}>
+		<Button
+			loading={pending}
+			disabled={pending}
+			aria-disabled={pending}
+			type="submit"
+			{...rest}>
 			{pending ? "loading..." : children}
 		</Button>
 	);

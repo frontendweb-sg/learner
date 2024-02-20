@@ -2,7 +2,7 @@ import { ListIcon } from "lucide-react";
 
 function AdminHeader() {
 	return (
-		<header>
+		<header className="py-2-px-3 relative">
 			<ListIcon />
 		</header>
 	);

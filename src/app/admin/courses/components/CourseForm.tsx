@@ -10,6 +10,7 @@ import { addCourse, updateCourse } from "../actions/actions";
 import { useFormState } from "react-dom";
 import Textarea from "@/components/ui/Textarea";
 import Select from "@/components/ui/Select";
+import Grid from "@/components/ui/Grid";
 
 export type CourseFormProps = {
 	course?: ICourseDoc;
@@ -24,7 +25,6 @@ function CourseForm({ course }: CourseFormProps) {
 	return (
 		<Form action={formAction}>
 			{course?.id && <input hidden name="id" defaultValue={course?.slug} />}
-
 			<Input
 				name="title"
 				placeholder="Course name"
@@ -43,12 +43,11 @@ function CourseForm({ course }: CourseFormProps) {
 				placeholder="Long description"
 				defaultValue={course?.description}
 			/>
-			<div className="grid grid-cols-2 gap-4">
+			<Grid size={2} gap={4}>
 				<Input name="offer" placeholder="Offer" defaultValue={course?.offer} />
-
 				<Input name="price" defaultValue={course?.price} placeholder="Price" />
-			</div>
-			<div className="grid grid-cols-2 gap-4">
+			</Grid>
+			<Grid size={2} gap={4}>
 				<Select
 					name="level"
 					defaultValue={course?.level ?? CourseLevel.Beginners}
@@ -59,10 +58,10 @@ function CourseForm({ course }: CourseFormProps) {
 					defaultValue={course?.status ?? Status.New}
 					options={courseStatus}
 				/>
-			</div>
+			</Grid>
 			<br />
 
-			<SubmitButton>
+			<SubmitButton color="primary">
 				{course?.id ? AppContent.update : AppContent.save}
 			</SubmitButton>
 		</Form>

@@ -45,7 +45,9 @@ function Select<T extends { label?: string }>({
 						"placeholder:text-rose-600": error,
 					})}>
 					{options.map((option: T) => (
-						<option>{optionLabel(option) as string}</option>
+						<option key={JSON.stringify(option)}>
+							{optionLabel(option) as string}
+						</option>
 					))}
 				</select>
 				{error && (

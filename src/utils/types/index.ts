@@ -1,8 +1,33 @@
-import { ResponseResult } from "@/components/network/http";
 import { ReactElement } from "react";
-import { ZodIssue } from "zod";
 
+export type SizeType = "xs" | "sm" | "md" | "lg" | "xl" | "full";
+export type ColorType =
+	| "primary"
+	| "secondary"
+	| "info"
+	| "danger"
+	| "warning"
+	| "gray"
+	| "default"
+	| "success";
+export type VariantType = "filled" | "outlined" | "text";
 export type CourseStatus = "new" | "draf" | "public";
+export type Numbers = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+
+export interface ColorVariant {
+	primary: string;
+	secondary: string;
+	info: string;
+	warning: string;
+	danger: string;
+	success: string;
+	gray: string;
+}
+export interface Variant {
+	filled: ColorVariant;
+	outlined: ColorVariant;
+	text: ColorVariant;
+}
 
 export type ColumnProps<T, K extends keyof T> = {
 	id?: string | number;
