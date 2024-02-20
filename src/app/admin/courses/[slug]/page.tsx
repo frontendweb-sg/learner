@@ -1,7 +1,29 @@
+import { Metadata } from "next";
 import { getCourseBySlug } from "../actions/actions";
 import CourseForm from "../components/CourseForm";
 
-async function Page({ params }: { params: { slug: string } }) {
+export async function generateMetadata({
+	params,
+}: {
+	params: { slug: string };
+}) {
+	const { data } = await getCourseBySlug(params.slug);
+
+	return {
+		title: `hi-${data.data?.title}`,
+		description: data.data?.description,
+	};
+}
+
+async function Page({
+	params,
+	searchParams,
+	...rest
+}: {
+	params: { slug: string };
+	searchParams: any;
+}) {
+	console.log("searchParams", searchParams, rest);
 	const { data } = await getCourseBySlug(params.slug);
 	return (
 		<div>

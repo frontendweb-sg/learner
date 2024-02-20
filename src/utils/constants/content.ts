@@ -1,5 +1,5 @@
 export const AppContent = {
-	brandName: "Learner",
+	brandName: "learner",
 	ok: "Ok",
 	cancel: "Cancel",
 	save: "Save",

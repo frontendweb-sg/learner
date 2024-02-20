@@ -16,3 +16,18 @@ export const courseLevel = [
 		value: "expert",
 	},
 ];
+
+export const courseStatus = [
+	{
+		label: "New",
+		value: "new",
+	},
+	{
+		label: "Draft",
+		value: "draft",
+	},
+	{
+		label: "Publish",
+		value: "publish",
+	},
+];

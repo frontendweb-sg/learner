@@ -1,80 +1,71 @@
 "use client";
 import SubmitButton from "@/components/common/SubmitButton";
+import Input from "@/components/ui/Input";
+import Form from "@/components/ui/Form";
 import { ICourseDoc } from "@/app/api/models/course";
-import { courseLevel } from "@/utils/constants/constants";
+import { courseLevel, courseStatus } from "@/utils/constants/constants";
 import { AppContent } from "@/utils/constants/content";
 import { CourseLevel, Status } from "@/utils/enums";
 import { addCourse, updateCourse } from "../actions/actions";
 import { useFormState } from "react-dom";
+import Textarea from "@/components/ui/Textarea";
+import Select from "@/components/ui/Select";
 
 export type CourseFormProps = {
 	course?: ICourseDoc;
 };
 function CourseForm({ course }: CourseFormProps) {
-	const status = [Status.Draft, Status.New, Status.Publish];
+	const status: string[] = [Status.Draft, Status.New, Status.Publish];
 	const [state, formAction] = useFormState(
 		course?.id ? updateCourse : addCourse,
 		null,
 	);
 
 	return (
-		<form action={formAction}>
+		<Form action={formAction}>
 			{course?.id && <input hidden name="id" defaultValue={course?.slug} />}
-			<input
+
+			<Input
 				name="title"
 				placeholder="Course name"
 				defaultValue={course?.title}
+				error={state?.errors?.["title"]}
 			/>
-			<input
-				type="file"
-				name="hero"
-				accept=".png,.jpe?g"
-				placeholder="Select image"
-				defaultValue={course?.hero}
-			/>
-			<p>{state?.errors?.["title"]}</p>
 
-			<input
-				type="file"
-				name="videoUrl"
-				accept=".mp4,.webm"
-				defaultValue={course?.videoUrl}
-			/>
-			<textarea
+			<Textarea
 				name="excerpt"
 				placeholder="Short description"
 				defaultValue={course?.excerpt}
 			/>
-			<textarea
+			<Textarea
+				rows={5}
 				name="description"
 				placeholder="Long description"
 				defaultValue={course?.description}
 			/>
-			<input name="offer" placeholder="Offer" defaultValue={course?.offer} />
+			<div className="grid grid-cols-2 gap-4">
+				<Input name="offer" placeholder="Offer" defaultValue={course?.offer} />
 
-			<input name="price" defaultValue={course?.price} />
-			<select
-				name="level"
-				defaultValue={course?.level ?? CourseLevel.Beginners}>
-				{courseLevel.map((item: (typeof courseLevel)[0]) => (
-					<option key={item.value} value={item.value}>
-						{item.label}
-					</option>
-				))}
-			</select>
-			<select name="status" defaultValue={course?.status ?? Status.New}>
-				{status.map((item: string) => (
-					<option key={item} value={item}>
-						{item}
-					</option>
-				))}
-			</select>
+				<Input name="price" defaultValue={course?.price} placeholder="Price" />
+			</div>
+			<div className="grid grid-cols-2 gap-4">
+				<Select
+					name="level"
+					defaultValue={course?.level ?? CourseLevel.Beginners}
+					options={courseLevel}
+				/>
+				<Select
+					name="status"
+					defaultValue={course?.status ?? Status.New}
+					options={courseStatus}
+				/>
+			</div>
 			<br />
 
 			<SubmitButton>
 				{course?.id ? AppContent.update : AppContent.save}
 			</SubmitButton>
-		</form>
+		</Form>
 	);
 }
 

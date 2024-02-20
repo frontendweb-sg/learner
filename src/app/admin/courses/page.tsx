@@ -1,10 +1,14 @@
-import { ICourseDoc } from "@/app/api/models/course";
-import { deleteCourse, getCourses } from "./actions/actions";
+import DeleteButton from "@/components/common/DeleteButton";
 import CourseForm from "./components/CourseForm";
 import Link from "next/link";
+import { ICourseDoc } from "@/app/api/models/course";
+import { deleteCourse, getCourses } from "./actions/actions";
 import { PencilIcon } from "lucide-react";
-import DeleteButton from "@/components/common/DeleteButton";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+	title: "course pages",
+};
 async function Page() {
 	const response = await getCourses();
 

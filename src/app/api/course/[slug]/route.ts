@@ -41,7 +41,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
 	try {
 		const { hero, videoUrl, ...rest } = (await req.json()) as ICourseDoc;
 		rest.slug = slug(rest.title);
-		console.log(rest);
+		console.log(rest, "rest");
 		const course = await Course.findOneAndUpdate(
 			{
 				slug: params.slug,

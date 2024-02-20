@@ -1,4 +1,5 @@
 import { ResponseResult } from "@/components/network/http";
+import { ReactElement } from "react";
 import { ZodIssue } from "zod";
 
 export type CourseStatus = "new" | "draf" | "public";
@@ -20,4 +21,11 @@ export interface ActionError<T> {
 	data?: T | null;
 	error?: Error;
 	errors?: { [key: string]: string };
+}
+
+export interface IMenu {
+	name: string;
+	slug: string;
+	icon?: ReactElement;
+	children?: IMenu[];
 }
