@@ -4,13 +4,20 @@ import { TrashIcon } from "lucide-react";
 import { useTransition } from "react";
 import { toast } from "react-toastify";
 import { ActionError } from "@/utils/types";
+import { ButtonProps } from "../ui/Button";
 
-type DeleteButtonProps<T> = {
+type DeleteButtonProps<T> = ButtonProps & {
 	id: string;
 	formAction: (formData: FormData) => Promise<ActionError<T>>;
+	formProps?: React.FormHTMLAttributes<HTMLFormElement>;
 };
 
-function DeleteButton<T>({ id, formAction }: DeleteButtonProps<T>) {
+function DeleteButton<T>({
+	id,
+	formAction,
+	formProps,
+	...rest
+}: DeleteButtonProps<T>) {
 	const [_, startTransition] = useTransition();
 
 	const deleteAction = (formData: FormData) => {
@@ -28,10 +35,10 @@ function DeleteButton<T>({ id, formAction }: DeleteButtonProps<T>) {
 	};
 
 	return (
-		<form action={deleteAction}>
+		<form action={deleteAction} {...formProps} noValidate>
 			<input type="text" hidden name="id" defaultValue={id} />
-			<SubmitButton>
-				<TrashIcon />
+			<SubmitButton {...rest}>
+				<TrashIcon size={16} />
 			</SubmitButton>
 		</form>
 	);

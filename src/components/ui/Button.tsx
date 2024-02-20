@@ -14,12 +14,22 @@ export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 	variant?: VariantType;
 	pills?: boolean;
 	loading?: boolean;
+	icon?: boolean;
 };
 
 const ButtonSizes = {
 	xs: "px-2 py-.5",
 	sm: "px-4 py-1",
 	md: "px-5 py-1.5 min-w-24",
+	lg: "px-6 py-1.5",
+	xl: "px-7 py-1.5",
+	full: "w-full py-1.5`",
+};
+
+const ButtonIconSize = {
+	xs: "p-1",
+	sm: "p-2",
+	md: "p-2",
 	lg: "px-6 py-1.5",
 	xl: "px-7 py-1.5",
 	full: "w-full py-1.5`",
@@ -70,14 +80,15 @@ function Button({
 	children,
 	pills,
 	loading,
+	icon,
 	...rest
 }: ButtonProps) {
 	const colors = Variants[variant as keyof typeof Variants];
 	const classes = classNames(
 		"text-center font-medium flex justify-center space-x-2 items-center",
-		pills ? "rounded-full" : "rounded-md",
+		pills || icon ? "rounded-full" : "rounded-md",
 		variant !== "text" && "shadow-md ",
-		ButtonSizes[size],
+		icon ? ButtonIconSize[size] : ButtonSizes[size],
 		colors[color as keyof typeof colors],
 	);
 	return (

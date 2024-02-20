@@ -28,7 +28,12 @@ async function Page() {
 					<Link href={`/admin/courses/${course.slug}`}>
 						<PencilIcon />
 					</Link>
-					<DeleteButton id={course.slug} formAction={deleteCourse} />
+					<DeleteButton
+						icon
+						variant="text"
+						id={course.slug}
+						formAction={deleteCourse}
+					/>
 				</div>
 			))}
 		</div>
