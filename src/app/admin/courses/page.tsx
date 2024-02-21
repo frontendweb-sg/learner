@@ -7,6 +7,9 @@ import { deleteCourse, getCourses } from "./actions/actions";
 import { PencilIcon } from "lucide-react";
 import { Metadata } from "next";
 import { AppContent } from "@/utils/constants/content";
+import Box from "@/components/ui/Box";
+import Course from "@/components/course/Course";
+import Grid from "@/components/ui/Grid";
 
 export const metadata: Metadata = {
 	title: "course pages",
@@ -15,28 +18,18 @@ async function Page() {
 	const response = await getCourses();
 
 	return (
-		<div>
-			<h1>COurses</h1>
+		<>
 			<PageTitle title="Courses" subtitle="Welcome to courses">
 				<Link href={`/admin/courses/add-course`}>{AppContent.addCourse}</Link>
 			</PageTitle>
-			<CourseForm />
+
 			{response.data?.length == 0 && <p>There is no course</p>}
-			{response.data?.map((course: ICourseDoc) => (
-				<div key={course.id}>
-					{course.title}
-					<Link href={`/admin/courses/${course.slug}`}>
-						<PencilIcon />
-					</Link>
-					<DeleteButton
-						icon
-						variant="text"
-						id={course.slug}
-						formAction={deleteCourse}
-					/>
-				</div>
-			))}
-		</div>
+			<Grid size={5} gap={4}>
+				{response.data?.map((course: ICourseDoc) => (
+					<Course key={course.id} course={course} />
+				))}
+			</Grid>
+		</>
 	);
 }
 

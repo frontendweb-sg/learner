@@ -1,20 +1,8 @@
 import { ReactElement } from "react";
-
 export type SizeType = "xs" | "sm" | "md" | "lg" | "xl" | "full";
-export type ColorType =
-	| "primary"
-	| "secondary"
-	| "info"
-	| "danger"
-	| "warning"
-	| "gray"
-	| "default"
-	| "success";
-export type VariantType = "filled" | "outlined" | "text";
 export type CourseStatus = "new" | "draf" | "public";
 export type Numbers = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
-
-export interface ColorVariant {
+export type ColorVariant = {
 	primary: string;
 	secondary: string;
 	info: string;
@@ -22,13 +10,14 @@ export interface ColorVariant {
 	danger: string;
 	success: string;
 	gray: string;
-}
-export interface Variant {
+};
+export type Variant = {
 	filled: ColorVariant;
 	outlined: ColorVariant;
 	text: ColorVariant;
-}
-
+};
+export type ColorType = keyof ColorVariant;
+export type VariantType = keyof Variant;
 export type ColumnProps<T, K extends keyof T> = {
 	id?: string | number;
 	field: K;

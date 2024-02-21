@@ -29,7 +29,7 @@ async function Page({
 		<div>
 			<h1>{data.data?.title}</h1>
 			<p>{data.data?.description}</p>
-			<CourseForm course={data.data!} />
+			{/* <CourseForm course={data.data!} /> */}
 
 			{JSON.stringify(data.data)}
 		</div>
