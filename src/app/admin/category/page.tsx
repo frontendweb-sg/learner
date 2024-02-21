@@ -2,10 +2,10 @@ import CategoryForm from "./components/CategoryForm";
 import CategoryDeleteButton from "./components/CategoryDeleteButton";
 import Link from "next/link";
 import { ICategoryDoc } from "@/app/api/models/category";
-import { getCategories } from "./actions/actions";
+import { deleteCategory, getCategories } from "./actions/actions";
 import { PenIcon } from "lucide-react";
+import DeleteButton from "@/components/common/DeleteButton";
 
-export const revalidate = 0;
 async function Page() {
 	const response = await getCategories();
 
@@ -22,7 +22,7 @@ async function Page() {
 					<Link href={`/admin/category/${category.id}`}>
 						<PenIcon size={16} />
 					</Link>
-					<CategoryDeleteButton categoryId={category.id} />
+					<DeleteButton id={category.id} formAction={deleteCategory} />
 				</div>
 			))}
 		</div>
