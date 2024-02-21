@@ -8,4 +8,5 @@ export const AppContent = {
 	add: "Add",
 	addCourse: "Add course",
 	addSection: "Add section",
+	editCourse: "Edit course",
 };

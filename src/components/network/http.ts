@@ -42,6 +42,7 @@ export async function http<T>(
 		});
 
 		const data: T = await response.json();
+		// throw error
 		if (![200, 201].includes(response.status)) throw data;
 
 		return {

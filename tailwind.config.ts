@@ -8,6 +8,9 @@ const config: Config = {
 	],
 	theme: {
 		extend: {
+			colors: {
+				light: "#f8fafc",
+			},
 			fontFamily: {
 				lato: ["Lato", "sans-serif"],
 				roboto: ["Roboto", "sans-serif"],

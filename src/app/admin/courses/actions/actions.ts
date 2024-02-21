@@ -24,30 +24,36 @@ export async function getCourses(): Promise<ResponseResult<ICourseDoc[]>> {
 	}
 }
 
+const schema = z.object({
+	title: z.string().min(3, { message: "Course name is required!" }),
+	price: z.coerce.number(),
+	description: z.string(),
+	excerpt: z.string(),
+	level: z.string(),
+});
+
 /**
  * Add course
  * @param prevState
  * @param formData
  * @returns
  */
+
 export async function addCourse(prevState: any, formData: FormData) {
 	const body = Object.fromEntries(formData.entries());
 
 	try {
-		const schema = z.object({
-			title: z.string().min(3, { message: "Course name is required!" }),
-			price: z.coerce.number(),
-		});
-
 		const data = schema.parse(body);
-
 		const response = await http<ICourseDoc>("/course", {
 			method: "POST",
 			body: JSON.stringify(data),
 		});
+		console.log("res", response);
+
 		revalidatePath("/admin/courses");
 		return { success: true, data: response.data };
 	} catch (error) {
+		console.log(error);
 		if (error instanceof ZodError) {
 			return { success: false, errors: zodValidationError(error) };
 		}
@@ -55,17 +61,15 @@ export async function addCourse(prevState: any, formData: FormData) {
 	}
 }
 
+/**
+ * Update course
+ * @param prevState
+ * @param formData
+ * @returns
+ */
 export async function updateCourse(prevState: any, formData: FormData) {
 	const { id, ...rest } = Object.fromEntries(formData.entries());
 	try {
-		const schema = z.object({
-			title: z.string().min(3, { message: "Course name is required!" }),
-			price: z.coerce.number(),
-			description: z.string(),
-			excerpt: z.string(),
-			level: z.string(),
-		});
-
 		const data = schema.parse(rest) as ICourseDoc;
 		const response = await http<ICourseDoc>("/course/" + id, {
 			method: "PUT",
@@ -74,7 +78,6 @@ export async function updateCourse(prevState: any, formData: FormData) {
 		revalidatePath("/admin/courses/" + id);
 		return { success: true, data: response.data };
 	} catch (error) {
-		console.log(error);
 		if (error instanceof ZodError) {
 			return { success: false, errors: zodValidationError(error) };
 		}
@@ -90,22 +93,15 @@ export async function updateCourse(prevState: any, formData: FormData) {
 export async function deleteCourse(formData: FormData) {
 	try {
 		const id = formData.get("id");
-
+		console.log("Id", id);
 		const response = await http<ICourseDoc>("/course/" + id, {
 			method: "DELETE",
 		});
-
 		revalidatePath("/admin/courses");
-		return {
-			success: true,
-			data: response.data,
-		};
+		return { success: true, data: response.data };
 	} catch (error) {
 		if (error instanceof ZodError) {
-			return {
-				success: false,
-				errors: zodValidationError(error),
-			};
+			return { success: false, errors: zodValidationError(error) };
 		}
 		return { success: false, error: error as Error };
 	}

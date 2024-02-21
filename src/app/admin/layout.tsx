@@ -7,7 +7,7 @@ import AdminHeader from "./layout/AdminHeader";
 export const metadata: Metadata = {
 	title: {
 		template: "admin: %s",
-		default: "no-title",
+		default: "courses",
 	},
 };
 export default function AdminLayout({ children }: { children: ReactNode }) {

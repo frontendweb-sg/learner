@@ -10,12 +10,14 @@ type DeleteButtonProps<T> = ButtonProps & {
 	id: string;
 	formAction: (formData: FormData) => Promise<ActionError<T>>;
 	formProps?: React.FormHTMLAttributes<HTMLFormElement>;
+	label?: string;
 };
 
 function DeleteButton<T>({
 	id,
 	formAction,
 	formProps,
+	label,
 	...rest
 }: DeleteButtonProps<T>) {
 	const [_, startTransition] = useTransition();
@@ -38,7 +40,7 @@ function DeleteButton<T>({
 		<form action={deleteAction} {...formProps} noValidate>
 			<input type="text" hidden name="id" defaultValue={id} />
 			<SubmitButton {...rest}>
-				<TrashIcon size={16} />
+				{label ? label : <TrashIcon size={16} />}
 			</SubmitButton>
 		</form>
 	);

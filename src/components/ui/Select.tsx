@@ -8,9 +8,13 @@ export type SelectProps<T> = React.SelectHTMLAttributes<HTMLSelectElement> & {
 	error?: string;
 	options: T[];
 	getOptionLabel?: (option: T) => string;
+	getValue?: (option: T) => string;
 };
 
-function Select<T extends { label?: string }>({
+type IOption = {
+	[key: string]: string;
+};
+function Select<T>({
 	name,
 	iconEnd,
 	iconStart,
@@ -18,9 +22,10 @@ function Select<T extends { label?: string }>({
 	error,
 	options,
 	getOptionLabel,
+	getValue,
 	...rest
 }: SelectProps<T>) {
-	let optionLabel = getOptionLabel ?? ((option: T) => option.label);
+	let optionLabel = getOptionLabel ?? ((option: IOption) => option["label"]);
 
 	const clasess = classNames(
 		"bg-white flex  text-sm  item-center rounded-md p-3 relative border border-gray-200 hover:border-slate-300 focus:bg-slate-100",
@@ -45,8 +50,10 @@ function Select<T extends { label?: string }>({
 						"placeholder:text-rose-600": error,
 					})}>
 					{options.map((option: T) => (
-						<option key={JSON.stringify(option)}>
-							{optionLabel(option) as string}
+						<option
+							value={getValue ? getValue(option) : JSON.stringify(option)}
+							key={JSON.stringify(option)}>
+							{optionLabel(option as T & IOption) as string}
 						</option>
 					))}
 				</select>

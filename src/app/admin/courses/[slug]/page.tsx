@@ -1,6 +1,9 @@
 import { Metadata } from "next";
 import { getCourseBySlug } from "../actions/actions";
 import CourseForm from "../components/CourseForm";
+import PageTitle from "@/components/common/PageTitle";
+import Link from "next/link";
+import { AppContent } from "@/utils/constants/content";
 
 export async function generateMetadata({
 	params,
@@ -23,16 +26,23 @@ async function Page({
 	params: { slug: string };
 	searchParams: any;
 }) {
-	console.log("searchParams", searchParams, rest);
 	const { data } = await getCourseBySlug(params.slug);
 	return (
-		<div>
-			<h1>{data.data?.title}</h1>
-			<p>{data.data?.description}</p>
-			{/* <CourseForm course={data.data!} /> */}
+		<>
+			<PageTitle title={data.data?.title} subtitle="Welcome to courses">
+				<Link href={decodeURI(`/admin/courses/${data.data?.slug}/edit-course`)}>
+					{AppContent.editCourse}
+				</Link>
+			</PageTitle>
 
-			{JSON.stringify(data.data)}
-		</div>
+			<div>
+				<h1>{data.data?.title}</h1>
+				<p>{data.data?.description}</p>
+				{/* <CourseForm course={data.data!} /> */}
+
+				{JSON.stringify(data.data)}
+			</div>
+		</>
 	);
 }
 
