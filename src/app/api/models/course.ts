@@ -57,6 +57,8 @@ export const Course =
 /**
  * {
  *   category:"development",
+ *   courseCode:0003434,
+ *   courseDuration:dskfdlf,
  *   title:"html",
  *   slug:"html",
  *   excerpt:"this is for beginers",

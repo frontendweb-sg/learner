@@ -1,9 +1,13 @@
-import { Metadata } from "next";
-import { getCourseBySlug } from "../actions/actions";
-import CourseForm from "../components/CourseForm";
-import PageTitle from "@/components/common/PageTitle";
 import Link from "next/link";
+import PageTitle from "@/components/common/PageTitle";
+import { getCourseBySlug } from "../actions/actions";
 import { AppContent } from "@/utils/constants/content";
+import AddSection from "../components/AddSection";
+import SectionForm from "../components/SectionForm";
+import { deleteSection, getSections } from "../actions/section-action";
+import { ISectionDoc } from "@/app/api/models/section";
+import DeleteButton from "@/components/common/DeleteButton";
+import SectionList from "../components/SectionList";
 
 export async function generateMetadata({
 	params,
@@ -13,8 +17,8 @@ export async function generateMetadata({
 	const { data } = await getCourseBySlug(params.slug);
 
 	return {
-		title: `hi-${data.data?.title}`,
-		description: data.data?.description,
+		title: `hi-${data?.title}`,
+		description: data?.description,
 	};
 }
 
@@ -27,21 +31,21 @@ async function Page({
 	searchParams: any;
 }) {
 	const { data } = await getCourseBySlug(params.slug);
+	const { data: sections } = await getSections(params.slug);
 	return (
 		<>
-			<PageTitle title={data.data?.title} subtitle="Welcome to courses">
-				<Link href={decodeURI(`/admin/courses/${data.data?.slug}/edit-course`)}>
+			<PageTitle title={data?.title} subtitle="Welcome to courses">
+				<Link href={decodeURI(`/admin/courses/${data?.slug}/edit-course`)}>
 					{AppContent.editCourse}
 				</Link>
 			</PageTitle>
 
 			<div>
-				<h1>{data.data?.title}</h1>
-				<p>{data.data?.description}</p>
-				{/* <CourseForm course={data.data!} /> */}
-
-				{JSON.stringify(data.data)}
+				<h1>{data?.title}</h1>
+				<p>{data?.description}</p>
 			</div>
+
+			<SectionList slug={data?.slug!} sections={sections!} />
 		</>
 	);
 }

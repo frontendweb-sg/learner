@@ -3,11 +3,11 @@ import Link from "next/link";
 import PageTitle from "@/components/common/PageTitle";
 import Grid from "@/components/ui/Grid";
 import Course from "@/components/course/Course";
+import NoData from "@/components/common/NoData";
 import { ICourseDoc } from "@/app/api/models/course";
 import { deleteCourse, getCourses } from "./actions/actions";
 import { Metadata } from "next";
 import { AppContent } from "@/utils/constants/content";
-import NoData from "@/components/common/NoData";
 import { PlusSquareIcon } from "lucide-react";
 
 /**

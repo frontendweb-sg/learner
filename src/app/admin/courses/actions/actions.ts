@@ -48,12 +48,10 @@ export async function addCourse(prevState: any, formData: FormData) {
 			method: "POST",
 			body: JSON.stringify(data),
 		});
-		console.log("res", response);
 
 		revalidatePath("/admin/courses");
 		return { success: true, data: response.data };
 	} catch (error) {
-		console.log(error);
 		if (error instanceof ZodError) {
 			return { success: false, errors: zodValidationError(error) };
 		}
@@ -115,14 +113,11 @@ export async function deleteCourse(formData: FormData) {
 export async function getCourseBySlug(slug: string) {
 	try {
 		const response = await http<ICourseDoc>("/course/" + slug);
-		return { success: true, data: response };
+		return { success: true, data: response.data };
 	} catch (error) {
 		return {
 			success: false,
-			data: {
-				error: error as Error,
-				data: null,
-			},
+			error: error as Error,
 		};
 	}
 }
