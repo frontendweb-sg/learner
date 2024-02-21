@@ -12,19 +12,17 @@ export type PageTitleProps = React.HtmlHTMLAttributes<HTMLDivElement> & {
  */
 function PageTitle({ title, subtitle, className, children }: PageTitleProps) {
 	const classes = classNames(
-		"flex mb-3 border-b border-gray-200 pb-3 items-center justify-between",
+		"flex mb-4 pb-4 items-center justify-between",
 		className,
 	);
 	return (
 		<div className={classes}>
-			<div>
-				<h1 className="font-roboto font-semibold">
-					{title}
-					<small className="block text-xs font-normal text-gray-500">
-						{subtitle}
-					</small>
-				</h1>
-			</div>
+			<h1 className="dark:text-navy-50  text-lg font-medium text-slate-700">
+				{title}
+				<small className="block text-xs font-normal text-gray-500">
+					{subtitle}
+				</small>
+			</h1>
 			{children}
 		</div>
 	);

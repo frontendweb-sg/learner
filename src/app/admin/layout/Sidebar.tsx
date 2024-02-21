@@ -22,7 +22,7 @@ function Sidebar({ isOpen }: SidebarProps) {
 					return (
 						<div key={menu.slug}>
 							<div className="mb-3 mt-4 flex items-center justify-between px-4">
-								<span className="text-xs font-medium uppercase text-gray-400">
+								<span className="text-xs  uppercase text-gray-400">
 									{menu.name}
 								</span>
 								{/* <div className="dark:bg-navy-500 ml-2 h-px flex-grow bg-slate-200"></div> */}

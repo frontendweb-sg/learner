@@ -57,7 +57,7 @@ const OutlinedColors: ColorVariant = {
 	gray: "border border-gray-600 text-gray-600",
 };
 const TextColors: ColorVariant = {
-	primary: "text-rose-600 hover:border-rose-600 border border-rose-600/0",
+	primary: "text-rose-600 hover:bg-rose-600/10 border border-rose-600/0",
 	secondary: "text-slate-600 hover:border-slate-600 border border-slate-600/0",
 	info: "text-sky-600 hover:border-sky-600 border border-sky-600/0",
 	warning: "text-yellow-600 hover:border-yellow-600 border border-yellow-600/0",

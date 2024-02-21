@@ -16,7 +16,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 			<Sidebar />
 			<main className="flex flex-1 flex-col md:ml-64">
 				<AdminHeader />
-				<div className="flex-1 px-4 py-6">{children}</div>
+				<div className="flex-1 px-8 py-6">{children}</div>
 				<footer className="border-t border-gray-200 py-5 text-center">
 					<p className="text-xs">
 						copyright- {new Date().getFullYear()} &copy; all rights reserved
