@@ -1,7 +1,9 @@
 import { IMenu } from "@/utils/types";
 import classNames from "classnames";
+import { HomeIcon } from "lucide-react";
 import Link, { LinkProps } from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
+import { ReactElement, ReactNode } from "react";
 import { UrlObject } from "url";
 
 /**
@@ -26,17 +28,23 @@ function NavItem({
 	const segment = useSelectedLayoutSegment();
 	const isActive = item.slug === segment;
 
-	const classes = classNames("mb-2 px-4 py-2 block", className);
+	const classes = classNames(
+		"px-2 py-2 block text-sm flex items-center space-x-2",
+		className,
+	);
+
+	const Icon = item.icon!;
 	return (
 		<li
 			className={classNames(
-				"mb-2 rounded-md",
-				isActive ? "bg-white text-rose-700" : "bg-slate-700",
+				" roundedtracking-wide w-full cursor-pointer items-center rounded-md outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800",
+				isActive ? "bg-slate-100 text-slate-800" : "text-slate-500 ",
 				parentProps?.className,
 			)}
 			{...parentProps}>
 			<Link className={classes} href={root + item.slug}>
-				{item.name}
+				{item.icon! && <Icon size={16} />}
+				<span>{item.name}</span>
 			</Link>
 		</li>
 	);

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ToastContainer } from "react-toastify";
-import { roboto } from "@/utils/fonts/font";
+import { poppins, roboto } from "@/utils/fonts/font";
 import "react-toastify/dist/ReactToastify.css";
 import "./index.scss";
 
@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={roboto.className}>
+			<body className={poppins.className}>
 				{children}
 				<ToastContainer />
 			</body>
