@@ -22,14 +22,16 @@ function Input({
 	iconEnd,
 	error,
 	readOnly,
+	className,
 	...rest
 }: InputProps) {
 	const clasess = classNames(
-		"bg-white flex  text-sm  item-center rounded-md p-2.5 relative border border-gray-200 hover:border-slate-300 focus:bg-slate-100",
+		"bg-white flex  text-sm  item-center rounded-md  relative border border-gray-200 hover:border-slate-300 focus:bg-slate-100",
 		{
 			"border-rose-600 text-rose-600": error,
 			"bg-gray-100/50 hover:border-gray-200": readOnly,
 		},
+		className,
 	);
 	let StartIcon = iconStart!;
 	let EndIcon = iconEnd!;
@@ -44,9 +46,12 @@ function Input({
 				{iconStart && <StartIcon className="mr-2 text-inherit" />}
 				<input
 					aria-readonly={readOnly}
-					className={classNames("flex-1 bg-transparent outline-none", {
-						"placeholder:text-rose-600": error,
-					})}
+					className={classNames(
+						"flex-grow rounded-md  bg-transparent p-2.5 outline-none",
+						{
+							"placeholder:text-rose-600": error,
+						},
+					)}
 					name={name}
 					placeholder={placeholder}
 					{...rest}
