@@ -3,39 +3,52 @@ import { Edit2Icon, Eye, EyeOff, PenIcon, Trash2Icon } from "lucide-react";
 import Button from "../Button";
 import Dropdown from "../Dropdown";
 import Link from "next/link";
+import Divider from "../Divider";
 
 type TableActionProps = {
-	as?: "dropdown" | "rail";
+	as?: "dropdown" | "slide";
 };
 function TableAction({ as }: TableActionProps) {
-	if (as === "rail") {
+	if (as === "slide") {
 		return (
 			<div className="flex items-center justify-end">
-				<Button icon variant="text" size="xs">
-					<Edit2Icon size={14} />
-				</Button>
-				<Button icon variant="text" size="xs">
-					<Trash2Icon size={14} />
-				</Button>
-				<Button icon variant="text" size="xs">
-					<Eye size={14} />
-				</Button>
-				<Button icon variant="text" size="xs">
-					<EyeOff size={14} />
-				</Button>
+				<Dropdown as="div" isSlider>
+					<Dropdown.Item
+						as={Button}
+						icon
+						variant="text"
+						iconStart={Trash2Icon}
+					/>
+					<Dropdown.Item as={Link} href="/" iconStart={PenIcon} />
+				</Dropdown>
 			</div>
 		);
 	}
+	<div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
+		<div>Bonnie Green</div>
+		<div className="truncate font-medium">name@flowbite.com</div>
+	</div>;
 	return (
-		<div>
-			<Dropdown as="div">
-				<Dropdown.Item as={Button} label="Delete" iconStart={Trash2Icon} />
-				<Dropdown.Item iconStart={PenIcon}>Edit</Dropdown.Item>
-				<Dropdown.Item>Active</Dropdown.Item>
-
-				<Dropdown.Item>Inactive</Dropdown.Item>
-			</Dropdown>
-		</div>
+		<Dropdown
+			as="div"
+			renderHeader={
+				<div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
+					<div>Bonnie Green</div>
+					<div className="truncate font-medium">name@flowbite.com</div>
+				</div>
+			}>
+			<Dropdown.Item
+				as={Button}
+				icon
+				variant="text"
+				label="Delete"
+				iconStart={Trash2Icon}
+			/>
+			<Dropdown.Item iconStart={PenIcon}>Edit</Dropdown.Item>
+			<Dropdown.Item>Active</Dropdown.Item>
+			<Divider />
+			<Dropdown.Item>Inactive</Dropdown.Item>
+		</Dropdown>
 	);
 }
 export default TableAction;
