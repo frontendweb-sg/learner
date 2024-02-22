@@ -94,7 +94,7 @@ function Button({
 	return (
 		<button role="button" className={classes} type={type} {...rest}>
 			{loading && <LoaderIcon className="animate-spin" size={16} />}
-			<span>{children}</span>
+			{children}
 		</button>
 	);
 }

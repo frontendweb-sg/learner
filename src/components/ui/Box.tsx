@@ -1,6 +1,5 @@
 import { Sizes, Width } from "@/utils/styles";
 import classNames from "classnames";
-import { ReactNode, RefObject } from "react";
 
 type WidthPrefix = "w-" | "min-" | "max-";
 export type Props<T> = {

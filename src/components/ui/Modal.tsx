@@ -10,7 +10,6 @@ export type ModalProps = {
 };
 
 function Modal({ open, children, onClose, title, ...rest }: ModalProps) {
-	if (!open) return null;
 	return (
 		<>
 			<div className="fixed inset-0 z-50 w-screen overflow-y-auto">

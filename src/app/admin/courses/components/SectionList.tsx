@@ -7,6 +7,9 @@ import AddSection from "./AddSection";
 import Accordion from "@/components/ui/Accordion";
 import DeleteButton from "@/components/common/DeleteButton";
 import { deleteSection } from "../actions/section-action";
+import Button from "@/components/ui/Button";
+import { PencilIcon } from "lucide-react";
+import Link from "next/link";
 
 /**
  * Section List
@@ -20,12 +23,18 @@ function SectionList({ sections, slug }: SectionListProps) {
 	return (
 		<div className="mt-7">
 			<PageTitle title="Section" subtitle="Add section">
-				<AddSection slug={slug!} />
+				<Link href={"/admin/courses/" + slug + "/section/add-section"}>
+					Add section
+				</Link>
+				{/* <AddSection slug={slug!} /> */}
 			</PageTitle>
 			<div className="mt-5">
 				{sections?.map((section: ISectionDoc) => (
-					<Accordion>
+					<Accordion key={section.id}>
 						<Accordion.Title title={section.title}>
+							<Button onClick={() => {}} icon variant="text">
+								<PencilIcon size={16} />
+							</Button>
 							<DeleteButton
 								icon
 								variant="text"
@@ -41,17 +50,4 @@ function SectionList({ sections, slug }: SectionListProps) {
 	);
 }
 
-// <div
-// 	className="mb-4 flex items-center justify-between rounded-md border border-gray-200 bg-white p-3 shadow-sm"
-// 	key={section.id}>
-// 	{section.title}{" "}
-// 	<div>
-// 		<DeleteButton
-// 			icon
-// 			variant="text"
-// 			formAction={deleteSection}
-// 			id={section.id}
-// 		/>
-// 	</div>
-// </div>
 export default SectionList;

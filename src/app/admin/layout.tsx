@@ -10,7 +10,14 @@ export const metadata: Metadata = {
 		default: "courses",
 	},
 };
-export default function AdminLayout({ children }: { children: ReactNode }) {
+export default function AdminLayout({
+	children,
+	modal,
+}: {
+	children: ReactNode;
+	modal: ReactNode;
+}) {
+	console.log("modal", modal);
 	return (
 		<Cover>
 			<Sidebar />
@@ -23,6 +30,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 					</p>
 				</footer>
 			</main>
+			{modal}
 		</Cover>
 	);
 }
