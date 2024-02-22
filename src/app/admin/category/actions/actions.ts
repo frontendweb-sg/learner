@@ -15,14 +15,16 @@ import { ZodError, z } from "zod";
  * @param params
  * @returns
  */
-export async function getCategories(
-	params?: string,
-): Promise<ResponseResult<ICategoryDoc[]>> {
+export async function getCategories(params?: {
+	[key: string]: string;
+}): Promise<ResponseResult<ICategoryDoc[]>> {
 	try {
+		console.log(params);
 		let query = "";
 		if (params) {
-			query = "?=" + params;
+			query = "?" + new URLSearchParams(params).toString();
 		}
+
 		const response = await http<ICategoryDoc[]>(`/category${query}`, {
 			next: { revalidate: 0 },
 		});

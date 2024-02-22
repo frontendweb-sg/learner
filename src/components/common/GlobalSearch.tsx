@@ -38,12 +38,12 @@ function GlobalSearch({ debounceTime = 300 }: GlobalSearchProps) {
 			)}>
 			<SearchIcon size={16} className="text-slate-600" />
 			<input
-				placeholder="Search keyword..."
-				name="search"
-				type="search"
 				className={classNames(
 					"rounded-full bg-transparent px-3 py-2 text-sm text-slate-800 outline-none placeholder:text-xs",
 				)}
+				placeholder="Search keyword..."
+				name="search"
+				type="search"
 				defaultValue={searchParams.get("q")?.toString()}
 				onChange={handleSearch}
 			/>

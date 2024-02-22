@@ -1,8 +1,8 @@
-import { ReactNode } from "react";
-import Sidebar from "./layout/Sidebar";
-import { Metadata } from "next";
-import Cover from "@/components/ui/Cover";
 import AdminHeader from "./layout/AdminHeader";
+import Sidebar from "./layout/Sidebar";
+import Cover from "@/components/ui/Cover";
+import { ReactNode } from "react";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
 	title: {
@@ -17,7 +17,6 @@ export default function AdminLayout({
 	children: ReactNode;
 	modal: ReactNode;
 }) {
-	console.log("modal", modal);
 	return (
 		<Cover>
 			<Sidebar />

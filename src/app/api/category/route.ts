@@ -33,10 +33,16 @@ export async function POST(req: NextRequest) {
  *  Category handler
  * @returns
  */
-export async function GET() {
+export async function GET(req: NextRequest) {
+	const query = req.nextUrl.searchParams;
 	await connectDb();
+
 	try {
-		const data = (await Category.find()) as ICategoryDoc[];
+		const data = (await Category.aggregate([
+			{
+				$match: query.get("q") !== "undefined" ? { slug: query.get("q") } : {},
+			},
+		])) as ICategoryDoc[];
 		return NextResponse.json(data, { status: 200 });
 	} catch (error) {
 		return errorHandler(error as CustomError);

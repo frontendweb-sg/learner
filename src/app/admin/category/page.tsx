@@ -10,8 +10,14 @@ import { getCategories } from "./actions/actions";
  * @returns
  */
 
-async function Page() {
-	const { data, error } = await getCategories();
+async function Page({
+	searchParams,
+}: {
+	searchParams: { [key: string]: string };
+}) {
+	const { data, error } = await getCategories(
+		JSON.parse(JSON.stringify(searchParams)),
+	);
 
 	const columns: ColumnProps<ICategoryDoc, keyof ICategory>[] = [
 		{ field: "title", headerName: "Title" },
