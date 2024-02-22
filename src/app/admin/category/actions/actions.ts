@@ -3,6 +3,7 @@
 import { ICategoryDoc } from "@/app/api/models/category";
 import { ICourseDoc } from "@/app/api/models/course";
 import { ResponseResult, http } from "@/components/network/http";
+import { isObjEmpty } from "@/utils";
 import {
 	handleValidationError,
 	zodValidationError,
@@ -19,9 +20,9 @@ export async function getCategories(params?: {
 	[key: string]: string;
 }): Promise<ResponseResult<ICategoryDoc[]>> {
 	try {
-		console.log(params);
 		let query = "";
-		if (params) {
+		if (!isObjEmpty(params!)) {
+			console.log("Hi");
 			query = "?" + new URLSearchParams(params).toString();
 		}
 

@@ -13,7 +13,7 @@ export interface ICategoryDoc extends Document<ICategory>, ICategory {}
 const schema = new Schema(
 	{
 		title: { type: String, required: true, trim: true },
-		slug: { type: String, required: true, trim: true },
+		slug: { type: String, required: true, trim: true, index: true },
 		description: { type: String, default: "" },
 		image: { type: String, default: "" },
 		active: { type: Boolean, default: true },
@@ -21,12 +21,14 @@ const schema = new Schema(
 	{
 		timestamps: true,
 		id: true,
+
 		toJSON: {
 			virtuals: true,
 			versionKey: false,
 		},
 	},
 );
+
 schema.virtual("id").get(function () {
 	return this._id.toHexString();
 });

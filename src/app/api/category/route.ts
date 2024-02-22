@@ -37,12 +37,17 @@ export async function GET(req: NextRequest) {
 	const query = req.nextUrl.searchParams;
 	await connectDb();
 
+	const slug = query.get("q")?.toLowerCase();
+
 	try {
 		const data = (await Category.aggregate([
 			{
-				$match: query.get("q") !== "undefined" ? { slug: query.get("q") } : {},
+				$match: query.get("q")
+					? { slug: { $regex: new RegExp(slug!, "i") } }
+					: {},
 			},
 		])) as ICategoryDoc[];
+
 		return NextResponse.json(data, { status: 200 });
 	} catch (error) {
 		return errorHandler(error as CustomError);
