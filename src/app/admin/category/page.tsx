@@ -4,6 +4,10 @@ import classNames from "classnames";
 import DataTable, { ColumnProps } from "@/components/ui/DataTable";
 import type { ICategory, ICategoryDoc } from "@/app/api/models/category";
 import { getCategories } from "./actions/actions";
+import PageTitle from "@/components/common/PageTitle";
+import NavLink from "@/components/common/NavLink";
+import { AppContent } from "@/utils/constants/content";
+import { PlusIcon } from "lucide-react";
 
 /**
  * Category page
@@ -41,26 +45,21 @@ async function Page({
 
 	return (
 		<div>
-			<p>{error ? error.toString() : ""}</p>
-			<h1>Category</h1>
-			<CategoryForm />
-			<Link href="/admin/category/add-category">Add category</Link>
+			<PageTitle title="Category" subtitle="Welcome to category">
+				<NavLink
+					size="sm"
+					variant="text"
+					className="text-sm"
+					href="/admin/category/add">
+					<PlusIcon size={16} className="mr-1.5" /> {AppContent.add}
+				</NavLink>
+			</PageTitle>
 
 			<DataTable
 				rows={data!}
 				columns={columns}
 				onAction={() => <h1>Hello</h1>}
 			/>
-			{/* {response?.data?.map((category: ICategoryDoc) => (
-				<div key={category.id} className="flex items-center space-x-3">
-					{category.title}
-
-					<Link href={`/admin/category/${category.id}`}>
-						<PenIcon size={16} />
-					</Link>
-					<DeleteButton id={category.id} formAction={deleteCategory} />
-				</div>
-			))} */}
 		</div>
 	);
 }

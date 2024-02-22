@@ -1,15 +1,13 @@
 "use server";
-
 import { ICategoryDoc } from "@/app/api/models/category";
-import { ICourseDoc } from "@/app/api/models/course";
 import { ResponseResult, http } from "@/components/network/http";
 import { isObjEmpty } from "@/utils";
+import { revalidatePath } from "next/cache";
+import { ZodError, z } from "zod";
 import {
 	handleValidationError,
 	zodValidationError,
 } from "@/utils/action-error";
-import { revalidatePath } from "next/cache";
-import { ZodError, z } from "zod";
 
 /**
  * Fetch all categories
@@ -46,7 +44,7 @@ export async function getCategories(params?: {
  */
 const CategorySchema = z.object({
 	title: z.string().min(3, { message: "Category name is required" }),
-	description: z.string().min(3, { message: "Description is required" }),
+	description: z.string(),
 });
 export async function addCategory(prevState: any, formData: FormData) {
 	const body = Object.fromEntries(formData.entries());

@@ -1,6 +1,8 @@
-import { ReactNode } from "react";
+"use client";
 import Button from "./Button";
+import { ReactNode } from "react";
 import { X } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export type ModalProps = {
 	children?: ReactNode;
@@ -10,6 +12,7 @@ export type ModalProps = {
 };
 
 function Modal({ open, children, onClose, title, ...rest }: ModalProps) {
+	const router = useRouter();
 	return (
 		<>
 			<div className="fixed inset-0 z-50 w-screen overflow-y-auto">
@@ -19,22 +22,22 @@ function Modal({ open, children, onClose, title, ...rest }: ModalProps) {
 							<Button
 								className="absolute right-2 top-3 hover:text-rose-600"
 								icon
-								onClick={onClose}>
-								<X />
+								onClick={onClose ? onClose : () => router.back()}>
+								<X size={16} />
 							</Button>
 							<div className="mb-6">
-								<h5 className="before:contents-[''] relative font-semibold text-slate-700 before:absolute before:-left-6 before:h-full before:w-1 before:bg-rose-600">
+								<h5 className="before:contents-[''] relative text-slate-700 before:absolute before:-left-6 before:h-full before:w-1 before:bg-rose-600">
 									{title}
 								</h5>
 							</div>
-							{children}
+							<div className="rounded-md bg-slate-50 p-4">{children}</div>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div
 				onClick={onClose}
-				className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+				className="fixed inset-0 z-40  bg-gray-500 bg-opacity-75 transition-opacity"
 			/>
 		</>
 	);
