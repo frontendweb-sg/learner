@@ -18,7 +18,7 @@ function TableCell<T extends "th" | "td">({
 	const Component = as || "td";
 	return (
 		<Component
-			className={classNames("p-2 text-left text-sm  text-slate-700", className)}
+			className={classNames("p-3 text-left text-xs  text-slate-700", className)}
 			{...rest}>
 			{children}
 		</Component>

@@ -15,11 +15,11 @@ function TableHead<T, K extends keyof T>({
 }: DataBodyProps<T, K>) {
 	return (
 		<thead>
-			<tr className="border-b border-slate-200/50 bg-slate-100">
+			<tr className="rounded-t-md border-b border-slate-200/50 bg-slate-100">
 				{columns.map((column: ColumnProps<T, K>) => (
 					<DataCell
 						as="th"
-						className="font-semibold"
+						className="rounded-t-md font-semibold"
 						key={column.field as string}>
 						{column.headerName}
 					</DataCell>

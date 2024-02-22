@@ -3,9 +3,9 @@ import classNames from "classnames";
 import DataTable, { ColumnProps } from "@/components/ui/DataTable";
 import PageTitle from "@/components/common/PageTitle";
 import { getCategories } from "./actions/actions";
-import type { ICategory, ICategoryDoc } from "@/app/api/models/category";
 import { AppContent } from "@/utils/constants/content";
 import { PlusIcon } from "lucide-react";
+import type { ICategory, ICategoryDoc } from "@/app/api/models/category";
 
 /**
  * Category page
