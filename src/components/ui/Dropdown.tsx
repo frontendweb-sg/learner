@@ -75,7 +75,7 @@ function Dropdown<T extends React.ElementType = "div">({
 				) : (
 					<div
 						className={classNames(
-							"before:contents[''] absolute -right-5 w-40 rounded-md border border-slate-100/80 bg-white p-4 shadow-sm before:absolute before:-top-2 before:right-5 before:border-b-8 before:border-l-8 before:border-r-8 before:border-b-slate-500 before:border-l-transparent before:border-r-transparent",
+							"before:contents[''] absolute -right-5 z-30 w-40 rounded-md border border-slate-100/80 bg-white p-4 shadow-sm before:absolute before:-top-2 before:right-5 before:border-b-8 before:border-l-8 before:border-r-8 before:border-b-slate-500 before:border-l-transparent before:border-r-transparent",
 							!open && "collapse",
 						)}>
 						{renderHeader}

@@ -2,7 +2,7 @@ import TableBody from "./TableBody";
 import TableHead from "./TableHead";
 import type { ReactNode } from "react";
 
-type Action = "update" | "delete" | "active" | "inactive";
+export type Action = "update" | "delete" | "active" | "inactive";
 export type TableCommonProps<T, K extends keyof T> = {
 	rows: Array<T>;
 	columns: Array<ColumnProps<T, K>>;

@@ -1,14 +1,18 @@
 "use client";
-import { Edit2Icon, Eye, EyeOff, PenIcon, Trash2Icon } from "lucide-react";
+
+import { PenIcon, Trash2Icon } from "lucide-react";
 import Button from "../Button";
 import Dropdown from "../Dropdown";
 import Link from "next/link";
 import Divider from "../Divider";
+import { Action } from ".";
 
-type TableActionProps = {
+type TableActionProps<T> = {
 	as?: "dropdown" | "slide";
+	onAction: (status: Action, row: T) => void;
+	row: T;
 };
-function TableAction({ as }: TableActionProps) {
+function TableAction<T>({ as, onAction, row }: TableActionProps<T>) {
 	if (as === "slide") {
 		return (
 			<div className="flex items-center justify-end">
@@ -24,19 +28,9 @@ function TableAction({ as }: TableActionProps) {
 			</div>
 		);
 	}
-	<div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-		<div>Bonnie Green</div>
-		<div className="truncate font-medium">name@flowbite.com</div>
-	</div>;
+
 	return (
-		<Dropdown
-			as="div"
-			renderHeader={
-				<div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-					<div>Bonnie Green</div>
-					<div className="truncate font-medium">name@flowbite.com</div>
-				</div>
-			}>
+		<Dropdown as="div">
 			<Dropdown.Item
 				as={Button}
 				icon

@@ -1,11 +1,9 @@
-import CategoryForm from "./components/CategoryForm";
-import Link from "next/link";
+import NavLink from "@/components/common/NavLink";
 import classNames from "classnames";
 import DataTable, { ColumnProps } from "@/components/ui/DataTable";
-import type { ICategory, ICategoryDoc } from "@/app/api/models/category";
-import { getCategories } from "./actions/actions";
 import PageTitle from "@/components/common/PageTitle";
-import NavLink from "@/components/common/NavLink";
+import { getCategories } from "./actions/actions";
+import type { ICategory, ICategoryDoc } from "@/app/api/models/category";
 import { AppContent } from "@/utils/constants/content";
 import { PlusIcon } from "lucide-react";
 
@@ -55,11 +53,7 @@ async function Page({
 				</NavLink>
 			</PageTitle>
 
-			<DataTable
-				rows={data!}
-				columns={columns}
-				onAction={() => <h1>Hello</h1>}
-			/>
+			<DataTable rows={data!} columns={columns} />
 		</div>
 	);
 }

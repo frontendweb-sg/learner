@@ -1,8 +1,7 @@
 import classNames from "classnames";
 import DataCell from "./TableCell";
-import type { ColumnProps, TableCommonProps } from "./DataTable";
-
 import TableAction from "./TableAction";
+import type { ColumnProps, TableCommonProps } from "./DataTable";
 
 type TableBodyProps<T, K extends keyof T> = React.PropsWithChildren<
 	TableCommonProps<T, K>
@@ -38,8 +37,13 @@ function TableBody<T, K extends keyof T>({
 							);
 						})}
 						{onAction && (
-							<DataCell>
-								<TableAction />
+							<DataCell
+								as="td"
+								key={"action-" + index}
+								className={classNames({
+									"border-b": index != rows.length - 1,
+								})}>
+								<TableAction onAction={() => {}} row={row} />
 							</DataCell>
 						)}
 					</tr>

@@ -1,5 +1,7 @@
+import CategoryForm from "../components/CategoryForm";
+
 function Page() {
-	return <h1>add category page</h1>;
+	return <CategoryForm />;
 }
 
 export default Page;
