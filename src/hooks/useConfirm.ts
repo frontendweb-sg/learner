@@ -1,8 +1,8 @@
 import { useCallback, useState } from "react";
 
 export type IConfirm = {
-	open?: boolean;
 	title: string;
+	open?: boolean;
 	subtitle?: string;
 	onConfirm: () => void;
 };

@@ -72,8 +72,6 @@ export async function updateCategory(prevState: any, formData: FormData) {
 			method: "PUT",
 			body: JSON.stringify(rest),
 		});
-
-		revalidatePath("/admin/category");
 		return { success: true, data: result.data! };
 	} catch (error: any) {
 		if (error instanceof ZodError) {
@@ -120,10 +118,8 @@ export async function changeStatus(
  * @param formData
  * @returns
  */
-export async function deleteCategory(formData: FormData) {
+export async function deleteCategory(id: string) {
 	try {
-		const id = formData.get("id");
-
 		const response = await http(`/category/${id}`, {
 			method: "DELETE",
 		});
@@ -131,12 +127,6 @@ export async function deleteCategory(formData: FormData) {
 		revalidatePath("/admin/category");
 		return { success: true, data: response.data };
 	} catch (error) {
-		if (error instanceof ZodError) {
-			return {
-				success: false,
-				errors: zodValidationError(error),
-			};
-		}
 		return { success: false, error: error as Error };
 	}
 }

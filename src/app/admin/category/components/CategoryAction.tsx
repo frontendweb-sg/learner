@@ -2,12 +2,11 @@
 import TableAction from "@/components/ui/DataTable/TableAction";
 import Dropdown from "@/components/ui/Dropdown";
 import Link from "next/link";
-import CategoryDeleteButton from "./CategoryDeleteButton";
 import Button from "@/components/ui/Button";
 import { ICategoryDoc } from "@/app/api/models/category";
 import { AppContent } from "@/utils/constants/content";
-import { EyeIcon, EyeOffIcon, PenIcon, TrashIcon } from "lucide-react";
-import { changeStatus } from "../actions/actions";
+import { EyeIcon, EyeOffIcon, PenIcon, Trash2Icon } from "lucide-react";
+import { changeStatus, deleteCategory } from "../actions/actions";
 import { toast } from "react-toastify";
 import { useAppState } from "@/context/AppContext";
 
@@ -39,7 +38,24 @@ function CategoryAction({ row: { id } }: { row: ICategoryDoc }) {
 				iconStart={PenIcon}>
 				{AppContent.edit}
 			</Dropdown.Item>
-			<CategoryDeleteButton categoryId={id} />
+			<Dropdown.Item
+				as={Button}
+				onClick={() => {
+					handleConfirm!({
+						title: "Delete category",
+						subtitle: "Are you sure?",
+						onConfirm: async () => {
+							const { success } = await deleteCategory(id);
+							if (success) {
+								toast.success("Category deleted!");
+								handleConfirmCancel!();
+							}
+						},
+					});
+				}}
+				iconStart={Trash2Icon}>
+				{AppContent.delete}
+			</Dropdown.Item>
 			<Dropdown.Item
 				as={Button}
 				onClick={() => handleChange("active")}

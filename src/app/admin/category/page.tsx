@@ -8,6 +8,7 @@ import { PlusIcon } from "lucide-react";
 import { ICategory, ICategoryDoc } from "@/app/api/models/category";
 import CategoryAction from "./components/CategoryAction";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
+import Panel from "@/components/ui/Panel";
 
 /**
  * Category page
@@ -53,11 +54,13 @@ async function Page({
 					<PlusIcon size={16} className="mr-1.5" /> {AppContent.add}
 				</NavLink>
 			</PageTitle>
-			<DataTable
-				rows={data!}
-				columns={columns}
-				renderAction={(row) => <CategoryAction row={row!} />}
-			/>
+			<Panel>
+				<DataTable
+					rows={data!}
+					columns={columns}
+					renderAction={(row) => <CategoryAction row={row!} />}
+				/>
+			</Panel>
 		</>
 	);
 }
