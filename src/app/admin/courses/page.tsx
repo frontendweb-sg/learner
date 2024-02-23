@@ -8,7 +8,8 @@ import { ICourseDoc } from "@/app/api/models/course";
 import { deleteCourse, getCourses } from "./actions/actions";
 import { Metadata } from "next";
 import { AppContent } from "@/utils/constants/content";
-import { PlusSquareIcon } from "lucide-react";
+import { PlusIcon, PlusSquareIcon } from "lucide-react";
+import NavLink from "@/components/common/NavLink";
 
 /**
  * Page meta data
@@ -27,11 +28,13 @@ async function Page() {
 	return (
 		<>
 			<PageTitle title="Courses" subtitle="Welcome to courses">
-				<Link
-					href={decodeURIComponent("/admin/courses/add-course")}
-					className="flex items-center space-x-2 text-sm">
-					<PlusSquareIcon size={16} /> <span>{AppContent.addCourse}</span>
-				</Link>
+				<NavLink
+					size="sm"
+					variant="text"
+					className="text-sm"
+					href="/admin/courses/add">
+					<PlusIcon size={16} className="mr-1.5" /> {AppContent.add}
+				</NavLink>
 			</PageTitle>
 			{data?.length == 0 && <NoData />}
 
