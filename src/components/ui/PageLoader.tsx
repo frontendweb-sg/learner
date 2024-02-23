@@ -6,7 +6,7 @@ import classNames from "classnames";
  */
 function PageLoader() {
 	const classes = classNames(
-		"fixed w-screen top-0 left-0 h-screen bg-white opacity-25 flex items-center justify-center",
+		"fixed w-screen top-0 z-80 left-0 h-screen bg-white opacity-25 flex items-center justify-center",
 	);
 	return (
 		<div className={classes}>

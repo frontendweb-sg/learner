@@ -9,6 +9,7 @@ import { AppContent } from "@/utils/constants/content";
 import { EyeIcon, EyeOffIcon, PenIcon, TrashIcon } from "lucide-react";
 import { changeStatus } from "../actions/actions";
 import { toast } from "react-toastify";
+import { useAppState } from "@/context/AppContext";
 
 /**
  * Category action
@@ -16,6 +17,20 @@ import { toast } from "react-toastify";
  * @returns
  */
 function CategoryAction({ row: { id } }: { row: ICategoryDoc }) {
+	const { handleConfirm, handleConfirmCancel } = useAppState();
+
+	const handleChange = (status: "active" | "inactive") => {
+		handleConfirm!({
+			onConfirm: async () => {
+				const { success } = await changeStatus(id, status);
+				if (success) toast.success(`Category ${status}`);
+				handleConfirmCancel!();
+			},
+			title: "Update category",
+			subtitle: `Are you sure, do you want to ${status} category`,
+		});
+	};
+
 	return (
 		<TableAction>
 			<Dropdown.Item
@@ -27,19 +42,13 @@ function CategoryAction({ row: { id } }: { row: ICategoryDoc }) {
 			<CategoryDeleteButton categoryId={id} />
 			<Dropdown.Item
 				as={Button}
-				onClick={async () => {
-					const { success } = await changeStatus(id, "active");
-					if (success) toast.success("Category activate");
-				}}
+				onClick={() => handleChange("active")}
 				iconStart={EyeIcon}>
 				{AppContent.active}
 			</Dropdown.Item>
 			<Dropdown.Item
 				as={Button}
-				onClick={async () => {
-					const { success } = await changeStatus(id, "active");
-					if (success) toast.success("Category Inactivate");
-				}}
+				onClick={() => handleChange("inactive")}
 				iconStart={EyeOffIcon}>
 				{AppContent.inactive}
 			</Dropdown.Item>

@@ -7,6 +7,7 @@ import { AppContent } from "@/utils/constants/content";
 import { PlusIcon } from "lucide-react";
 import { ICategory, ICategoryDoc } from "@/app/api/models/category";
 import CategoryAction from "./components/CategoryAction";
+import ConfirmDialog from "@/components/common/ConfirmDialog";
 
 /**
  * Category page
@@ -42,7 +43,7 @@ async function Page({
 	];
 
 	return (
-		<div>
+		<>
 			<PageTitle title="Category" subtitle="Welcome to category">
 				<NavLink
 					size="sm"
@@ -57,7 +58,7 @@ async function Page({
 				columns={columns}
 				renderAction={(row) => <CategoryAction row={row!} />}
 			/>
-		</div>
+		</>
 	);
 }
 export default Page;
