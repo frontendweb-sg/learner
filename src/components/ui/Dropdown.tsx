@@ -115,7 +115,7 @@ function DropdownItem<T extends React.ElementType>({
 		<li {...parentProps} className={classNames(parentProps?.className)}>
 			<Component
 				className={classNames(
-					"flex w-full items-center rounded-md p-2 text-xs transition-all ease-in-out hover:bg-slate-100",
+					"flex w-full items-center rounded-md p-2 text-xs hover:bg-slate-100",
 					className,
 				)}
 				{...rest}>

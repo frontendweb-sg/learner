@@ -20,7 +20,6 @@ export async function getCategories(params?: {
 	try {
 		let query = "";
 		if (!isObjEmpty(params!)) {
-			console.log("Hi");
 			query = "?" + new URLSearchParams(params).toString();
 		}
 
@@ -54,7 +53,7 @@ export async function addCategory(prevState: any, formData: FormData) {
 			method: "POST",
 			body: JSON.stringify(data),
 		});
-		revalidatePath("/admin/category");
+		//revalidatePath("/admin/category");
 		return { success: true, data: response.data! };
 	} catch (error) {
 		if (error instanceof ZodError) {
@@ -95,6 +94,27 @@ export async function getCategoryById(id: string) {
 	} catch (error) {}
 }
 
+/**
+ * Change status
+ * @param params
+ * @returns
+ */
+export async function changeStatus(
+	id: string,
+	status: "active" | "inactive" = "active",
+) {
+	try {
+		const response = await http(`/category/${id}?status=${status}`, {
+			method: "PUT",
+			body: JSON.stringify({}),
+		});
+
+		revalidatePath("/admin/category");
+		return { success: true, data: response.data };
+	} catch (error) {
+		return { error: error, success: false };
+	}
+}
 /**
  * Delete category actions
  * @param formData

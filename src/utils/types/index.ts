@@ -1,8 +1,9 @@
 import { LucideIcon } from "lucide-react";
-import { ReactElement, ReactNode } from "react";
 export type SizeType = "xs" | "sm" | "md" | "lg" | "xl" | "full";
 export type CourseStatus = "new" | "draf" | "public";
 export type Numbers = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+export type Action = "edit" | "delete" | "active" | "inactive";
+
 export type ColorVariant = {
 	primary: string;
 	secondary: string;

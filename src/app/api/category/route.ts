@@ -46,6 +46,9 @@ export async function GET(req: NextRequest) {
 					? { slug: { $regex: new RegExp(slug!, "i") } }
 					: {},
 			},
+			{
+				$addFields: { id: "$_id" },
+			},
 		])) as ICategoryDoc[];
 
 		return NextResponse.json(data, { status: 200 });

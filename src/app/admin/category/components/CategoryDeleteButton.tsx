@@ -1,7 +1,9 @@
-"use client";
-import { DeleteIcon } from "lucide-react";
+import Button from "@/components/ui/Button";
+import Dropdown from "@/components/ui/Dropdown";
 import { deleteCategory } from "../actions/actions";
 import { toast } from "react-toastify";
+import { AppContent } from "@/utils/constants/content";
+import { TrashIcon } from "lucide-react";
 
 /**
  * Category delete button
@@ -20,9 +22,9 @@ function CategoryDeleteButton({ categoryId }: { categoryId: string }) {
 	return (
 		<form action={formAction}>
 			<input hidden name="id" defaultValue={categoryId} />
-			<button type="submit">
-				<DeleteIcon />
-			</button>
+			<Dropdown.Item type="submit" as={Button} iconStart={TrashIcon}>
+				{AppContent.delete}
+			</Dropdown.Item>
 		</form>
 	);
 }

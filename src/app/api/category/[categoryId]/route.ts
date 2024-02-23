@@ -31,17 +31,29 @@ export async function PUT(
 ) {
 	await connectDb();
 	try {
-		const body = (await req.json()) as ICategory;
-		body.slug = slug(body.title);
-
-		const category = await Category.findByIdAndUpdate(
-			categoryId,
-			{ $set: body },
-			{ new: true },
-		);
-
-		return NextResponse.json(category, { status: 200 });
+		const queryParam = req.nextUrl.searchParams.get("status") as
+			| "active"
+			| "inactive";
+		console.log(categoryId, queryParam);
+		let result;
+		if (queryParam === "active" || queryParam === "inactive") {
+			result = await Category.findByIdAndUpdate(
+				categoryId,
+				{ $set: { active: queryParam === "active" ? true : false } },
+				{ new: true },
+			);
+		} else {
+			const body = (await req.json()) as ICategory;
+			body.slug = slug(body.title);
+			result = await Category.findByIdAndUpdate(
+				categoryId,
+				{ $set: body },
+				{ new: true },
+			);
+		}
+		return NextResponse.json(result, { status: 200 });
 	} catch (error) {
+		console.log("error", error);
 		return errorHandler(error as CustomError);
 	}
 }
