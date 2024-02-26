@@ -40,7 +40,7 @@ export default function CourseAction({ row: { slug } }: { row: ICourseDoc }) {
 						title: "Delete category",
 						subtitle: "Are you sure?",
 						onConfirm: async () => {
-							const { success } = await deleteCourse(id);
+							const { success } = await deleteCourse(slug);
 							if (success) {
 								toast.success("Category deleted!");
 								handleConfirmCancel!();

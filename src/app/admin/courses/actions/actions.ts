@@ -97,11 +97,9 @@ export async function updateCourse(prevState: any, formData: FormData) {
  * @param formData
  * @returns
  */
-export async function deleteCourse(formData: FormData) {
+export async function deleteCourse(slug: string) {
 	try {
-		const id = formData.get("id");
-		console.log("Id", id);
-		const response = await http<ICourseDoc>(`${COURSE_API_ROUTE}/${id}`, {
+		const response = await http<ICourseDoc>(`${COURSE_API_ROUTE}/${slug}`, {
 			method: "DELETE",
 		});
 		revalidatePath("/admin/courses");
