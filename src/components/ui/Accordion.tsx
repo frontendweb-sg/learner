@@ -30,7 +30,7 @@ function Accordion({ children }: AccordionProps) {
 	);
 }
 
-function AccordionTitle({ title, children }: AccordionTitleProps) {
+export function AccordionTitle({ title, children }: AccordionTitleProps) {
 	const { open, toggle } = useContext<IAccordionContext>(AccordionContext);
 	return (
 		<div className={"flex items-center justify-between"}>
@@ -46,7 +46,7 @@ function AccordionTitle({ title, children }: AccordionTitleProps) {
 }
 
 type AccordionBodyProps = AccordionCommonProps & {};
-function AccordionBody({ children }: AccordionBodyProps) {
+export function AccordionBody({ children }: AccordionBodyProps) {
 	const { open } = useContext<IAccordionContext>(AccordionContext);
 
 	return open ? <div>{children}</div> : null;

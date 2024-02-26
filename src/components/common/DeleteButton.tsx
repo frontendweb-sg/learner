@@ -5,6 +5,7 @@ import { useTransition } from "react";
 import { toast } from "react-toastify";
 import { ActionError } from "@/utils/types";
 import { ButtonProps } from "../ui/Button";
+import { useAppState } from "@/context/AppContext";
 
 type DeleteButtonProps<T> = ButtonProps & {
 	id: string;
@@ -20,19 +21,24 @@ function DeleteButton<T>({
 	label,
 	...rest
 }: DeleteButtonProps<T>) {
+	const { handleConfirm, handleConfirmCancel } = useAppState();
 	const [_, startTransition] = useTransition();
 
 	const deleteAction = (formData: FormData) => {
-		const confirm = window.confirm("Are you sure?");
-		if (!confirm) return;
-
-		startTransition(async () => {
-			const data = await formAction(formData);
-			if (data?.error) {
-				toast.error(data.error.message);
-			} else {
-				toast.success("Deleted successfully!");
-			}
+		startTransition(() => {
+			handleConfirm!({
+				title: "Delete section",
+				subtitle: "All lession with this section delete autometically",
+				onConfirm: async () => {
+					const data = await formAction(formData);
+					if (data?.error) {
+						toast.error(data.error.message);
+					} else {
+						toast.success("Deleted successfully!");
+						handleConfirmCancel!();
+					}
+				},
+			});
 		});
 	};
 
