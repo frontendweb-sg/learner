@@ -22,5 +22,6 @@
 	"useTabs": true,
 	"embeddedLanguageFormatting": "auto",
 	"importOrder": ["^@/utils/(.*)$", "^@/component/(.*)$", "^[./]"],
-	"importOrderSeparation": true
+	"importOrderSeparation": true,
+	"importOrderSortSpecifiers": true
 }
