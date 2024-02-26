@@ -9,12 +9,12 @@ import { getCourseBySlug } from "../../actions/actions";
  */
 async function Page({ params }: { params: { slug: string } }) {
 	const response = await getCategories();
-	const course = await getCourseBySlug(params.slug);
+	const { data } = await getCourseBySlug(params.slug);
 	console.log(params);
 	return (
 		<>
 			<PageTitle title="Edut course" subtitle="Welcome to add course" />
-			<CourseForm course={course.data.data!} categories={response.data!} />
+			<CourseForm course={data!} categories={response.data!} />
 		</>
 	);
 }

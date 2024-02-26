@@ -2,13 +2,18 @@ import DeleteButton from "@/components/common/DeleteButton";
 import PageTitle from "@/components/common/PageTitle";
 import Grid from "@/components/ui/Grid";
 import Course from "@/components/course/Course";
+import { PlusIcon } from "lucide-react";
 import NoData from "@/components/common/NoData";
 import NavLink from "@/components/common/NavLink";
-import { ICourseDoc } from "@/app/api/models/course";
+import { ICourse, ICourseDoc } from "@/app/api/models/course";
 import { deleteCourse, getCourses } from "./actions/actions";
 import { Metadata } from "next";
 import { AppContent } from "@/utils/constants/content";
-import { PlusIcon } from "lucide-react";
+import DataTable, { ColumnProps } from "@/components/ui/DataTable";
+import classNames from "classnames";
+import Link from "next/link";
+import Panel from "@/components/ui/Panel";
+import CourseAction from "./components/CourseAction";
 
 /**
  * Page meta data
@@ -21,8 +26,43 @@ export const metadata: Metadata = {
  * Course page
  * @returns
  */
-async function Page() {
-	const { data } = await getCourses();
+async function Page({
+	searchParams,
+}: {
+	searchParams: { [key: string]: string };
+}) {
+	const { data } = await getCourses(JSON.parse(JSON.stringify(searchParams)));
+	const columns: ColumnProps<ICourseDoc, keyof ICourse>[] = [
+		{
+			field: "title",
+			headerName: "Title",
+			renderCell: (row) => (
+				<Link
+					className="hover:text-rose-600"
+					href={{
+						pathname: "/admin/courses/" + row.slug,
+					}}>
+					{row.title}
+				</Link>
+			),
+		},
+		{ field: "description", headerName: "Description" },
+		{
+			field: "active",
+			headerName: "Active",
+			renderCell: (row, column, index) => {
+				return (
+					<span
+						title={row[column.field] ? "Active" : "Inactive"}
+						className={classNames(
+							"block h-2 w-2 rounded-full ",
+							row[column.field] ? "bg-green-700" : "bg-red-600",
+						)}
+					/>
+				);
+			},
+		},
+	];
 
 	return (
 		<>
@@ -35,15 +75,13 @@ async function Page() {
 					<PlusIcon size={16} className="mr-1.5" /> {AppContent.add}
 				</NavLink>
 			</PageTitle>
-			{data?.length == 0 && <NoData />}
-
-			<Grid size={5} gap={4}>
-				{data?.map((course: ICourseDoc) => (
-					<Course key={course.id} course={course}>
-						<DeleteButton id={course.slug} formAction={deleteCourse} />
-					</Course>
-				))}
-			</Grid>
+			<Panel>
+				<DataTable
+					rows={data!}
+					columns={columns}
+					renderAction={(row) => <CourseAction row={row!} />}
+				/>
+			</Panel>
 		</>
 	);
 }

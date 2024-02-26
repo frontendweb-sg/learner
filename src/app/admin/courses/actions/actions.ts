@@ -2,17 +2,26 @@
 
 import { ICourseDoc } from "@/app/api/models/course";
 import { ResponseResult, http } from "@/components/network/http";
+import { isObjEmpty } from "@/utils";
 import { zodValidationError } from "@/utils/action-error";
 import { revalidatePath } from "next/cache";
 import { ZodError, z } from "zod";
+
+const COURSE_API_ROUTE = "/course";
 
 /**
  * Get all course action
  * @returns
  */
-export async function getCourses(): Promise<ResponseResult<ICourseDoc[]>> {
+export async function getCourses(params?: {
+	[key: string]: string;
+}): Promise<ResponseResult<ICourseDoc[]>> {
 	try {
-		const response = await http<ICourseDoc[]>("/course", {
+		let query = "";
+		if (!isObjEmpty(params!)) {
+			query = "?" + new URLSearchParams(params).toString();
+		}
+		const response = await http<ICourseDoc[]>(`${COURSE_API_ROUTE}?${query}`, {
 			next: { revalidate: 0 },
 		});
 		return response;
@@ -44,7 +53,7 @@ export async function addCourse(prevState: any, formData: FormData) {
 
 	try {
 		const data = schema.parse(body);
-		const response = await http<ICourseDoc>("/course", {
+		const response = await http<ICourseDoc>(COURSE_API_ROUTE, {
 			method: "POST",
 			body: JSON.stringify(data),
 		});
@@ -69,7 +78,7 @@ export async function updateCourse(prevState: any, formData: FormData) {
 	const { id, ...rest } = Object.fromEntries(formData.entries());
 	try {
 		const data = schema.parse(rest) as ICourseDoc;
-		const response = await http<ICourseDoc>("/course/" + id, {
+		const response = await http<ICourseDoc>(`${COURSE_API_ROUTE}/${id}`, {
 			method: "PUT",
 			body: JSON.stringify(data),
 		});
@@ -92,7 +101,7 @@ export async function deleteCourse(formData: FormData) {
 	try {
 		const id = formData.get("id");
 		console.log("Id", id);
-		const response = await http<ICourseDoc>("/course/" + id, {
+		const response = await http<ICourseDoc>(`${COURSE_API_ROUTE}/${id}`, {
 			method: "DELETE",
 		});
 		revalidatePath("/admin/courses");
@@ -112,12 +121,37 @@ export async function deleteCourse(formData: FormData) {
  */
 export async function getCourseBySlug(slug: string) {
 	try {
-		const response = await http<ICourseDoc>("/course/" + slug);
+		const response = await http<ICourseDoc>(`${COURSE_API_ROUTE}/${slug}`);
 		return { success: true, data: response.data };
 	} catch (error) {
 		return {
 			success: false,
 			error: error as Error,
 		};
+	}
+}
+
+/**
+ * Change status
+ * @param params
+ * @returns
+ */
+export async function changeStatus(
+	slug: string,
+	status: "active" | "inactive" = "active",
+) {
+	try {
+		const response = await http(
+			`${COURSE_API_ROUTE}/${slug}?status=${status}`,
+			{
+				method: "PUT",
+				body: JSON.stringify({}),
+			},
+		);
+
+		revalidatePath("/admin/courses");
+		return { success: true, data: response.data };
+	} catch (error) {
+		return { error: error, success: false };
 	}
 }

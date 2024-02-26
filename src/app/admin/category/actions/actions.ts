@@ -4,10 +4,7 @@ import { ResponseResult, http } from "@/components/network/http";
 import { isObjEmpty } from "@/utils";
 import { revalidatePath } from "next/cache";
 import { ZodError, z } from "zod";
-import {
-	handleValidationError,
-	zodValidationError,
-} from "@/utils/action-error";
+import { handleValidationError } from "@/utils/action-error";
 
 /**
  * Fetch all categories

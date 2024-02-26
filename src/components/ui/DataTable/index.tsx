@@ -37,6 +37,10 @@ function DataTable<T, K extends keyof T>({
 	renderAction,
 	...rest
 }: TableProps<T, K>) {
+	if (typeof renderAction !== "function") {
+		console.log("Fun");
+		throw new Error("renderAction should be function");
+	}
 	return (
 		<Table className={classNames(className)}>
 			<DataTableHeader

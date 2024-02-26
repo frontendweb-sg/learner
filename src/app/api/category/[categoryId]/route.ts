@@ -34,7 +34,7 @@ export async function PUT(
 		const queryParam = req.nextUrl.searchParams.get("status") as
 			| "active"
 			| "inactive";
-		console.log(categoryId, queryParam);
+
 		let result;
 		if (queryParam === "active" || queryParam === "inactive") {
 			result = await Category.findByIdAndUpdate(
