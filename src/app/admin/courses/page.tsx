@@ -1,15 +1,14 @@
 import DeleteButton from "@/components/common/DeleteButton";
-import Link from "next/link";
 import PageTitle from "@/components/common/PageTitle";
 import Grid from "@/components/ui/Grid";
 import Course from "@/components/course/Course";
 import NoData from "@/components/common/NoData";
+import NavLink from "@/components/common/NavLink";
 import { ICourseDoc } from "@/app/api/models/course";
 import { deleteCourse, getCourses } from "./actions/actions";
 import { Metadata } from "next";
 import { AppContent } from "@/utils/constants/content";
-import { PlusIcon, PlusSquareIcon } from "lucide-react";
-import NavLink from "@/components/common/NavLink";
+import { PlusIcon } from "lucide-react";
 
 /**
  * Page meta data
@@ -23,7 +22,7 @@ export const metadata: Metadata = {
  * @returns
  */
 async function Page() {
-	const { data, error } = await getCourses();
+	const { data } = await getCourses();
 
 	return (
 		<>

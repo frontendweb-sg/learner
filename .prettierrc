@@ -20,5 +20,7 @@
 	"requirePragma": false,
 	"tabWidth": 2,
 	"useTabs": true,
-	"embeddedLanguageFormatting": "auto"
+	"embeddedLanguageFormatting": "auto",
+	"importOrder": ["^@/utils/(.*)$", "^@/component/(.*)$", "^[./]"],
+	"importOrderSeparation": true
 }
