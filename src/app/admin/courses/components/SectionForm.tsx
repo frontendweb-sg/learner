@@ -39,7 +39,6 @@ function SectionForm({ courseSlug, section }: SectionFormProps) {
 		}
 	}, [state, section]);
 
-	console.log(courseSlug, "slug");
 	return (
 		<Form action={formAction}>
 			{section?.id && <input hidden name="id" defaultValue={section?.id} />}

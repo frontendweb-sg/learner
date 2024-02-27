@@ -1,7 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/dist/server/api-utils";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { ZodError, z } from "zod";
 
 import { ISectionDoc } from "@/app/api/models/section";
@@ -25,7 +24,7 @@ export async function getSections(queryParam: string) {
 			query = "?q=" + queryParam;
 		}
 		const response = await http<ISectionDoc[]>(`${API_URL}${query}`, {
-			next: { revalidate: 0 },
+			next: { revalidate: 0, tags: ["section"] },
 		});
 		return response;
 	} catch (error) {
@@ -54,7 +53,8 @@ export async function addSection(prevState: any, formData: FormData) {
 			body: JSON.stringify(data),
 		});
 
-		revalidatePath(`${API_REVALIDATE_PATH}/${body.id}`);
+		revalidatePath(`${API_REVALIDATE_PATH}/${body.id}`, "page");
+
 		return { success: true, data: response.data };
 	} catch (error) {
 		console.log(error);
