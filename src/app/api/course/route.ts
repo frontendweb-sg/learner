@@ -35,6 +35,7 @@ export async function GET() {
 
 	try {
 		const courses = (await Course.find()) as ICourseDoc[];
+
 		return NextResponse.json(courses, { status: 200 });
 	} catch (error) {
 		return errorHandler(error as CustomError);

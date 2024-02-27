@@ -44,12 +44,15 @@ export async function GET(req: NextRequest) {
 	try {
 		const query = req.nextUrl.searchParams;
 		const slug = query.get("q")?.toLowerCase();
-		console.log(slug);
-		const sections = (await CourseSection.find({
-			course: slug ? slug : "",
-		})) as ISectionDoc[];
 
-		console.log("HI", sections);
+		const sections = (await CourseSection.find(
+			!!slug
+				? {
+						course: slug,
+					}
+				: {},
+		)) as ISectionDoc[];
+
 		return NextResponse.json(sections, { status: 200 });
 	} catch (error) {
 		return errorHandler(error as CustomError);

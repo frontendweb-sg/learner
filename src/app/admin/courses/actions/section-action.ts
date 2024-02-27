@@ -17,7 +17,7 @@ const API_REVALIDATE_PATH = "/admin/courses";
  * @param queryParam
  * @returns
  */
-export async function getSections(queryParam: string) {
+export async function getSections(queryParam?: string) {
 	try {
 		let query = "";
 		if (queryParam) {

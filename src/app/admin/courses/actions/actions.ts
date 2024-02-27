@@ -21,12 +21,13 @@ export async function getCourses(params?: {
 }): Promise<ResponseResult<ICourseDoc[]>> {
 	try {
 		let query = "";
-		if (!isObjEmpty(params!)) {
+		if (params && !isObjEmpty(params!)) {
 			query = "?" + new URLSearchParams(params).toString();
 		}
 		const response = await http<ICourseDoc[]>(`${COURSE_API_ROUTE}?${query}`, {
 			next: { revalidate: 0 },
 		});
+
 		return response;
 	} catch (error) {
 		return {
