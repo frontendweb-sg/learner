@@ -1,8 +1,8 @@
-import { ReactNode } from "react";
-import Sidebar from "./layout/Sidebar";
-import { Metadata } from "next";
-import Cover from "@/components/ui/Cover";
 import AdminHeader from "./layout/AdminHeader";
+import Sidebar from "./layout/Sidebar";
+import Cover from "@/components/ui/Cover";
+import { ReactNode } from "react";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
 	title: {
@@ -10,7 +10,13 @@ export const metadata: Metadata = {
 		default: "courses",
 	},
 };
-export default function AdminLayout({ children }: { children: ReactNode }) {
+export default function AdminLayout({
+	children,
+	modal,
+}: {
+	children: ReactNode;
+	modal: ReactNode;
+}) {
 	return (
 		<Cover>
 			<Sidebar />
@@ -23,6 +29,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 					</p>
 				</footer>
 			</main>
+			{modal}
 		</Cover>
 	);
 }

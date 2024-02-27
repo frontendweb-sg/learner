@@ -1,17 +1,33 @@
-import { ReactNode, RefObject } from "react";
+import { Sizes, Width } from "@/utils/styles";
+import classNames from "classnames";
 
-export type BoxProps<T extends React.ElementType> = {
+type WidthPrefix = "w-" | "min-" | "max-";
+export type Props<T> = {
 	as?: T;
-	children: ReactNode;
-} & React.ComponentPropsWithRef<T>["ref"];
+	width?: Sizes;
+	widthPrefix?: WidthPrefix;
+};
+export type BoxProps<T extends React.ElementType> = React.PropsWithChildren<
+	Props<T>
+> &
+	Omit<React.ComponentPropsWithoutRef<T>, keyof Props<T>> & {};
 
 function Box<T extends React.ElementType>({
 	as,
 	children,
+	width,
+	widthPrefix = "w-",
+	className,
 	...rest
 }: BoxProps<T>) {
 	const Component = as || "span";
-	return <Component {...rest}>{children}</Component>;
+	const key = `${widthPrefix}${width}`;
+	const classes = classNames(Width[key as keyof typeof Width], className);
+	return (
+		<Component className={classes} {...rest}>
+			{children}
+		</Component>
+	);
 }
 
 export default Box;

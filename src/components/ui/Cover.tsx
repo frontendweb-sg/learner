@@ -9,7 +9,11 @@ export type CoverProps = React.HtmlHTMLAttributes<HTMLDivElement> & {};
  */
 function Cover({ children, className }: CoverProps) {
 	return (
-		<div className={classNames("flex h-screen w-full bg-slate-50", className)}>
+		<div
+			className={classNames(
+				"flex h-screen w-full overflow-x-hidden bg-slate-50",
+				className,
+			)}>
 			{children}
 		</div>
 	);

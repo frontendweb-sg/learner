@@ -1,31 +1,67 @@
-import CategoryForm from "./components/CategoryForm";
-import CategoryDeleteButton from "./components/CategoryDeleteButton";
-import Link from "next/link";
-import { ICategoryDoc } from "@/app/api/models/category";
-import { deleteCategory, getCategories } from "./actions/actions";
-import { PenIcon } from "lucide-react";
-import DeleteButton from "@/components/common/DeleteButton";
+import NavLink from "@/components/common/NavLink";
+import PageTitle from "@/components/common/PageTitle";
+import DataTable, { ColumnProps } from "@/components/ui/DataTable";
+import classNames from "classnames";
+import { getCategories } from "./actions/actions";
+import { AppContent } from "@/utils/constants/content";
+import { PlusIcon } from "lucide-react";
+import { ICategory, ICategoryDoc } from "@/app/api/models/category";
+import CategoryAction from "./components/CategoryAction";
+import ConfirmDialog from "@/components/common/ConfirmDialog";
+import Panel from "@/components/ui/Panel";
 
-async function Page() {
-	const response = await getCategories();
+/**
+ * Category page
+ * @returns
+ */
+
+async function Page({
+	searchParams,
+}: {
+	searchParams: { [key: string]: string };
+}) {
+	const { data, error } = await getCategories(
+		JSON.parse(JSON.stringify(searchParams)),
+	);
+	const columns: ColumnProps<ICategoryDoc, keyof ICategory>[] = [
+		{ field: "title", headerName: "Title" },
+		{ field: "description", headerName: "Description" },
+		{
+			field: "active",
+			headerName: "Active",
+			renderCell: (row, column, index) => {
+				return (
+					<span
+						title={row[column.field] ? "Active" : "Inactive"}
+						className={classNames(
+							"block h-2 w-2 rounded-full ",
+							row[column.field] ? "bg-green-700" : "bg-red-600",
+						)}
+					/>
+				);
+			},
+		},
+	];
 
 	return (
-		<div>
-			<p>{response.error ? response?.error.toString() : ""}</p>
-			<h1>Category</h1>
-			<CategoryForm />
-
-			{response?.data?.map((category: ICategoryDoc) => (
-				<div key={category.id} className="flex items-center space-x-3">
-					{category.title}
-
-					<Link href={`/admin/category/${category.id}`}>
-						<PenIcon size={16} />
-					</Link>
-					<DeleteButton id={category.id} formAction={deleteCategory} />
-				</div>
-			))}
-		</div>
+		<>
+			<PageTitle title="Category" subtitle="Welcome to category">
+				<NavLink
+					size="sm"
+					variant="text"
+					className="text-sm"
+					href="/admin/category/add">
+					<PlusIcon size={16} className="mr-1.5" /> {AppContent.add}
+				</NavLink>
+			</PageTitle>
+			<Panel>
+				<DataTable
+					rows={data!}
+					columns={columns}
+					renderAction={(row) => <CategoryAction row={row!} />}
+				/>
+			</Panel>
+		</>
 	);
 }
 export default Page;

@@ -1,6 +1,8 @@
+import AppProvider from "@/context/AppContext";
+import ConfirmDialog from "@/components/common/ConfirmDialog";
 import type { Metadata } from "next";
+import { poppins } from "@/utils/fonts/font";
 import { ToastContainer } from "react-toastify";
-import { poppins, roboto } from "@/utils/fonts/font";
 import "react-toastify/dist/ReactToastify.css";
 import "./index.scss";
 
@@ -21,8 +23,11 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={poppins.className}>
-				{children}
-				<ToastContainer />
+				<AppProvider>
+					{children}
+					<ToastContainer />
+					<ConfirmDialog />
+				</AppProvider>
 			</body>
 		</html>
 	);

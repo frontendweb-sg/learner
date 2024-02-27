@@ -1,12 +1,20 @@
 "use client";
 
-import SubmitButton from "@/components/common/SubmitButton";
-import { ICategoryDoc } from "@/app/api/models/category";
-import { addCategory, updateCategory } from "../actions/actions";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "react-toastify";
-import { usePathname, useRouter } from "next/navigation";
+
+import { ICategoryDoc } from "@/app/api/models/category";
+
+import SubmitButton from "@/components/common/SubmitButton";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
+import Textarea from "@/components/ui/Textarea";
+
+import { AppContent } from "@/utils/constants/content";
+
+import { addCategory, updateCategory } from "../actions/actions";
 
 export type CategoryFormProps = {
 	category?: ICategoryDoc;
@@ -36,20 +44,23 @@ function CategoryForm({ category }: CategoryFormProps) {
 			{category?.id && (
 				<input type="text" name="id" hidden defaultValue={category?.id} />
 			)}
-			<input
+			<Input
 				name="title"
 				defaultValue={category?.title}
-				className="rounded-md border border-gray-200 p-2 outline-none focus:border-gray-300"
 				placeholder="Category name"
+				error={state?.errors?.["title"]}
 			/>
-			<p className="text-xs text-rose-600">{state?.errors?.["title"]}</p>
-			<textarea
+			<Textarea
 				name="description"
 				defaultValue={category?.description}
-				className="rounded-md border border-gray-200 p-2 outline-none focus:border-gray-300"
+				error={state?.errors?.["description"]}
 			/>
-			<p className="text-xs text-rose-600">{state?.errors?.["description"]}</p>
-			<SubmitButton>{category?.id ? "Update" : "Save"}</SubmitButton>
+			<div className="flex items-center justify-end space-x-4">
+				<Button onClick={() => router.back()} variant="text" color="secondary">
+					{AppContent.cancel}
+				</Button>
+				<SubmitButton>{category?.id ? "Update" : "Save"}</SubmitButton>
+			</div>
 			{state?.error && (
 				<p className="text-xs text-rose-600">{state.error.message}</p>
 			)}

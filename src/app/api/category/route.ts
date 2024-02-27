@@ -1,10 +1,11 @@
 import { connectDb } from "@/lib/db";
-import { NextRequest, NextResponse } from "next/server";
-import { errorHandler } from "../middleware/error-handler";
-import { CustomError } from "../errors/custom-error";
-import { Category, ICategory, ICategoryDoc } from "../models/category";
 import { slug } from "@/utils";
+import { NextRequest, NextResponse } from "next/server";
+
 import { BadRequestError } from "../errors";
+import { CustomError } from "../errors/custom-error";
+import { errorHandler } from "../middleware/error-handler";
+import { Category, ICategory, ICategoryDoc } from "../models/category";
 
 /**
  * Add course category
@@ -33,10 +34,22 @@ export async function POST(req: NextRequest) {
  *  Category handler
  * @returns
  */
-export async function GET() {
+export async function GET(req: NextRequest) {
+	const query = req.nextUrl.searchParams;
 	await connectDb();
+
+	const slug = query.get("q")?.toLowerCase();
+
 	try {
-		const data = (await Category.find()) as ICategoryDoc[];
+		const data = (await Category.aggregate([
+			{
+				$match: slug ? { slug: { $regex: new RegExp(slug!, "i") } } : {},
+			},
+			{
+				$addFields: { id: "$_id" },
+			},
+		])) as ICategoryDoc[];
+
 		return NextResponse.json(data, { status: 200 });
 	} catch (error) {
 		return errorHandler(error as CustomError);

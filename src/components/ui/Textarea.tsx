@@ -35,7 +35,7 @@ function Textarea({
 	return (
 		<div>
 			{label && (
-				<span className="block text-sm font-medium text-slate-700">
+				<span className="block text-xs font-medium text-slate-700 mb-2">
 					{label}
 				</span>
 			)}

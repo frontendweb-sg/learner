@@ -1,10 +1,11 @@
 import { connectDb } from "@/lib/db";
-import { NextRequest, NextResponse } from "next/server";
-import { errorHandler } from "../../middleware/error-handler";
-import { CustomError } from "../../errors/custom-error";
-import { Course, ICourse, ICourseDoc } from "../../models/course";
-import { NotFoundError } from "../../errors";
 import { slug } from "@/utils";
+import { NextRequest, NextResponse } from "next/server";
+
+import { NotFoundError } from "../../errors";
+import { CustomError } from "../../errors/custom-error";
+import { errorHandler } from "../../middleware/error-handler";
+import { Course, ICourse, ICourseDoc } from "../../models/course";
 
 interface Params {
 	params: {
@@ -39,18 +40,32 @@ export async function GET(req: NextRequest, { params }: Params) {
 export async function PUT(req: NextRequest, { params }: Params) {
 	await connectDb();
 	try {
-		const { hero, videoUrl, ...rest } = (await req.json()) as ICourseDoc;
-		rest.slug = slug(rest.title);
+		const queryParam = req.nextUrl.searchParams.get("status") as
+			| "active"
+			| "inactive";
 
-		const course = await Course.findOneAndUpdate(
-			{
-				slug: params.slug,
-			},
-			{ $set: rest },
-			{ new: true },
-		);
+		let result;
+		if (queryParam === "active" || queryParam === "inactive") {
+			result = await Course.findOneAndUpdate(
+				{
+					slug: params.slug,
+				},
+				{ $set: { active: queryParam === "active" ? true : false } },
+				{ new: true },
+			);
+		} else {
+			const { hero, videoUrl, ...rest } = (await req.json()) as ICourseDoc;
+			rest.slug = slug(rest.title);
+			result = await Course.findOneAndUpdate(
+				{
+					slug: params.slug,
+				},
+				{ $set: rest },
+				{ new: true },
+			);
+		}
 
-		return NextResponse.json(course, { status: 200 });
+		return NextResponse.json(result, { status: 200 });
 	} catch (error) {
 		console.log(error);
 		return errorHandler(error as CustomError);

@@ -17,7 +17,7 @@ export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 	icon?: boolean;
 };
 
-const ButtonSizes = {
+export const ButtonSizes = {
 	xs: "px-2 py-.5",
 	sm: "px-4 py-1",
 	md: "px-5 py-1.5 min-w-24",
@@ -26,7 +26,7 @@ const ButtonSizes = {
 	full: "w-full py-1.5`",
 };
 
-const ButtonIconSize = {
+export const ButtonIconSize = {
 	xs: "p-1",
 	sm: "p-2",
 	md: "p-2",
@@ -58,7 +58,7 @@ const OutlinedColors: ColorVariant = {
 };
 const TextColors: ColorVariant = {
 	primary: "text-rose-600 hover:bg-rose-600/10 border border-rose-600/0",
-	secondary: "text-slate-600 hover:border-slate-600 border border-slate-600/0",
+	secondary: "text-slate-600 hover:bg-slate-300 border border-slate-600/0",
 	info: "text-sky-600 hover:border-sky-600 border border-sky-600/0",
 	warning: "text-yellow-600 hover:border-yellow-600 border border-yellow-600/0",
 	success: "text-green-600 hover:border-green-600 border border-green-600/0",
@@ -66,7 +66,7 @@ const TextColors: ColorVariant = {
 	gray: "text-gray-600 hover:border-gray-600 border border-gray-600/0",
 };
 
-const Variants: Variant = {
+export const Variants: Variant = {
 	filled: FilledColors,
 	outlined: OutlinedColors,
 	text: TextColors,
@@ -85,7 +85,7 @@ function Button({
 }: ButtonProps) {
 	const colors = Variants[variant as keyof typeof Variants];
 	const classes = classNames(
-		"text-center font-medium flex justify-center space-x-2 items-center",
+		"text-center text-sm font-medium flex justify-center space-x-2 items-center",
 		pills || icon ? "rounded-full" : "rounded-md",
 		variant !== "text" && "shadow-md ",
 		icon ? ButtonIconSize[size] : ButtonSizes[size],
@@ -94,7 +94,7 @@ function Button({
 	return (
 		<button role="button" className={classes} type={type} {...rest}>
 			{loading && <LoaderIcon className="animate-spin" size={16} />}
-			<span>{children}</span>
+			{children}
 		</button>
 	);
 }

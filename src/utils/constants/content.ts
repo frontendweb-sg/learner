@@ -9,4 +9,9 @@ export const AppContent = {
 	addCourse: "Add course",
 	addSection: "Add section",
 	editCourse: "Edit course",
+	action: "Action",
+	delete: "Delete",
+	active: "Active",
+	inactive: "Inactive",
+	edit: "Edit",
 };

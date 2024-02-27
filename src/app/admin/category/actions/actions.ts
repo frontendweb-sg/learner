@@ -1,33 +1,36 @@
 "use server";
 
-import { ICategoryDoc } from "@/app/api/models/category";
-import { ICourseDoc } from "@/app/api/models/course";
-import { ResponseResult, http } from "@/components/network/http";
-import {
-	handleValidationError,
-	zodValidationError,
-} from "@/utils/action-error";
+import { isObjEmpty } from "@/utils";
 import { revalidatePath } from "next/cache";
 import { ZodError, z } from "zod";
+
+import { ICategoryDoc } from "@/app/api/models/category";
+
+import { ResponseResult, http } from "@/components/network/http";
+
+import { handleValidationError } from "@/utils/action-error";
 
 /**
  * Fetch all categories
  * @param params
  * @returns
  */
-export async function getCategories(
-	params?: string,
-): Promise<ResponseResult<ICategoryDoc[]>> {
+export async function getCategories(params?: {
+	[key: string]: string;
+}): Promise<ResponseResult<ICategoryDoc[]>> {
 	try {
 		let query = "";
-		if (params) {
-			query = "?=" + params;
+		if (params && !isObjEmpty(params!)) {
+			query = "?" + new URLSearchParams(params).toString();
 		}
+
 		const response = await http<ICategoryDoc[]>(`/category${query}`, {
 			next: { revalidate: 0 },
 		});
+
 		return response;
 	} catch (error) {
+		console.log(error);
 		return {
 			data: null,
 			error: error as Error,
@@ -43,7 +46,7 @@ export async function getCategories(
  */
 const CategorySchema = z.object({
 	title: z.string().min(3, { message: "Category name is required" }),
-	description: z.string().min(3, { message: "Description is required" }),
+	description: z.string(),
 });
 export async function addCategory(prevState: any, formData: FormData) {
 	const body = Object.fromEntries(formData.entries());
@@ -53,7 +56,7 @@ export async function addCategory(prevState: any, formData: FormData) {
 			method: "POST",
 			body: JSON.stringify(data),
 		});
-		revalidatePath("/admin/category");
+		//revalidatePath("/admin/category");
 		return { success: true, data: response.data! };
 	} catch (error) {
 		if (error instanceof ZodError) {
@@ -72,8 +75,6 @@ export async function updateCategory(prevState: any, formData: FormData) {
 			method: "PUT",
 			body: JSON.stringify(rest),
 		});
-
-		revalidatePath("/admin/category");
 		return { success: true, data: result.data! };
 	} catch (error: any) {
 		if (error instanceof ZodError) {
@@ -95,14 +96,33 @@ export async function getCategoryById(id: string) {
 }
 
 /**
+ * Change status
+ * @param params
+ * @returns
+ */
+export async function changeStatus(
+	id: string,
+	status: "active" | "inactive" = "active",
+) {
+	try {
+		const response = await http(`/category/${id}?status=${status}`, {
+			method: "PUT",
+			body: JSON.stringify({}),
+		});
+
+		revalidatePath("/admin/category");
+		return { success: true, data: response.data };
+	} catch (error) {
+		return { error: error, success: false };
+	}
+}
+/**
  * Delete category actions
  * @param formData
  * @returns
  */
-export async function deleteCategory(formData: FormData) {
+export async function deleteCategory(id: string) {
 	try {
-		const id = formData.get("id");
-
 		const response = await http(`/category/${id}`, {
 			method: "DELETE",
 		});
@@ -110,12 +130,6 @@ export async function deleteCategory(formData: FormData) {
 		revalidatePath("/admin/category");
 		return { success: true, data: response.data };
 	} catch (error) {
-		if (error instanceof ZodError) {
-			return {
-				success: false,
-				errors: zodValidationError(error),
-			};
-		}
 		return { success: false, error: error as Error };
 	}
 }

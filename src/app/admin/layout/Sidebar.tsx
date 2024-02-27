@@ -1,11 +1,15 @@
 "use client";
+
 import classNames from "classnames";
+import { LogOutIcon } from "lucide-react";
+
 import NavItem from "@/components/common/NavItem";
 import Logo from "@/components/layout/Logo";
-import { SidebarMenu } from "./menu";
-import { IMenu } from "@/utils/types";
-import { LogOutIcon } from "lucide-react";
 import Button from "@/components/ui/Button";
+
+import { IMenu } from "@/utils/types";
+
+import { SidebarMenu } from "./menu";
 
 type SidebarProps = React.HtmlHTMLAttributes<HTMLDivElement> & {
 	isOpen?: boolean;
@@ -14,7 +18,7 @@ function Sidebar({ isOpen }: SidebarProps) {
 	return (
 		<aside
 			className={classNames(
-				"fixed  left-0 z-40 h-screen w-64 -translate-x-full bg-white p-3  shadow-md transition-transform md:translate-x-0",
+				"fixed  left-0 z-40 h-screen w-64  -translate-x-full bg-white p-3  shadow-md transition-transform sm:translate-x-0 md:visible",
 			)}>
 			<Logo className="mb-4 py-2" href="/admin" />
 			<div className="flex h-[calc(100%-4.5rem)] grow flex-col">
