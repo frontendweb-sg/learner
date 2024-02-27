@@ -1,13 +1,17 @@
+import upperFirst from "lodash/upperFirst";
+import React from "react";
+
 import PageTitle from "@/components/common/PageTitle";
-import CourseForm from "../../components/CourseForm";
+import Col from "@/components/ui/Col";
+import Divider from "@/components/ui/Divider";
+import Grid from "@/components/ui/Grid";
+import Panel from "@/components/ui/Panel";
+
 import { getCategories } from "../../../category/actions/actions";
 import { getCourseBySlug } from "../../actions/actions";
-import Grid from "@/components/ui/Grid";
-import Col from "@/components/ui/Col";
-import Panel from "@/components/ui/Panel";
-import Divider from "@/components/ui/Divider";
-import SectionList from "../../components/SectionList";
 import { getSections } from "../../actions/section-action";
+import CourseForm from "../../components/CourseForm";
+import SectionList from "../../components/SectionList";
 
 /**
  * Add course page
@@ -16,6 +20,7 @@ import { getSections } from "../../actions/section-action";
 async function Page({ params }: { params: { slug: string } }) {
 	const response = await getCategories();
 	const { data } = await getCourseBySlug(params.slug);
+
 	const { data: sections } = await getSections(params.slug);
 	return (
 		<>
@@ -34,7 +39,7 @@ async function Page({ params }: { params: { slug: string } }) {
 							</Col>
 							<Col span={4}>
 								<Panel>
-									<h2>Publish</h2>
+									<h2>{upperFirst("Publish")}</h2>
 									<Divider />
 									<div>Status: pending</div>
 								</Panel>

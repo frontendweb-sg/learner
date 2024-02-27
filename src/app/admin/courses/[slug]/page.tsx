@@ -1,12 +1,16 @@
 import Link from "next/link";
+
+import { ISectionDoc } from "@/app/api/models/section";
+
+import DeleteButton from "@/components/common/DeleteButton";
 import PageTitle from "@/components/common/PageTitle";
-import { getCourseBySlug } from "../actions/actions";
+
 import { AppContent } from "@/utils/constants/content";
+
+import { getCourseBySlug } from "../actions/actions";
+import { deleteSection, getSections } from "../actions/section-action";
 import AddSection from "../components/AddSection";
 import SectionForm from "../components/SectionForm";
-import { deleteSection, getSections } from "../actions/section-action";
-import { ISectionDoc } from "@/app/api/models/section";
-import DeleteButton from "@/components/common/DeleteButton";
 import SectionList from "../components/SectionList";
 
 export async function generateMetadata({
@@ -15,7 +19,6 @@ export async function generateMetadata({
 	params: { slug: string };
 }) {
 	const { data } = await getCourseBySlug(params.slug);
-
 	return {
 		title: `hi-${data?.title}`,
 		description: data?.description,
@@ -31,6 +34,7 @@ async function Page({
 	searchParams: any;
 }) {
 	const { data } = await getCourseBySlug(params.slug);
+
 	const { data: sections } = await getSections(params.slug);
 	return (
 		<>

@@ -38,7 +38,7 @@ function Select<T>({
 	return (
 		<div>
 			{label && (
-				<span className="block text-sm font-medium text-slate-700">
+				<span className="block text-xs font-medium text-slate-700 mb-2">
 					{label}
 				</span>
 			)}
@@ -48,7 +48,8 @@ function Select<T>({
 					name={name}
 					className={classNames("flex-1 bg-transparent outline-none", {
 						"placeholder:text-rose-600": error,
-					})}>
+					})}
+					{...rest}>
 					{options.map((option: T) => (
 						<option
 							value={getValue ? getValue(option) : JSON.stringify(option)}

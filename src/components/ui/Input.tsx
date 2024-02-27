@@ -38,7 +38,7 @@ function Input({
 	return (
 		<div>
 			{label && (
-				<span className="block text-sm font-medium text-slate-700">
+				<span className="block text-xs font-medium text-slate-700 mb-2">
 					{label}
 				</span>
 			)}
@@ -47,7 +47,7 @@ function Input({
 				<input
 					aria-readonly={readOnly}
 					className={classNames(
-						"flex-grow rounded-md  bg-transparent p-2.5 outline-none",
+						"flex-grow rounded-md  bg-transparent p-3 outline-none",
 						{
 							"placeholder:text-rose-600": error,
 						},

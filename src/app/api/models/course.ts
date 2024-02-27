@@ -1,16 +1,18 @@
-import mongoose, { Schema, Document } from "mongoose";
-import { CourseStatus } from "@/utils/types";
-import { CATEGORY_TABLE } from "./category";
+import mongoose, { Document, Schema } from "mongoose";
+
 import { CourseLevel } from "@/utils/enums";
+import { CourseStatus } from "@/utils/types";
+
+import { CATEGORY_TABLE } from "./category";
 
 export const COURSE_TABLE = "Course";
 export interface ICourse {
 	category: string;
-	author: string;
 	title: string;
 	slug: string;
 	excerpt: string;
 	level: CourseLevel;
+	author: string;
 	description: string;
 	price: number;
 	hero?: string;

@@ -1,18 +1,18 @@
-import DeleteButton from "@/components/common/DeleteButton";
-import PageTitle from "@/components/common/PageTitle";
-import Grid from "@/components/ui/Grid";
-import Course from "@/components/course/Course";
-import { PlusIcon } from "lucide-react";
-import NoData from "@/components/common/NoData";
-import NavLink from "@/components/common/NavLink";
-import { ICourse, ICourseDoc } from "@/app/api/models/course";
-import { deleteCourse, getCourses } from "./actions/actions";
-import { Metadata } from "next";
-import { AppContent } from "@/utils/constants/content";
-import DataTable, { ColumnProps } from "@/components/ui/DataTable";
 import classNames from "classnames";
+import { PlusIcon } from "lucide-react";
+import { Metadata } from "next";
 import Link from "next/link";
+
+import { ICourse, ICourseDoc } from "@/app/api/models/course";
+
+import NavLink from "@/components/common/NavLink";
+import PageTitle from "@/components/common/PageTitle";
+import DataTable, { ColumnProps } from "@/components/ui/DataTable";
 import Panel from "@/components/ui/Panel";
+
+import { AppContent } from "@/utils/constants/content";
+
+import { getCourses } from "./actions/actions";
 import CourseAction from "./components/CourseAction";
 
 /**
@@ -32,6 +32,7 @@ async function Page({
 	searchParams: { [key: string]: string };
 }) {
 	const { data } = await getCourses(JSON.parse(JSON.stringify(searchParams)));
+
 	const columns: ColumnProps<ICourseDoc, keyof ICourse>[] = [
 		{
 			field: "title",

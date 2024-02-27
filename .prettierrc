@@ -1,6 +1,9 @@
 {
 	"$schema": "http://json.schemastore.org/prettierrc",
-	"plugins": ["prettier-plugin-tailwindcss"],
+	"plugins": [
+		"prettier-plugin-tailwindcss",
+		"@trivago/prettier-plugin-sort-imports"
+	],
 	"tailwindConfig": "./tailwind.config.ts",
 	"arrowParens": "always",
 	"bracketSameLine": true,
@@ -21,7 +24,13 @@
 	"tabWidth": 2,
 	"useTabs": true,
 	"embeddedLanguageFormatting": "auto",
-	"importOrder": ["^@/utils/(.*)$", "^@/component/(.*)$", "^[./]"],
+
+	"importOrder": [
+		"^@/app/(.*)$",
+		"^@/components/(.*)$",
+		"^@/utils/(.*)$",
+		"^[./]"
+	],
 	"importOrderSeparation": true,
 	"importOrderSortSpecifiers": true
 }

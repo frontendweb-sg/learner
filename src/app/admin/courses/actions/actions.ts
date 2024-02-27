@@ -1,11 +1,14 @@
 "use server";
 
-import { ICourseDoc } from "@/app/api/models/course";
-import { ResponseResult, http } from "@/components/network/http";
 import { isObjEmpty } from "@/utils";
-import { zodValidationError } from "@/utils/action-error";
 import { revalidatePath } from "next/cache";
 import { ZodError, z } from "zod";
+
+import { ICourse, ICourseDoc } from "@/app/api/models/course";
+
+import { ResponseResult, http } from "@/components/network/http";
+
+import { zodValidationError } from "@/utils/action-error";
 
 const COURSE_API_ROUTE = "/course";
 
@@ -34,11 +37,17 @@ export async function getCourses(params?: {
 }
 
 const schema = z.object({
+	category: z.string().min(2, { message: "Category requried" }),
 	title: z.string().min(3, { message: "Course name is required!" }),
 	price: z.coerce.number(),
-	description: z.string(),
 	excerpt: z.string(),
+	description: z.string(),
+	offer: z.coerce.number().default(0),
+	videoUrl: z.string().default(""),
+	hero: z.string().default(""),
+	language: z.string().default(""),
 	level: z.string(),
+	status: z.string(),
 });
 
 /**
@@ -53,6 +62,7 @@ export async function addCourse(prevState: any, formData: FormData) {
 
 	try {
 		const data = schema.parse(body);
+
 		const response = await http<ICourseDoc>(COURSE_API_ROUTE, {
 			method: "POST",
 			body: JSON.stringify(data),
@@ -61,6 +71,7 @@ export async function addCourse(prevState: any, formData: FormData) {
 		revalidatePath("/admin/courses");
 		return { success: true, data: response.data };
 	} catch (error) {
+		console.log(error);
 		if (error instanceof ZodError) {
 			return { success: false, errors: zodValidationError(error) };
 		}
@@ -77,7 +88,7 @@ export async function addCourse(prevState: any, formData: FormData) {
 export async function updateCourse(prevState: any, formData: FormData) {
 	const { id, ...rest } = Object.fromEntries(formData.entries());
 	try {
-		const data = schema.parse(rest) as ICourseDoc;
+		const data = schema.parse(rest);
 		const response = await http<ICourseDoc>(`${COURSE_API_ROUTE}/${id}`, {
 			method: "PUT",
 			body: JSON.stringify(data),

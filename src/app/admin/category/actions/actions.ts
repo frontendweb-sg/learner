@@ -1,9 +1,13 @@
 "use server";
-import { ICategoryDoc } from "@/app/api/models/category";
-import { ResponseResult, http } from "@/components/network/http";
+
 import { isObjEmpty } from "@/utils";
 import { revalidatePath } from "next/cache";
 import { ZodError, z } from "zod";
+
+import { ICategoryDoc } from "@/app/api/models/category";
+
+import { ResponseResult, http } from "@/components/network/http";
+
 import { handleValidationError } from "@/utils/action-error";
 
 /**
@@ -16,15 +20,18 @@ export async function getCategories(params?: {
 }): Promise<ResponseResult<ICategoryDoc[]>> {
 	try {
 		let query = "";
-		if (!isObjEmpty(params!)) {
+		if (params && !isObjEmpty(params!)) {
+			console.log("Hi");
 			query = "?" + new URLSearchParams(params).toString();
 		}
 
 		const response = await http<ICategoryDoc[]>(`/category${query}`, {
 			next: { revalidate: 0 },
 		});
+
 		return response;
 	} catch (error) {
+		console.log(error);
 		return {
 			data: null,
 			error: error as Error,
