@@ -21,7 +21,6 @@ export async function getCategories(params?: {
 	try {
 		let query = "";
 		if (params && !isObjEmpty(params!)) {
-			console.log("Hi");
 			query = "?" + new URLSearchParams(params).toString();
 		}
 

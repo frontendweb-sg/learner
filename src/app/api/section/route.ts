@@ -1,10 +1,12 @@
 import { connectDb } from "@/lib/db";
-import { NextRequest, NextResponse } from "next/server";
-import { errorHandler } from "../middleware/error-handler";
-import { CustomError } from "../errors/custom-error";
-import { CourseSection, ISection, ISectionDoc } from "../models/section";
 import { slug } from "@/utils";
+import { NextRequest, NextResponse } from "next/server";
+
 import { BadRequestError } from "../errors";
+import { CustomError } from "../errors/custom-error";
+import { errorHandler } from "../middleware/error-handler";
+import { CourseSection, ISection, ISectionDoc } from "../models/section";
+
 /**
  * Add course section handler
  * @param req
@@ -37,11 +39,17 @@ export async function POST(req: NextRequest) {
  * @param req
  * @returns
  */
-export async function GET() {
+export async function GET(req: NextRequest) {
 	await connectDb();
 	try {
-		const sections = (await CourseSection.find()) as ISectionDoc[];
+		const query = req.nextUrl.searchParams;
+		const slug = query.get("q")?.toLowerCase();
+		console.log(slug);
+		const sections = (await CourseSection.find({
+			course: slug ? slug : "",
+		})) as ISectionDoc[];
 
+		console.log("HI", sections);
 		return NextResponse.json(sections, { status: 200 });
 	} catch (error) {
 		return errorHandler(error as CustomError);

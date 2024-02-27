@@ -1,8 +1,9 @@
 import classNames from "classnames";
+import { ReactNode } from "react";
+
 import Table from "../Table";
 import DataTableBody from "./DataTableBody";
 import DataTableHeader from "./DataTableHeader";
-import { ReactNode } from "react";
 
 export type TableCommonProps<T, K extends keyof T> = {
 	rows: Array<T>;
@@ -38,7 +39,6 @@ function DataTable<T, K extends keyof T>({
 	...rest
 }: TableProps<T, K>) {
 	if (typeof renderAction !== "function") {
-		console.log("Fun");
 		throw new Error("renderAction should be function");
 	}
 	return (

@@ -41,7 +41,6 @@ function CourseForm({ course, categories }: CourseFormProps) {
 		}
 	}, [state, router]);
 
-	console.log("course ----", course);
 	return (
 		<Form action={formAction}>
 			{course?.id && <input hidden name="id" defaultValue={course?.slug} />}
