@@ -24,7 +24,7 @@ export async function getSections(queryParam: string) {
 			query = "?q=" + queryParam;
 		}
 		const response = await http<ISectionDoc[]>(`${API_URL}${query}`, {
-			next: { revalidate: 0, tags: ["section"] },
+			next: { revalidate: 0 },
 		});
 		return response;
 	} catch (error) {
@@ -47,17 +47,13 @@ export async function addSection(prevState: any, formData: FormData) {
 
 	try {
 		const data = schema.parse(body);
-
 		const response = await http<ISectionDoc>(API_URL, {
 			method: "POST",
 			body: JSON.stringify(data),
 		});
-
-		revalidatePath(`${API_REVALIDATE_PATH}/${body.id}`, "page");
-
+		// revalidatePath(`${API_REVALIDATE_PATH}/${data.course}`);
 		return { success: true, data: response.data };
 	} catch (error) {
-		console.log(error);
 		if (error instanceof ZodError) {
 			return { success: false, errors: zodValidationError(error) };
 		}
@@ -79,7 +75,6 @@ export async function updateSection(prevState: any, formData: FormData) {
 			method: "PUT",
 			body: JSON.stringify(data),
 		});
-
 		revalidatePath(`${API_REVALIDATE_PATH}/${id}`);
 		return { success: true, data: response.data };
 	} catch (error) {
