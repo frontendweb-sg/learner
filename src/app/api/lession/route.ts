@@ -44,12 +44,16 @@ export async function GET(req: NextRequest) {
 	const section = query.get("section");
 
 	try {
-		const lessions = (await Lession.find({
-			$or: [
-				{ course: course ? course : "" },
-				{ section: section ? section : "" },
-			],
-		})) as ILessionDoc[];
+		const lessions = (await Lession.find(
+			course || section
+				? {
+						$or: [
+							{ course: course ? course : "" },
+							{ section: section ? section : "" },
+						],
+					}
+				: {},
+		)) as ILessionDoc[];
 		return NextResponse.json(lessions, { status: 200 });
 	} catch (error) {
 		return errorHandler(error as CustomError);
