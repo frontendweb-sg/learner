@@ -1,0 +1,7 @@
+.ck-editor {
+	--ck-border-radius: 5px;
+	--ck-border-color: gray;
+	.ck-content {
+		@apply min-h-40 overflow-hidden rounded-md;
+	}
+}

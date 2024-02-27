@@ -17,6 +17,7 @@ export async function POST(req: NextRequest) {
 	try {
 		const body = (await req.json()) as ILession;
 		body.slug = slug(body.title);
+		console.log(body);
 
 		const lessionExist = await Lession.findOne({ slug: body.slug });
 		if (lessionExist) throw new BadRequestError("Lession already existed");
@@ -25,6 +26,7 @@ export async function POST(req: NextRequest) {
 		const result = (await lession.save()) as ILessionDoc;
 		return NextResponse.json(result, { status: 201 });
 	} catch (error) {
+		console.log(error);
 		return errorHandler(error as CustomError);
 	}
 }

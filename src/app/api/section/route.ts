@@ -51,7 +51,7 @@ export async function GET(req: NextRequest) {
 						course: slug,
 					}
 				: {},
-		)) as ISectionDoc[];
+		).sort({ slug: 1 })) as ISectionDoc[];
 
 		return NextResponse.json(sections, { status: 200 });
 	} catch (error) {

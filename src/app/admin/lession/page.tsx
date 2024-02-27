@@ -50,7 +50,7 @@ export default async function Page() {
 
 	return (
 		<>
-			<PageTitle title="Courses" subtitle="Welcome to courses">
+			<PageTitle title="Lessions" subtitle="Welcome to lessions page">
 				<NavLink
 					size="sm"
 					variant="text"

@@ -1,8 +1,11 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useMemo, useState } from "react";
+import { ChangeEvent, Suspense, useEffect, useMemo, useState } from "react";
+import { useFormState } from "react-dom";
+import { toast } from "react-toastify";
 
 import { ICourseDoc } from "@/app/api/models/course";
 import { ILessionDoc } from "@/app/api/models/lession";
@@ -21,6 +24,11 @@ import Select from "@/components/ui/Select";
 
 import { AppContent } from "@/utils/constants/content";
 
+import { addLession, updateLession } from "../action/action";
+
+const DynamicEditor = dynamic(() => import("@/components/common/Editor"), {
+	ssr: false,
+});
 /**
  * Lession form
  * @returns
@@ -41,10 +49,15 @@ export default function LessionForm({
 	const q = searchParam.get("q");
 	const sectionId = searchParam.get("section");
 
-	const [course, setCourse] = useState<string | null>(q ?? courses![0].slug);
+	const [state, formAction] = useFormState(
+		lession?.id ? updateLession : addLession,
+		null,
+	);
+
+	const [course, setCourse] = useState<ICourseDoc | null>(courses![0]);
 
 	const filteredSection = useMemo(
-		() => sections?.filter((section) => section.course == course),
+		() => sections?.filter((section) => section.course == course?.slug),
 		[sections, course],
 	);
 
@@ -56,15 +69,27 @@ export default function LessionForm({
 		[sectionId, sections],
 	);
 
+	const defaultCourse = useMemo(
+		() =>
+			q ? filteredSection?.find((section) => section.slug === q) : sections![0],
+		[q, sections],
+	);
+
 	const handleChangeCourse = (ev: ChangeEvent<HTMLSelectElement>) => {
-		setCourse(ev.target.value);
-		const params = new URLSearchParams(searchParam.toString());
-		params.set("q", ev.target.value);
-		params.delete("section");
-		router.push(`${pathname}?${params}`);
+		setCourse(courses?.find((course) => course.id === ev.target.value)!);
+		if (searchParam.get("q")) {
+			const params = new URLSearchParams(searchParam.toString());
+			params.set("q", ev.target.value);
+			params.delete("section");
+			router.push(`${pathname}?${params}`);
+		}
 	};
 
-	console.log("defaultSection", sectionId, defaultSection?.title);
+	useEffect(() => {
+		if (state?.success) {
+			toast.success(lession?.id ? "Lession updated" : "Lession added");
+		}
+	}, [state, router, lession]);
 
 	return (
 		<Grid size={12}>
@@ -72,23 +97,29 @@ export default function LessionForm({
 				<PageTitle title="Edit course" subtitle="Welcome to add course" />
 				<Grid size={12} gap={6}>
 					<Col span={8}>
-						<Form>
+						<Form action={formAction}>
 							<Select
 								options={courses!}
 								getOptionLabel={(option) => option.title}
 								name="course"
 								onChange={handleChangeCourse}
-								getValue={(option) => option.slug}
-								defaultValue={course! ?? ""}
+								getValue={(option) => option.id}
+								defaultValue={defaultCourse?.id ?? ""}
 							/>
 							<Select
 								options={filteredSection!}
 								getOptionLabel={(option) => option.title}
 								name="section"
 								defaultValue={defaultSection?.slug ?? ""}
-								getValue={(option) => option.slug}
+								getValue={(option) => option.id}
 							/>
 							<Input name="title" placeholder="Lession name" />
+							<Suspense fallback={<h1>LOading</h1>}>
+								<DynamicEditor
+									name="content"
+									defaultValue={lession?.content ?? "ssss"}
+								/>
+							</Suspense>
 							<Divider className="mt-7 border-slate-200" />
 							<Button
 								variant="text"
