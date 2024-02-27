@@ -37,7 +37,7 @@ function SectionForm({ courseSlug, section }: SectionFormProps) {
 			toast.success(section?.id ? "Section updated" : "Section added");
 			router.back();
 		}
-	}, [state, section]);
+	}, [state, section, router]);
 
 	return (
 		<Form action={formAction}>

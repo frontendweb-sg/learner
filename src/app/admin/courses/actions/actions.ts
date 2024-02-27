@@ -4,7 +4,7 @@ import { isObjEmpty } from "@/utils";
 import { revalidatePath } from "next/cache";
 import { ZodError, z } from "zod";
 
-import { ICourse, ICourseDoc } from "@/app/api/models/course";
+import { ICourseDoc } from "@/app/api/models/course";
 
 import { ResponseResult, http } from "@/components/network/http";
 

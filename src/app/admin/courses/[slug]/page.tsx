@@ -1,16 +1,11 @@
 import Link from "next/link";
 
-import { ISectionDoc } from "@/app/api/models/section";
-
-import DeleteButton from "@/components/common/DeleteButton";
 import PageTitle from "@/components/common/PageTitle";
 
 import { AppContent } from "@/utils/constants/content";
 
 import { getCourseBySlug } from "../actions/actions";
-import { deleteSection, getSections } from "../actions/section-action";
-import AddSection from "../components/AddSection";
-import SectionForm from "../components/SectionForm";
+import { getSections } from "../actions/section-action";
 import SectionList from "../components/SectionList";
 
 export async function generateMetadata({
