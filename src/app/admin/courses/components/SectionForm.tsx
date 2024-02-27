@@ -1,16 +1,21 @@
 "use client";
+
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useFormState } from "react-dom";
+import { toast } from "react-toastify";
+
+import { ISectionDoc } from "@/app/api/models/section";
+
 import SubmitButton from "@/components/common/SubmitButton";
+import Button from "@/components/ui/Button";
 import Form from "@/components/ui/Form";
 import Input from "@/components/ui/Input";
 import Textarea from "@/components/ui/Textarea";
-import Button from "@/components/ui/Button";
-import { ISectionDoc } from "@/app/api/models/section";
+
 import { AppContent } from "@/utils/constants/content";
-import { useFormState } from "react-dom";
+
 import { addSection, updateSection } from "../actions/section-action";
-import { useEffect } from "react";
-import { toast } from "react-toastify";
-import { useRouter } from "next/router";
 
 /**
  * Section form
@@ -30,30 +35,32 @@ function SectionForm({ courseSlug, section }: SectionFormProps) {
 	useEffect(() => {
 		if (state?.success) {
 			toast.success(section?.id ? "Section updated" : "Section added");
+			router.back();
 		}
 	}, [state, section]);
 
+	console.log(courseSlug, "slug");
 	return (
 		<Form action={formAction}>
 			{section?.id && <input hidden name="id" defaultValue={section?.id} />}
 			<Input
 				error={state?.errors?.["course"]}
-				readOnly={true}
 				name="course"
+				readOnly
 				defaultValue={courseSlug}
-				placeholder="Section title"
+				placeholder="Course title"
 			/>
 			<Input
 				error={state?.errors?.["title"]}
 				placeholder="Section name"
 				name="title"
-				defaultValue={section?.title}
+				defaultValue={section?.title ?? ""}
 			/>
 			<Textarea
 				error={state?.errors?.["description"]}
 				placeholder="Description"
 				name="description"
-				defaultValue={section?.description}
+				defaultValue={section?.description ?? ""}
 			/>
 			<div className="flex items-center justify-end space-x-2">
 				<Button onClick={() => router.back()} variant="text" color="secondary">

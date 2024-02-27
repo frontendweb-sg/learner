@@ -46,6 +46,7 @@ function Input({
 				{iconStart && <StartIcon className="mr-2 text-inherit" />}
 				<input
 					aria-readonly={readOnly}
+					readOnly={readOnly}
 					className={classNames(
 						"flex-grow rounded-md  bg-transparent p-3 outline-none",
 						{

@@ -39,7 +39,7 @@ export default function Sections({ sections, slug }: SectionListProps) {
 							<NavLink
 								icon
 								variant="text"
-								href={`/admin/courses/${slug}/section/${section.id}/edit`}>
+								href={`/admin/courses/${slug}/section/${section.id}`}>
 								<PencilIcon size={16} />
 							</NavLink>
 							<DeleteButton
