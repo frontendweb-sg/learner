@@ -1,12 +1,14 @@
-import { IMenu } from "@/utils/types";
 import {
 	BookCopy,
+	BookCopyIcon,
 	CogIcon,
 	KeyIcon,
 	Layers2,
 	LayoutDashboard,
 	UserIcon,
 } from "lucide-react";
+
+import { IMenu } from "@/utils/types";
 
 export const SidebarMenu: IMenu[] = [
 	{
@@ -29,6 +31,12 @@ export const SidebarMenu: IMenu[] = [
 				name: "Courses",
 				slug: "courses",
 				icon: BookCopy,
+				children: [],
+			},
+			{
+				name: "Lession",
+				slug: "lession",
+				icon: BookCopyIcon,
 				children: [],
 			},
 		],

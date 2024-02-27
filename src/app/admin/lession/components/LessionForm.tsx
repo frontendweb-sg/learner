@@ -1,7 +1,8 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, useMemo, useState } from "react";
 
 import { ICourseDoc } from "@/app/api/models/course";
 import { ILessionDoc } from "@/app/api/models/lession";
@@ -9,6 +10,7 @@ import { ISectionDoc } from "@/app/api/models/section";
 
 import PageTitle from "@/components/common/PageTitle";
 import SubmitButton from "@/components/common/SubmitButton";
+import Button from "@/components/ui/Button";
 import Col from "@/components/ui/Col";
 import Divider from "@/components/ui/Divider";
 import Form from "@/components/ui/Form";
@@ -33,13 +35,36 @@ export default function LessionForm({
 	courses,
 	sections,
 }: LessionFormProps) {
-	const [course, setCourse] = useState<string | null>(courses![0].slug);
-	const params = useSearchParams();
+	const pathname = usePathname();
+	const router = useRouter();
+	const searchParam = useSearchParams();
+	const q = searchParam.get("q");
+	const sectionId = searchParam.get("section");
+
+	const [course, setCourse] = useState<string | null>(q ?? courses![0].slug);
 
 	const filteredSection = useMemo(
 		() => sections?.filter((section) => section.course == course),
 		[sections, course],
 	);
+
+	const defaultSection = useMemo(
+		() =>
+			sectionId
+				? filteredSection?.find((section) => section.id == sectionId)
+				: sections![0],
+		[sectionId, sections],
+	);
+
+	const handleChangeCourse = (ev: ChangeEvent<HTMLSelectElement>) => {
+		setCourse(ev.target.value);
+		const params = new URLSearchParams(searchParam.toString());
+		params.set("q", ev.target.value);
+		params.delete("section");
+		router.push(`${pathname}?${params}`);
+	};
+
+	console.log("defaultSection", sectionId, defaultSection?.title);
 
 	return (
 		<Grid size={12}>
@@ -52,17 +77,25 @@ export default function LessionForm({
 								options={courses!}
 								getOptionLabel={(option) => option.title}
 								name="course"
-								onChange={(option) => setCourse(option.target.value)}
+								onChange={handleChangeCourse}
 								getValue={(option) => option.slug}
+								defaultValue={course! ?? ""}
 							/>
 							<Select
 								options={filteredSection!}
 								getOptionLabel={(option) => option.title}
 								name="section"
+								defaultValue={defaultSection?.slug ?? ""}
+								getValue={(option) => option.slug}
 							/>
 							<Input name="title" placeholder="Lession name" />
-
 							<Divider className="mt-7 border-slate-200" />
+							<Button
+								variant="text"
+								color="secondary"
+								onClick={() => router.back()}>
+								{AppContent.cancel}
+							</Button>
 							<SubmitButton color="primary">
 								{lession?.id ? AppContent.update : AppContent.save}
 							</SubmitButton>

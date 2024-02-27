@@ -1,4 +1,5 @@
 import { PencilIcon, PlusIcon } from "lucide-react";
+import Link from "next/link";
 
 import { ISectionDoc } from "@/app/api/models/section";
 
@@ -49,7 +50,11 @@ export default function Sections({ sections, slug }: SectionListProps) {
 								id={section.id}
 							/>
 						</AccordionTitle>
-						<AccordionBody>Hellow</AccordionBody>
+						<AccordionBody>
+							<Link href={`/admin/lession/add?q=${slug}&section=${section.id}`}>
+								Add Lession
+							</Link>
+						</AccordionBody>
 					</Accordion>
 				))}
 			</div>
