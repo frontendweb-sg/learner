@@ -16,7 +16,6 @@ export interface ICourse {
 	description: string;
 	price: number;
 	hero?: string;
-	videoUrl?: string;
 	active: boolean;
 	offer?: number;
 	tags: string[];

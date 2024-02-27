@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
 
 		const course = new Course(body);
 		const result = (await course.save()) as ICourseDoc;
-		return NextResponse.json(course, { status: 201 });
+		return NextResponse.json(result, { status: 201 });
 	} catch (error) {
 		return errorHandler(error as CustomError);
 	}
