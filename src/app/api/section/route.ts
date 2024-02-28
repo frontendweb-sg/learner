@@ -1,6 +1,7 @@
-import { connectDb } from "@/lib/db";
 import { slug } from "@/utils";
 import { NextRequest, NextResponse } from "next/server";
+
+import { connectDb } from "@/lib/db";
 
 import { BadRequestError } from "../errors";
 import { CustomError } from "../errors/custom-error";
@@ -29,7 +30,6 @@ export async function POST(req: NextRequest) {
 
 		return NextResponse.json(result, { status: 201 });
 	} catch (error) {
-		console.log(error);
 		return errorHandler(error as CustomError);
 	}
 }
@@ -44,12 +44,11 @@ export async function GET(req: NextRequest) {
 	try {
 		const query = req.nextUrl.searchParams;
 		const slug = query.get("q")?.toLowerCase();
-		console.log(slug);
+
 		const sections = (await CourseSection.find({
 			course: slug ? slug : "",
 		})) as ISectionDoc[];
 
-		console.log("HI", sections);
 		return NextResponse.json(sections, { status: 200 });
 	} catch (error) {
 		return errorHandler(error as CustomError);

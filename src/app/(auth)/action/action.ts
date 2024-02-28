@@ -26,10 +26,8 @@ export async function login(prevState: any, formData: FormData) {
 			...data,
 		});
 
-		console.log(response, "res");
 		return { success: true };
 	} catch (error) {
-		console.log(error, "error");
 		if (error instanceof ZodError) {
 			return { success: false, errors: handleValidationError(error) };
 		}

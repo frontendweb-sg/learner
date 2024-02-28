@@ -31,7 +31,7 @@ const schema = new Schema(
 			default: userRole.user,
 			enum: userRole,
 		},
-		mobile: { type: String, required: true, unique: true },
+		mobile: { type: String },
 		courses: { type: [Schema.ObjectId], default: [] },
 		providerId: { type: String, default: "custom" },
 		provider: { type: String, default: "custom" },

@@ -2,7 +2,14 @@ import NextAuth from "next-auth";
 import Credential from "next-auth/providers/credentials";
 import Github from "next-auth/providers/github";
 
+import { connectDb } from "@/lib/db";
+
+import { AuthError } from "../../errors";
+import { IError } from "../../errors/custom-error";
+import { IUser, IUserDoc, User } from "../../models/user";
+
 const handler = NextAuth({
+	secret: process.env.NEXTAUTH_SECRET,
 	session: {
 		strategy: "jwt",
 		maxAge: 60 * 60 * 1000,
@@ -16,7 +23,7 @@ const handler = NextAuth({
 			clientSecret: process.env.GITHUB_CLIENT_SECRET!,
 		}),
 		Credential({
-			id: "auth",
+			id: "credentials",
 			credentials: {
 				email: { type: "email", label: "Email", placeholder: "Enter email" },
 				password: {
@@ -28,13 +35,19 @@ const handler = NextAuth({
 			async authorize(credentials, req) {
 				const response = await fetch(process.env.NEXTAUTH_URL + "/login", {
 					method: "POST",
-					body: JSON.stringify(credentials),
+					body: JSON.stringify({
+						email: credentials?.email,
+						password: credentials?.password,
+					}),
 					headers: {
 						"Content-Type": "application/json",
 					},
 				});
 
 				const data = await response.json();
+				if (response.status === 401)
+					throw new AuthError((data.error as IError).message);
+
 				if (response.status === 200) {
 					return data;
 				}
@@ -45,19 +58,30 @@ const handler = NextAuth({
 	],
 	callbacks: {
 		async signIn({ email, user, account, profile }) {
-			console.log(email, user, account, profile);
+			await connectDb();
 
+			const isUser = (await User.findOne({ email: user.email })) as IUserDoc;
+			if (!isUser) {
+				const newUser = new User({
+					name: user.name,
+					email: user.email,
+					provider: account?.provider,
+				});
+			}
 			return true;
 		},
-		jwt({ account, token, user }) {
+		jwt({ account, token, user, profile, session }) {
+			//console.log("----", { token, user, account, profile, session });
 			return { ...token, ...user };
 		},
 		session({ token, user, session }) {
-			if (session.user) {
-				session.user = token;
-			}
+			// console.log(session, user, token);
+			session.user = token;
 			return session;
 		},
+	},
+	pages: {
+		signIn: "/login",
 	},
 });
 

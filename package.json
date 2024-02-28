@@ -21,6 +21,7 @@
 		"@types/lodash": "^4.14.202",
 		"bcryptjs": "^2.4.3",
 		"classnames": "^2.5.1",
+		"formik": "^2.4.5",
 		"jsonwebtoken": "^9.0.2",
 		"lodash": "^4.17.21",
 		"lucide-react": "^0.331.0",
