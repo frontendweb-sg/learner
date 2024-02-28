@@ -10,3 +10,8 @@ export enum Status {
 	Draft = "draft",
 	Publish = "Publish",
 }
+
+export enum Role {
+	Admin = "admin",
+	User = "User",
+}
