@@ -1,16 +1,24 @@
+"use client";
+
+import Link from "next/link";
+import { useFormState } from "react-dom";
+
 import SubmitButton from "@/components/common/SubmitButton";
 import Box from "@/components/ui/Box";
 import Form from "@/components/ui/Form";
 import Input from "@/components/ui/Input";
-import Link from "next/link";
+
+import { login } from "../../action/action";
 
 /**
  * Login form component
  * @returns
  */
 function LoginForm() {
+	const [state, formAction] = useFormState(login, null);
+	console.log("state", state);
 	return (
-		<Box as="form" noValidate className="w-80 space-y-4">
+		<Form action={formAction} noValidate className="w-80 space-y-4">
 			<Box as="div" className="mb-8">
 				<h1 className="mb-2 text-2xl font-semibold">Login</h1>
 				<p className="text-xs text-slate-800">
@@ -18,10 +26,22 @@ function LoginForm() {
 					<Link href="/signup">Register</Link>
 				</p>
 			</Box>
-			<Input name="email" className="shadow-sm" placeholder="Email/Mobile" />
-			<Input name="description" className="shadow-sm" placeholder="Password" />
+			<Input
+				type="email"
+				name="email"
+				className="shadow-sm"
+				placeholder="Email/Mobile"
+				defaultValue="pradeep.kumar5@rsystems.com"
+			/>
+			<Input
+				type="password"
+				name="password"
+				className="shadow-sm"
+				placeholder="******"
+				defaultValue="Admin@123"
+			/>
 			<SubmitButton>Login</SubmitButton>
-		</Box>
+		</Form>
 	);
 }
 

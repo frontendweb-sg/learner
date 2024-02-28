@@ -11,7 +11,7 @@ export enum Status {
 	Publish = "Publish",
 }
 
-export enum Role {
-	Admin = "admin",
-	User = "User",
+export enum userRole {
+	admin = "admin",
+	user = "user",
 }
