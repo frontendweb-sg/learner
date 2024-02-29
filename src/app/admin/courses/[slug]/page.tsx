@@ -28,13 +28,13 @@ async function Page({
 	params: { slug: string };
 	searchParams: any;
 }) {
-	const { data } = await getCourseBySlug(params.slug);
+	const { data, error } = await getCourseBySlug(params.slug);
 
-	const { data: sections } = await getSections(params.slug);
+	const { data: sections } = await getSections(data?.id);
 	return (
 		<>
 			<PageTitle title={data?.title} subtitle="Welcome to courses">
-				<Link href={decodeURI(`/admin/courses/${data?.slug}/edit-course`)}>
+				<Link href={decodeURI(`/admin/courses/${data?.slug}/edit`)}>
 					{AppContent.editCourse}
 				</Link>
 			</PageTitle>
@@ -44,7 +44,7 @@ async function Page({
 				<p>{data?.description}</p>
 			</div>
 
-			<SectionList slug={data?.slug!} sections={sections!} />
+			<SectionList slug={data?.slug!} sections={sections! ?? []} />
 		</>
 	);
 }

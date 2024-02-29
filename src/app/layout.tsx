@@ -1,9 +1,12 @@
 import AppProvider from "@/context/AppContext";
-import ConfirmDialog from "@/components/common/ConfirmDialog";
 import type { Metadata } from "next";
-import { poppins } from "@/utils/fonts/font";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+import ConfirmDialog from "@/components/common/ConfirmDialog";
+
+import { lato, poppins, roboto } from "@/utils/fonts/font";
+
 import "./index.scss";
 
 export const metadata: Metadata = {
@@ -22,7 +25,8 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={poppins.className}>
+			<body
+				className={`${poppins.className} ${lato.variable} ${roboto.variable}`}>
 				<AppProvider>
 					{children}
 					<ToastContainer />

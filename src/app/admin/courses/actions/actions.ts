@@ -72,7 +72,6 @@ export async function addCourse(prevState: any, formData: FormData) {
 		revalidatePath("/admin/courses");
 		return { success: true, data: response.data };
 	} catch (error) {
-		console.log(error);
 		if (error instanceof ZodError) {
 			return { success: false, errors: zodValidationError(error) };
 		}
@@ -129,15 +128,15 @@ export async function deleteCourse(slug: string) {
  * @param id
  * @returns
  */
-export async function getCourseBySlug(slug: string) {
+export async function getCourseBySlug(
+	slug: string,
+): Promise<ResponseResult<ICourseDoc>> {
 	try {
 		const response = await http<ICourseDoc>(`${COURSE_API_ROUTE}/${slug}`);
-		return { success: true, data: response.data };
+		return response;
 	} catch (error) {
-		return {
-			success: false,
-			error: error as Error,
-		};
+		console.log(error);
+		return { data: null, error: error as Error };
 	}
 }
 

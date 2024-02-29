@@ -1,11 +1,11 @@
-import upperFirst from "lodash/upperFirst";
+import { ArrowLeftSquareIcon } from "lucide-react";
 import React from "react";
 
+import NavLink from "@/components/common/NavLink";
 import PageTitle from "@/components/common/PageTitle";
 import Col from "@/components/ui/Col";
 import Divider from "@/components/ui/Divider";
 import Grid from "@/components/ui/Grid";
-import Panel from "@/components/ui/Panel";
 
 import { getCategories } from "../../../category/actions/actions";
 import { getCourseBySlug } from "../../actions/actions";
@@ -18,27 +18,30 @@ import SectionList from "../../components/SectionList";
  * @returns
  */
 async function Page({ params }: { params: { slug: string } }) {
-	const response = await getCategories();
-	const { data } = await getCourseBySlug(params.slug);
+	const response = await getCategories(); // get categories
+	const { data } = await getCourseBySlug(params.slug); // course by name
+	const { data: sections } = await getSections(data?.id); // section
 
-	const { data: sections } = await getSections(params.slug);
 	return (
 		<>
 			<Grid size={12}>
-				<Col start={3} span={8}>
-					<Grid size={12} gap={6}>
+				<Col start={4} span={6}>
+					<PageTitle
+						headingProps={{
+							className: "text-rose-600",
+						}}
+						title="Edit course"
+						subtitle="You can update course...">
+						<NavLink variant="text" size="sm" href="/admin/courses">
+							<ArrowLeftSquareIcon size={16} className="mr-2" /> Back
+						</NavLink>
+					</PageTitle>
+					<Divider className="mb-7" />
+					<CourseForm categories={response?.data!} course={data!} />
+					<Grid size={12} className="mt-6">
 						<Col span={8}>
-							<PageTitle title="Edit course" subtitle="Welcome to add course" />
-							<CourseForm course={data!} categories={response.data!} />
-							<Divider className="mt-7 border-slate-200" />
+							<Divider />
 							<SectionList slug={params.slug} sections={sections!} />
-						</Col>
-						<Col span={4}>
-							<Panel>
-								<h2>{upperFirst("Publish")}</h2>
-								<Divider />
-								<div>Status: pending</div>
-							</Panel>
 						</Col>
 					</Grid>
 				</Col>

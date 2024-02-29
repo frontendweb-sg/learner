@@ -51,7 +51,8 @@ export async function addSection(prevState: any, formData: FormData) {
 			method: "POST",
 			body: JSON.stringify(data),
 		});
-		// revalidatePath(`${API_REVALIDATE_PATH}/${data.course}`);
+
+		revalidateTag("section");
 		return { success: true, data: response.data };
 	} catch (error) {
 		if (error instanceof ZodError) {

@@ -12,7 +12,7 @@ const config: Config = {
 				light: "#f8fafc",
 			},
 			fontFamily: {
-				lato: ["Lato", "sans-serif"],
+				lato: ["var(--font-lato)"],
 				roboto: ["Roboto", "sans-serif"],
 			},
 			backgroundImage: {

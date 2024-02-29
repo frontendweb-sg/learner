@@ -24,8 +24,9 @@ import { addSection, updateSection } from "../actions/section-action";
 export type SectionFormProps = {
 	section?: ISectionDoc;
 	courseSlug: string;
+	courseId?: string;
 };
-function SectionForm({ courseSlug, section }: SectionFormProps) {
+function SectionForm({ courseSlug, courseId, section }: SectionFormProps) {
 	const router = useRouter();
 	const [state, formAction] = useFormState(
 		section?.id ? updateSection : addSection,
@@ -45,6 +46,13 @@ function SectionForm({ courseSlug, section }: SectionFormProps) {
 			<Input
 				error={state?.errors?.["course"]}
 				name="course"
+				readOnly
+				hidden
+				defaultValue={courseId}
+				placeholder="Course title"
+			/>
+			<Input
+				error={state?.errors?.["course"]}
 				readOnly
 				defaultValue={courseSlug}
 				placeholder="Course title"

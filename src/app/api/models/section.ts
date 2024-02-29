@@ -1,4 +1,5 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
+
 import { COURSE_TABLE } from "./course";
 
 export const COURSE_SECTION_TABLE = "course-section";
@@ -12,7 +13,7 @@ export interface ISection {
 export interface ISectionDoc extends Document<ISection>, ISection {}
 const schema = new Schema(
 	{
-		course: { type: String, ref: COURSE_TABLE },
+		course: { type: Schema.Types.ObjectId, ref: COURSE_TABLE },
 		title: { type: String, required: true, trim: true },
 		slug: { type: String, required: true },
 		description: { type: String },

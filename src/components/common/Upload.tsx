@@ -18,6 +18,7 @@ export default function Upload({
 	accept = "image/png, image/jpeg",
 	multiple,
 	handleFile,
+	className,
 	...rest
 }: UploadProps) {
 	const inpRef = useRef<HTMLInputElement>(null);
@@ -41,12 +42,12 @@ export default function Upload({
 		inpRef.current?.form?.reset();
 	};
 
-	const classes = "overflow-hidden rounded-md relative w-full h-48";
+	const classes = "overflow-hidden rounded-md relative w-full ";
 
 	return (
 		<div>
 			{files && !multiple && (
-				<Box as="div" className={classNames(classes)}>
+				<Box as="div" className={classNames(classes, className)}>
 					<Button
 						icon
 						size="xs"
@@ -75,6 +76,7 @@ export default function Upload({
 					className={classNames(
 						classes,
 						"flex items-center justify-center text-xs space-x-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100",
+						className,
 					)}>
 					<ImageIcon size={16} /> <span>Upload course hero</span>
 					<input

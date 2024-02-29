@@ -1,8 +1,10 @@
 import classNames from "classnames";
+import React from "react";
 
 export type PageTitleProps = React.HtmlHTMLAttributes<HTMLDivElement> & {
 	title?: string;
 	subtitle?: string;
+	headingProps?: React.HTMLAttributes<HTMLHeadingElement>;
 };
 
 /**
@@ -10,16 +12,30 @@ export type PageTitleProps = React.HtmlHTMLAttributes<HTMLDivElement> & {
  * @param param0
  * @returns
  */
-function PageTitle({ title, subtitle, className, children }: PageTitleProps) {
+
+function PageTitle({
+	title,
+	subtitle,
+	className,
+	children,
+	headingProps,
+	...rest
+}: PageTitleProps) {
 	const classes = classNames(
 		"flex mb-4 pb-4 items-center justify-between",
 		className,
 	);
+
+	console.log(headingProps);
 	return (
-		<div className={classes}>
-			<h1 className="dark:text-navy-50  text-lg font-medium text-slate-700">
+		<div className={classes} {...rest}>
+			<h1
+				className={classNames(
+					"dark:text-navy-50 font-roboto text-lg font-medium",
+					headingProps?.className,
+				)}>
 				{title}
-				<small className="block text-xs font-normal text-gray-500">
+				<small className="block text-xs font-lato font-light text-gray-400">
 					{subtitle}
 				</small>
 			</h1>

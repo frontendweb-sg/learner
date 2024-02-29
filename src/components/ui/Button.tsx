@@ -1,3 +1,6 @@
+import classNames from "classnames";
+import { LoaderIcon } from "lucide-react";
+
 import {
 	ColorType,
 	ColorVariant,
@@ -5,8 +8,6 @@ import {
 	Variant,
 	VariantType,
 } from "@/utils/types";
-import classNames from "classnames";
-import { LoaderIcon } from "lucide-react";
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 	size?: SizeType;
@@ -23,7 +24,7 @@ export const ButtonSizes = {
 	md: "px-5 py-1.5 min-w-24",
 	lg: "px-6 py-1.5",
 	xl: "px-7 py-1.5",
-	full: "w-full py-1.5`",
+	full: "w-full py-1.5 px-7 py-1.5`",
 };
 
 export const ButtonIconSize = {
@@ -36,7 +37,7 @@ export const ButtonIconSize = {
 };
 
 const FilledColors: ColorVariant = {
-	primary: "bg-rose-600 text-white",
+	primary: "bg-rose-600 text-white hover:bg-rose-700 ",
 	secondary: "bg-slate-600 text-white",
 	info: "bg-sky-600 text-white",
 	warning: "bg-yellow-600",
@@ -47,7 +48,7 @@ const FilledColors: ColorVariant = {
 
 const OutlinedColors: ColorVariant = {
 	primary:
-		"border border-rose-600 text-rose-600 hover:bg-rose-600 hover:text-white",
+		"border border-rose-600 text-rose-600 hover:bg-rose-700 hover:text-white",
 	secondary:
 		"border border-slate-600 text-slate-600 hover:bg-slate-600 hover:text-white",
 	info: "border border-sky-600 text-sky-600",
@@ -76,7 +77,7 @@ function Button({
 	type = "button",
 	size = "md",
 	color = "primary",
-	variant = "outlined",
+	variant = "filled",
 	children,
 	pills,
 	loading,
@@ -87,7 +88,7 @@ function Button({
 	const classes = classNames(
 		"text-center text-sm font-medium flex justify-center space-x-2 items-center",
 		pills || icon ? "rounded-full" : "rounded-md",
-		variant !== "text" && "shadow-md ",
+		variant !== "text" && "shadow-sm",
 		icon ? ButtonIconSize[size] : ButtonSizes[size],
 		colors[color as keyof typeof colors],
 	);

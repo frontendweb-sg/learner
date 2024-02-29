@@ -1,5 +1,6 @@
 import { connectDb } from "@/lib/db";
 import { slug } from "@/utils";
+import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 import { BadRequestError } from "../errors";
@@ -17,19 +18,23 @@ export async function POST(req: NextRequest) {
 
 	try {
 		const body = (await req.json()) as ISection;
-
 		body.slug = slug(body.title);
 
-		const slugExist = await CourseSection.findOne({ slug: body.slug });
+		const courseSections = await CourseSection.find({
+			course: body.course,
+		});
 
-		if (slugExist) throw new BadRequestError("Course section already existed!");
+		const isSection = courseSections.find(
+			(section) => section.slug === body.slug,
+		);
+
+		if (isSection) throw new BadRequestError("Course section already existed!");
 
 		const section = new CourseSection(body);
 		const result = await section.save();
 
 		return NextResponse.json(result, { status: 201 });
 	} catch (error) {
-		console.log(error);
 		return errorHandler(error as CustomError);
 	}
 }
@@ -43,15 +48,12 @@ export async function GET(req: NextRequest) {
 	await connectDb();
 	try {
 		const query = req.nextUrl.searchParams;
-		const slug = query.get("q")?.toLowerCase();
-
-		const sections = (await CourseSection.find(
-			!!slug
-				? {
-						course: slug,
-					}
-				: {},
-		).sort({ slug: 1 })) as ISectionDoc[];
+		const courseId = query.get("q")?.toLowerCase();
+		const sections = (await CourseSection.find({})
+			.where("course")
+			.equals(courseId)
+			.sort({ slug: 1 })
+			.populate("course", "title slug id")) as ISectionDoc[];
 
 		return NextResponse.json(sections, { status: 200 });
 	} catch (error) {

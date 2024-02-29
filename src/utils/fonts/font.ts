@@ -1,10 +1,11 @@
-import { Roboto, Lato, Poppins } from "next/font/google";
+import { Lato, Poppins, Roboto } from "next/font/google";
 
 export const roboto = Roboto({
 	weight: ["300", "400", "500", "700", "900"],
 	display: "swap",
 	subsets: ["latin"],
 	preload: true,
+	variable: "--font-roboto",
 });
 
 export const lato = Lato({
@@ -12,6 +13,7 @@ export const lato = Lato({
 	display: "swap",
 	subsets: ["latin"],
 	preload: true,
+	variable: "--font-lato",
 });
 
 export const poppins = Poppins({

@@ -10,7 +10,6 @@ import Accordion, {
 	AccordionBody,
 	AccordionTitle,
 } from "@/components/ui/Accordion";
-import Button from "@/components/ui/Button";
 
 import { AppContent } from "@/utils/constants/content";
 
@@ -18,12 +17,12 @@ import { deleteSection } from "../actions/section-action";
 
 type SectionListProps = {
 	sections: ISectionDoc[];
-	slug?: string;
+	slug: string;
 };
-export default function Sections({ sections, slug }: SectionListProps) {
+export default function SectionList({ sections = [], slug }: SectionListProps) {
 	return (
 		<>
-			<PageTitle title="Sections" subtitle="Add section">
+			<PageTitle title="Sections" subtitle="Add course section...">
 				<NavLink
 					size="sm"
 					variant="text"
@@ -34,7 +33,7 @@ export default function Sections({ sections, slug }: SectionListProps) {
 			</PageTitle>
 
 			<div className="mt-5">
-				{sections.map((section: ISectionDoc) => (
+				{sections?.map((section: ISectionDoc) => (
 					<Accordion key={section.id}>
 						<AccordionTitle title={section.title}>
 							<NavLink

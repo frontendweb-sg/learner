@@ -17,7 +17,6 @@ export async function POST(req: NextRequest) {
 	try {
 		const body = (await req.json()) as ILession;
 		body.slug = slug(body.title);
-		console.log(body);
 
 		const lessionExist = await Lession.findOne({ slug: body.slug });
 		if (lessionExist) throw new BadRequestError("Lession already existed");
