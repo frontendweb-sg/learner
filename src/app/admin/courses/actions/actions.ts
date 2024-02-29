@@ -44,7 +44,7 @@ const schema = z.object({
 	excerpt: z.string(),
 	description: z.string(),
 	offer: z.coerce.number().default(0),
-	videoUrl: z.string().default(""),
+	// videoUrl: z.string().default(""),
 	hero: z.string().default(""),
 	language: z.string().default(""),
 	level: z.string(),
@@ -93,9 +93,11 @@ export async function updateCourse(prevState: any, formData: FormData) {
 			method: "PUT",
 			body: JSON.stringify(data),
 		});
+		console.log("res", response);
 		revalidatePath("/admin/courses/" + id);
 		return { success: true, data: response.data };
 	} catch (error) {
+		console.log("eror", error);
 		if (error instanceof ZodError) {
 			return { success: false, errors: zodValidationError(error) };
 		}
