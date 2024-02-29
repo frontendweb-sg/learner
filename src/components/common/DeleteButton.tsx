@@ -12,7 +12,7 @@ import SubmitButton from "./SubmitButton";
 
 type DeleteButtonProps<T> = ButtonProps & {
 	id: string;
-	formAction: (formData: FormData) => Promise<ActionError<T>>;
+	formAction: (formData: FormData) => Promise<any>;
 	formProps?: React.FormHTMLAttributes<HTMLFormElement>;
 	label?: string;
 };

@@ -38,7 +38,7 @@ function Select<T>({
 	return (
 		<div>
 			{label && (
-				<span className="block text-xs font-medium text-slate-700 mb-2">
+				<span className="block text-xs font-medium text-slate-500 mb-2">
 					{label}
 				</span>
 			)}

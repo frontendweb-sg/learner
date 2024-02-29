@@ -49,11 +49,10 @@ export async function GET(req: NextRequest) {
 	try {
 		const query = req.nextUrl.searchParams;
 		const courseId = query.get("q")?.toLowerCase();
-		const sections = (await CourseSection.find({})
-			.where("course")
-			.equals(courseId)
-			.sort({ slug: 1 })
-			.populate("course", "title slug id")) as ISectionDoc[];
+
+		const sections = (await CourseSection.find(
+			courseId ? { course: courseId } : {},
+		).sort({ slug: 1 })) as ISectionDoc[];
 
 		return NextResponse.json(sections, { status: 200 });
 	} catch (error) {

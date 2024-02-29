@@ -32,6 +32,7 @@ export async function getSections(queryParam?: string) {
 		const response = await http<ISectionDoc[]>(`${API_URL}${query}`, {
 			next: { revalidate: 0 },
 		});
+
 		return response;
 	} catch (error) {
 		return { data: null, error: error as Error };

@@ -30,7 +30,7 @@ export type ColorType = keyof ColorVariant;
 export type VariantType = keyof Variant;
 
 export interface ActionError<T> {
-	success: boolean;
+	status: ActionStatus;
 	data?: T | null;
 	error?: Error;
 	errors?: { [key: string]: string };
