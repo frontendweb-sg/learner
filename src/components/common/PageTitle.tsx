@@ -26,7 +26,6 @@ function PageTitle({
 		className,
 	);
 
-	console.log(headingProps);
 	return (
 		<div className={classes} {...rest}>
 			<h1

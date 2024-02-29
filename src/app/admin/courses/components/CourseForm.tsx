@@ -12,7 +12,6 @@ import SubmitButton from "@/components/common/SubmitButton";
 import Switch from "@/components/common/Switch";
 import Upload from "@/components/common/Upload";
 import Col from "@/components/ui/Col";
-import Divider from "@/components/ui/Divider";
 import Form from "@/components/ui/Form";
 import Grid from "@/components/ui/Grid";
 import Input from "@/components/ui/Input";
@@ -28,9 +27,14 @@ import { addCourse, updateCourse } from "../actions/actions";
 
 export type CourseFormProps = {
 	course?: ICourseDoc;
-	categories?: ICategoryDoc[];
+	categories: ICategoryDoc[];
 };
 
+/**
+ * Courses form
+ * @param param0
+ * @returns
+ */
 function CourseForm({ course, categories }: CourseFormProps) {
 	const router = useRouter();
 	const [state, formAction] = useFormState(
@@ -40,16 +44,24 @@ function CourseForm({ course, categories }: CourseFormProps) {
 
 	useEffect(() => {
 		if (state?.success) {
-			toast.success("Course added!");
+			toast.success(
+				state.status === "update"
+					? "Course updated successfully!"
+					: "Course added successfully!",
+			);
 			router.replace("/admin/courses");
 		}
-	}, [state, router]);
+	}, [state, course, router]);
 
 	return (
 		<Form action={formAction}>
 			<Grid size={12} gap={6}>
 				<Col span={8} className="space-y-4">
 					<Grid size={2} className="space-x-4">
+						{course?.id && (
+							<input hidden name="id" defaultValue={course?.slug} />
+						)}
+
 						{categories?.length! >= 0 && (
 							<Select
 								label="Course category"
@@ -125,18 +137,8 @@ function CourseForm({ course, categories }: CourseFormProps) {
 						</SubmitButton>
 					</Panel>
 					<Panel>
-						<Panel.Title headingLabel="Upload image" />
+						<Panel.Title headingLabel="Upload hero" />
 						<Upload name="imageUrl" className="h-28" />
-					</Panel>
-
-					<Panel>
-						<Panel.Title headingLabel="Upload video" />
-						<Upload
-							className="h-32"
-							name="videoUrl"
-							as="video"
-							accept="video/*"
-						/>
 					</Panel>
 				</Col>
 			</Grid>

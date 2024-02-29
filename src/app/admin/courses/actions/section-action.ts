@@ -5,12 +5,18 @@ import { ZodError, z } from "zod";
 
 import { ISectionDoc } from "@/app/api/models/section";
 
-import { http } from "@/components/network/http";
+import { ResponseResult, http } from "@/components/network/http";
 
 import { zodValidationError } from "@/utils/action-error";
 
 const API_URL = "/section";
 const API_REVALIDATE_PATH = "/admin/courses";
+
+const schema = z.object({
+	course: z.string().min(1, { message: "Course is required!" }),
+	title: z.string().min(3, { message: "Section name is required!" }),
+	description: z.string(),
+});
 
 /**
  * Get all sections
@@ -31,18 +37,17 @@ export async function getSections(queryParam?: string) {
 		return { data: null, error: error as Error };
 	}
 }
-const schema = z.object({
-	course: z.string().min(1, { message: "Course is required!" }),
-	title: z.string().min(3, { message: "Section name is required!" }),
-	description: z.string(),
-});
+
 /**
  * Add section
  * @param prevState
  * @param formData
  * @returns
  */
-export async function addSection(prevState: any, formData: FormData) {
+export async function addSection(
+	prevState: any,
+	formData: FormData,
+): Promise<ResponseResult<ISectionDoc>> {
 	const body = Object.fromEntries(formData.entries());
 
 	try {
@@ -53,22 +58,33 @@ export async function addSection(prevState: any, formData: FormData) {
 		});
 
 		revalidateTag("section");
-		return { success: true, data: response.data };
+		return { data: response.data, status: "add" };
 	} catch (error) {
 		if (error instanceof ZodError) {
-			return { success: false, errors: zodValidationError(error) };
+			return {
+				errors: zodValidationError(error),
+				data: null,
+				status: "add",
+			};
 		}
-		return { success: true, error: error };
+		return {
+			error: error as Error,
+			data: null,
+			status: "error",
+		};
 	}
 }
 
 /**
- * Update section
+ * Delete section
  * @param prevState
  * @param formData
  * @returns
  */
-export async function updateSection(prevState: any, formData: FormData) {
+export async function updateSection(
+	prevState: any,
+	formData: FormData,
+): Promise<ResponseResult<ISectionDoc>> {
 	const { id, ...rest } = Object.fromEntries(formData.entries());
 	try {
 		const data = schema.parse(rest) as ISectionDoc;
@@ -76,13 +92,13 @@ export async function updateSection(prevState: any, formData: FormData) {
 			method: "PUT",
 			body: JSON.stringify(data),
 		});
-		revalidatePath(`${API_REVALIDATE_PATH}/${id}`);
-		return { success: true, data: response.data };
+		revalidateTag("section");
+		return { ...response, status: "update" };
 	} catch (error) {
 		if (error instanceof ZodError) {
-			return { success: false, errors: zodValidationError(error) };
+			return { data: null, status: "error", errors: zodValidationError(error) };
 		}
-		return { success: true, error: error };
+		return { data: null, error: error as Error, status: "error" };
 	}
 }
 
@@ -91,25 +107,27 @@ export async function updateSection(prevState: any, formData: FormData) {
  * @param formData
  * @returns
  */
-export async function deleteSection(formData: FormData) {
+export async function deleteSection(
+	formData: FormData,
+): Promise<ResponseResult<ISectionDoc>> {
 	try {
 		const id = formData.get("id");
 		const response = await http<ISectionDoc>(`${API_URL}/${id}`, {
 			method: "DELETE",
 		});
 		revalidatePath(`${API_REVALIDATE_PATH}/${id}`);
-		return { success: true, data: response.data };
+		return { ...response, status: "delete" };
 	} catch (error) {
 		if (error instanceof ZodError) {
-			return { success: false, errors: zodValidationError(error) };
+			return { data: null, status: "error", errors: zodValidationError(error) };
 		}
-		return { success: false, error: error as Error };
+		return { error: error as Error, status: "error", data: null };
 	}
 }
 
 export async function getSectionById(id: string) {
 	try {
-		const response = await http(`${API_URL}/${id}`);
+		const response = await http<ISectionDoc>(`${API_URL}/${id}`);
 		return response;
 	} catch (error) {
 		return {

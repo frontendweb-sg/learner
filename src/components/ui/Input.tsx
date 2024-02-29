@@ -59,7 +59,7 @@ function Input({
 				/>
 				{error && (
 					<span className="absolute inset-y-0 right-3 flex items-center pl-2">
-						<XCircle />
+						<XCircle size={14} />
 					</span>
 				)}
 				{!error && iconEnd && <EndIcon className="ml-2" />}

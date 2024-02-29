@@ -1,11 +1,14 @@
 import classNames from "classnames";
 import { ReactNode } from "react";
 
-type PanelProps = React.HtmlHTMLAttributes<HTMLDivElement> & {};
+export type PanelProps = React.HtmlHTMLAttributes<HTMLDivElement> & {};
 function Panel({ children, className, ...rest }: PanelProps) {
 	return (
 		<div
-			className={classNames("rounded-md bg-white p-4 shadow-sm", className)}
+			className={classNames(
+				"rounded-md relative bg-white p-4 shadow-sm",
+				className,
+			)}
 			{...rest}>
 			{children}
 		</div>

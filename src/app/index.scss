@@ -5,3 +5,9 @@
 @tailwind utilities;
 
 @import "./styles/apply";
+
+@layer base {
+	body {
+		@apply text-xs text-slate-600;
+	}
+}

@@ -20,6 +20,7 @@ export default async function Page({
 	params: { slug: string; sectionId: string };
 }) {
 	const { data } = await getSectionById(params.sectionId);
+
 	return (
 		<Grid size={12}>
 			<Col start={3} span={8}>
@@ -31,7 +32,8 @@ export default async function Page({
 						/>
 						<SectionForm
 							courseSlug={params.slug}
-							section={data! as ISectionDoc}
+							courseId={data?.course!}
+							section={data!}
 						/>
 					</Col>
 					<Col span={4}>

@@ -1,3 +1,6 @@
+import { ArrowLeftSquareIcon } from "lucide-react";
+
+import NavLink from "@/components/common/NavLink";
 import PageTitle from "@/components/common/PageTitle";
 import Upload from "@/components/common/Upload";
 import Col from "@/components/ui/Col";
@@ -16,31 +19,22 @@ async function Page() {
 	const { data } = await getCategories();
 
 	return (
-		<>
-			<Grid size={12}>
-				<Col start={3} span={8}>
-					<PageTitle title="Add course" subtitle="Welcome to add course" />
-					<Grid size={12} gap={6}>
-						<Col span={8}>
-							<CourseForm categories={data!} />
-						</Col>
-						<Col span={4} className="space-y-4">
-							<Panel>
-								<h2>Publish</h2>
-								<Divider />
-								<Upload name="imageUrl" />
-							</Panel>
-
-							<Panel>
-								<h2>Publish</h2>
-								<Divider />
-								<Upload name="videoUrl" as="video" accept="video/*" />
-							</Panel>
-						</Col>
-					</Grid>
-				</Col>
-			</Grid>
-		</>
+		<Grid size={12}>
+			<Col start={4} span={6}>
+				<PageTitle
+					headingProps={{
+						className: "text-rose-600",
+					}}
+					title="Add course"
+					subtitle="You can create course...">
+					<NavLink variant="text" size="sm" href="/admin/courses">
+						<ArrowLeftSquareIcon size={16} className="mr-2" /> Back
+					</NavLink>
+				</PageTitle>
+				<Divider className="mb-7" />
+				<CourseForm categories={data!} />
+			</Col>
+		</Grid>
 	);
 }
 export default Page;

@@ -1,9 +1,11 @@
 import { connectDb } from "@/lib/db";
+import { slug } from "@/utils";
 import { NextRequest, NextResponse } from "next/server";
-import { errorHandler } from "../../middleware/error-handler";
-import { CustomError } from "../../errors/custom-error";
-import { CourseSection, ISection, ISectionDoc } from "../../models/section";
+
 import { NotFoundError } from "../../errors";
+import { CustomError } from "../../errors/custom-error";
+import { errorHandler } from "../../middleware/error-handler";
+import { CourseSection, ISection, ISectionDoc } from "../../models/section";
 
 interface Params {
 	params: { sectionId: string };
@@ -18,8 +20,8 @@ interface Params {
 export async function GET(req: NextRequest, { params }: Params) {
 	await connectDb();
 	try {
-		const section = (await CourseSection.findById(
-			params.sectionId,
+		const section = (await CourseSection.findById(params.sectionId).populate(
+			"course",
 		)) as ISectionDoc;
 
 		if (!section)
@@ -41,6 +43,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
 	await connectDb();
 	try {
 		const body = (await req.json()) as ISection;
+		body.slug = slug(body.title);
 
 		const section = (await CourseSection.findById(
 			params.sectionId,
@@ -48,17 +51,21 @@ export async function PUT(req: NextRequest, { params }: Params) {
 
 		if (!section)
 			throw new NotFoundError(`Invalid ${params.sectionId}, please check`);
-
 		const result = await CourseSection.findByIdAndUpdate(
 			params.sectionId,
 			{
-				$set: body,
+				$set: {
+					title: body.title,
+					slug: body.slug,
+					description: body.description,
+				},
 			},
 			{ new: true },
 		);
 
 		return NextResponse.json(result, { status: 200 });
 	} catch (error) {
+		console.log("erro", error);
 		return errorHandler(error as CustomError);
 	}
 }

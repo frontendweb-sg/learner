@@ -24,7 +24,7 @@ import { addSection, updateSection } from "../actions/section-action";
 export type SectionFormProps = {
 	section?: ISectionDoc;
 	courseSlug: string;
-	courseId?: string;
+	courseId: string;
 };
 function SectionForm({ courseSlug, courseId, section }: SectionFormProps) {
 	const router = useRouter();
@@ -34,8 +34,10 @@ function SectionForm({ courseSlug, courseId, section }: SectionFormProps) {
 	);
 
 	useEffect(() => {
-		if (state?.success) {
-			toast.success(section?.id ? "Section updated" : "Section added");
+		if (state?.status) {
+			toast.success(
+				AppContent.message[state.status! as keyof typeof AppContent.message],
+			);
 			router.back();
 		}
 	}, [state, section, router]);
@@ -43,8 +45,7 @@ function SectionForm({ courseSlug, courseId, section }: SectionFormProps) {
 	return (
 		<Form action={formAction}>
 			{section?.id && <input hidden name="id" defaultValue={section?.id} />}
-			<Input
-				error={state?.errors?.["course"]}
+			<input
 				name="course"
 				readOnly
 				hidden

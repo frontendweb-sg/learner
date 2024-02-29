@@ -6,6 +6,7 @@ import Modal from "@/components/ui/Modal";
 type Params = {
 	slug: string;
 };
+
 async function Page({ params }: { params: Params }) {
 	const { data } = await getCourseBySlug(params.slug);
 	return (

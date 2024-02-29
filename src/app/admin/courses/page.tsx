@@ -5,9 +5,12 @@ import Link from "next/link";
 
 import { ICourse, ICourseDoc } from "@/app/api/models/course";
 
+import Course from "@/components/admin/courses/Course";
 import NavLink from "@/components/common/NavLink";
 import PageTitle from "@/components/common/PageTitle";
+import Col from "@/components/ui/Col";
 import DataTable, { ColumnProps } from "@/components/ui/DataTable";
+import Grid from "@/components/ui/Grid";
 import Panel from "@/components/ui/Panel";
 
 import { AppContent } from "@/utils/constants/content";
@@ -76,13 +79,22 @@ async function Page({
 					<PlusIcon size={16} className="mr-1.5" /> {AppContent.add}
 				</NavLink>
 			</PageTitle>
-			<Panel>
+
+			<Grid size={6} gap={4}>
+				{data?.map((course: ICourseDoc) => (
+					<Col key={course.id}>
+						<Course course={course} />
+					</Col>
+				))}
+			</Grid>
+
+			{/* <Panel>
 				<DataTable
 					rows={data!}
 					columns={columns}
 					renderAction={(row) => <CourseAction row={row!} />}
 				/>
-			</Panel>
+			</Panel> */}
 		</>
 	);
 }

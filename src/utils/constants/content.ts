@@ -14,4 +14,11 @@ export const AppContent = {
 	active: "Active",
 	inactive: "Inactive",
 	edit: "Edit",
+	message: {
+		add: "Item added successfully!",
+		update: "Item updated successfully!",
+		delete: "Item deleted successfully",
+		active: "Item activated successfully",
+		inactive: "Item inactive successfully",
+	},
 };

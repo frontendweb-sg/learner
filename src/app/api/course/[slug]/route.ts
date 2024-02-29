@@ -54,7 +54,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
 				{ new: true },
 			);
 		} else {
-			const { hero, videoUrl, ...rest } = (await req.json()) as ICourseDoc;
+			const { hero, ...rest } = (await req.json()) as ICourseDoc;
 			rest.slug = slug(rest.title);
 			result = await Course.findOneAndUpdate(
 				{

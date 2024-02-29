@@ -1,6 +1,11 @@
+import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 
+import NavLink from "@/components/common/NavLink";
 import PageTitle from "@/components/common/PageTitle";
+import Col from "@/components/ui/Col";
+import Divider from "@/components/ui/Divider";
+import Grid from "@/components/ui/Grid";
 
 import { AppContent } from "@/utils/constants/content";
 
@@ -28,24 +33,31 @@ async function Page({
 	params: { slug: string };
 	searchParams: any;
 }) {
-	const { data, error } = await getCourseBySlug(params.slug);
-
+	const { data } = await getCourseBySlug(params.slug);
 	const { data: sections } = await getSections(data?.id);
+
 	return (
-		<>
-			<PageTitle title={data?.title} subtitle="Welcome to courses">
-				<Link href={decodeURI(`/admin/courses/${data?.slug}/edit`)}>
-					{AppContent.editCourse}
-				</Link>
-			</PageTitle>
-
-			<div>
-				<h1>{data?.title}</h1>
-				<p>{data?.description}</p>
-			</div>
-
-			<SectionList slug={data?.slug!} sections={sections! ?? []} />
-		</>
+		<Grid size={12}>
+			<Col span={6} start={4}>
+				<PageTitle
+					title={data?.title}
+					subtitle={`Welcome to ${data?.title.toLowerCase()}`}>
+					<NavLink
+						variant="text"
+						size="xs"
+						className="text-sm py-1"
+						href={decodeURI(`/admin/courses/${data?.slug}/edit`)}>
+						<PlusIcon size={16} className="mr-2" /> {AppContent.edit}
+					</NavLink>
+				</PageTitle>
+				<Divider />
+				<div className="space-y-4 mb-5">
+					<p className="text-sm mb-4 mt-4">{data?.excerpt}</p>
+					<p className="text-sm">{data?.description}</p>
+				</div>
+				<SectionList slug={data?.slug!} sections={sections! ?? []} />
+			</Col>
+		</Grid>
 	);
 }
 

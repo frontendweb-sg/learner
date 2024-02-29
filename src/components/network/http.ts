@@ -1,6 +1,8 @@
 import { RequestInit } from "next/dist/server/web/spec-extension/request";
 import { z } from "zod";
 
+import { ActionStatus } from "@/utils/types";
+
 /**
  * Gloabl http handler
  * @param segment
@@ -10,7 +12,10 @@ import { z } from "zod";
 
 export interface ResponseResult<T> {
 	data: T | null;
+	success?: boolean;
 	error?: Error | null;
+	status?: ActionStatus;
+	errors?: { [key: string]: string };
 }
 
 export async function http<T>(

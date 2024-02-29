@@ -44,6 +44,7 @@ const FilledColors: ColorVariant = {
 	success: "bg-green-600",
 	danger: "bg-red-600",
 	gray: "bg-gray-600",
+	default: "",
 };
 
 const OutlinedColors: ColorVariant = {
@@ -56,6 +57,7 @@ const OutlinedColors: ColorVariant = {
 	success: "border border-green-600 text-green-600",
 	danger: "border border-red-600 text-red-600",
 	gray: "border border-gray-600 text-gray-600",
+	default: "",
 };
 const TextColors: ColorVariant = {
 	primary: "text-rose-600 hover:bg-rose-600/10 border border-rose-600/0",
@@ -65,6 +67,7 @@ const TextColors: ColorVariant = {
 	success: "text-green-600 hover:border-green-600 border border-green-600/0",
 	danger: "text-red-600 hover:border-red-600 border border-red-600/0",
 	gray: "text-gray-600 hover:border-gray-600 border border-gray-600/0",
+	default: "text-white hover:bg-white/30 hover:text-rose-600",
 };
 
 export const Variants: Variant = {

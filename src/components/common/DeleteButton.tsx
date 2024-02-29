@@ -1,11 +1,14 @@
 "use client";
-import SubmitButton from "./SubmitButton";
+
+import { useAppState } from "@/context/AppContext";
 import { TrashIcon } from "lucide-react";
 import { useTransition } from "react";
 import { toast } from "react-toastify";
+
 import { ActionError } from "@/utils/types";
+
 import { ButtonProps } from "../ui/Button";
-import { useAppState } from "@/context/AppContext";
+import SubmitButton from "./SubmitButton";
 
 type DeleteButtonProps<T> = ButtonProps & {
 	id: string;
