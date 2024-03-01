@@ -43,8 +43,6 @@ const schema = z.object({
  */
 export async function addLession(lession: any) {
 	try {
-		// schema.parse(body);
-
 		const response = await http(API_URL, {
 			method: "POST",
 			body: JSON.stringify(lession),

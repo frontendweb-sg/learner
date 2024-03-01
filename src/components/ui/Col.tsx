@@ -32,7 +32,6 @@ const colClasess = {
 		12: "col-start-12",
 		auto: "col-start-auto",
 	},
-
 	end: {
 		1: "col-end-1",
 		2: "col-end-2",

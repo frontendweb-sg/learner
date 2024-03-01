@@ -69,10 +69,6 @@ export default function LessionForm({
 	const sectionId = searchParam.get("section");
 
 	const [_pending, startTransition] = useTransition();
-	// const [state, formAction] = useFormState(
-	// 	lession?.id ? updateLession : addLession,
-	// 	null,
-	// );
 
 	const { values, errors, handleChange, setFieldValue, handleSubmit } =
 		useFormik({
