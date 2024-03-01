@@ -79,7 +79,10 @@ export async function addCourse(
  * @param formData
  * @returns
  */
-export async function updateCourse(prevState: any, formData: FormData) {
+export async function updateCourse(
+	prevState: any,
+	formData: FormData,
+): Promise<ResponseResult<ICourseDoc>> {
 	const { id, ...rest } = Object.fromEntries(formData.entries());
 	try {
 		const data = schema.parse(rest);
@@ -93,12 +96,12 @@ export async function updateCourse(prevState: any, formData: FormData) {
 	} catch (error) {
 		if (error instanceof ZodError) {
 			return {
-				success: false,
+				data: null,
 				errors: zodValidationError(error),
 				status: "error",
 			};
 		}
-		return { data: null, error: error, status: "error" };
+		return { data: null, error: error as Error, status: "error" };
 	}
 }
 

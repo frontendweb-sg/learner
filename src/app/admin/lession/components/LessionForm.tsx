@@ -16,6 +16,8 @@ import { ISectionDoc } from "@/app/api/models/section";
 import NavLink from "@/components/common/NavLink";
 import PageTitle from "@/components/common/PageTitle";
 import SubmitButton from "@/components/common/SubmitButton";
+import Switch from "@/components/common/Switch";
+import Upload from "@/components/common/Upload";
 import Button from "@/components/ui/Button";
 import Col from "@/components/ui/Col";
 import Divider from "@/components/ui/Divider";
@@ -116,80 +118,82 @@ export default function LessionForm({
 
 	console.log(values, filteredSection);
 	return (
-		<Grid size={12}>
-			<Col start={4} span={6}>
-				<PageTitle title="Edit course" subtitle="Welcome to add course" />
-				<Grid size={12} gap={6}>
-					<Col span={8}>
-						<Form onSubmit={handleSubmit}>
-							<Select
-								label="Course"
-								name="course"
-								options={courses!}
-								getOptionLabel={(option) => option.title}
-								defaultValue={JSON.stringify(selectedCourse)}
-								onChange={({ target }) =>
-									setFieldValue("course", JSON.parse(target.value))
-								}
-							/>
-							{!filteredSection?.length ? (
-								<NavLink
-									size="sm"
-									variant="text"
-									className="text-sm"
-									href={
-										"/admin/courses/" + selectedCourse?.slug + "/section/add"
-									}>
-									<PlusIcon size={16} className="mr-1.5" />{" "}
-									{AppContent.addSection}
-								</NavLink>
-							) : (
-								<Select
-									label="Course section"
-									options={filteredSection!}
-									getOptionLabel={(option) => option.title}
-									name="section"
-									defaultValue={defaultSection?.slug ?? ""}
-									getValue={(option) => option.id}
-									onChange={({ target }) =>
-										setFieldValue("section", target.value)
-									}
-								/>
-							)}
-							<Input
-								label="Lession name"
-								name="title"
-								placeholder="Lession name"
-								onChange={handleChange}
-							/>
-							<Suspense fallback={<h1>Loading</h1>}>
-								<DynamicEditor
-									label="Content"
-									name="content"
-									defaultValue={lession?.content ?? "ssss"}
-									setValue={(data) => setFieldValue("content", data)}
-								/>
-							</Suspense>
-							<Divider className="mt-7 border-slate-200" />
-							<Button
-								variant="text"
-								color="secondary"
-								onClick={() => router.back()}>
-								{AppContent.cancel}
-							</Button>
-							<SubmitButton color="primary">
-								{lession?.id ? AppContent.update : AppContent.save}
-							</SubmitButton>
-						</Form>
-					</Col>
-					<Col span={4}>
-						<Panel>
-							<Divider />
-							<div>Status: pending</div>
-						</Panel>
-					</Col>
-				</Grid>
-			</Col>
-		</Grid>
+		<Form onSubmit={handleSubmit}>
+			<Grid size={12} gap={6}>
+				<Col span={8} className="space-y-4">
+					<Select
+						label="Course"
+						name="course"
+						options={courses!}
+						getOptionLabel={(option) => option.title}
+						defaultValue={JSON.stringify(selectedCourse)}
+						onChange={({ target }) =>
+							setFieldValue("course", JSON.parse(target.value))
+						}
+					/>
+					{!filteredSection?.length ? (
+						<NavLink
+							size="sm"
+							variant="text"
+							className="text-sm"
+							href={"/admin/courses/" + selectedCourse?.slug + "/section/add"}>
+							<PlusIcon size={16} className="mr-1.5" /> {AppContent.addSection}
+						</NavLink>
+					) : (
+						<Select
+							label="Course section"
+							options={filteredSection!}
+							getOptionLabel={(option) => option.title}
+							name="section"
+							defaultValue={defaultSection?.slug ?? ""}
+							getValue={(option) => option.id}
+							onChange={({ target }) => setFieldValue("section", target.value)}
+						/>
+					)}
+					<Input
+						label="Lession name"
+						name="title"
+						placeholder="Lession name"
+						onChange={handleChange}
+					/>
+					<Suspense fallback={<h1>Loading</h1>}>
+						<DynamicEditor
+							label="Content"
+							name="content"
+							defaultValue={lession?.content ?? "ssss"}
+							setValue={(data) => setFieldValue("content", data)}
+						/>
+					</Suspense>
+					<Divider className="mt-7 border-slate-200" />
+					<Button
+						variant="text"
+						color="secondary"
+						onClick={() => router.back()}>
+						{AppContent.cancel}
+					</Button>
+				</Col>
+				<Col span={4} className="space-y-4 mt-6">
+					<Panel>
+						<Panel.Title headingLabel="Publish" />
+
+						<div className="bg-slate-50/40 p-4 rounded-md mb-4">
+							<Switch prefixLabel="Status" />
+						</div>
+
+						<SubmitButton size="full" color="primary">
+							{lession?.id ? AppContent.update : AppContent.save}
+						</SubmitButton>
+					</Panel>
+					<Panel>
+						<Panel.Title headingLabel="Upload lession image" />
+						<Upload className="h-40" />
+					</Panel>
+					<Panel>
+						<Panel.Title headingLabel="Upload lession video" />
+						<Upload className="h-40" />
+					</Panel>
+				</Col>
+			</Grid>
+		</Form>
 	);
 }
