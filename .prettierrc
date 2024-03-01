@@ -26,6 +26,9 @@
 	"embeddedLanguageFormatting": "auto",
 
 	"importOrder": [
+		"^react$",
+		"^next/(.*)$",
+		"<THIRD_PARTY_MODULES>",
 		"^@/app/(.*)$",
 		"^@/components/(.*)$",
 		"^@/utils/(.*)$",

@@ -1,13 +1,16 @@
 "use client";
 
-import { useFormik } from "formik";
-import { PlusIcon } from "lucide-react";
+import { ChangeEvent, Suspense, useEffect, useMemo } from "react";
+
 import dynamic from "next/dynamic";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, Suspense, useEffect, useMemo, useState } from "react";
+
+import { useFormik } from "formik";
+import { PlusIcon } from "lucide-react";
 import { useFormState } from "react-dom";
 import { toast } from "react-toastify";
+import { z } from "zod";
 
 import { ICourseDoc } from "@/app/api/models/course";
 import { ILessionDoc } from "@/app/api/models/lession";
@@ -33,6 +36,13 @@ import { addLession, updateLession } from "../action/action";
 const DynamicEditor = dynamic(() => import("@/components/common/Editor"), {
 	ssr: false,
 });
+
+const userSchema = z.object({
+	name: z.string(),
+	email: z.string().email(),
+	age: z.number().min(0),
+});
+
 /**
  * Lession form
  * @returns
@@ -47,14 +57,21 @@ export default function LessionForm({
 	courses,
 	sections,
 }: LessionFormProps) {
+	const searchParam = useSearchParams();
+	const queryCourse = searchParam.get("course");
+	const sectionId = searchParam.get("section");
+
 	const [state, formAction] = useFormState(
 		lession?.id ? updateLession : addLession,
 		null,
 	);
+
 	const { values, handleChange, setFieldValue, handleSubmit } = useFormik({
 		initialValues: {
-			course: courses![0],
-			section: "",
+			course: queryCourse
+				? courses?.find((course) => course.slug == queryCourse)?.id
+				: courses![0].id,
+			section: sectionId ?? "",
 			title: "",
 			content: "",
 			code: "",
@@ -66,55 +83,50 @@ export default function LessionForm({
 		},
 		onSubmit(values, formikHelpers) {
 			console.log("values", values);
+			//toast.success(lession?.id ? "Lession updated" : "Lession added");
 		},
 	});
-
 	const router = useRouter();
 	const pathname = usePathname();
-	const searchParam = useSearchParams();
-
-	const courseSlug = searchParam.get("q");
-	const sectionId = searchParam.get("section");
-
-	const selectedCourse = useMemo(
-		() =>
-			courses?.find((course) =>
-				courseSlug
-					? course.slug === courseSlug
-					: course.slug === values.course.slug,
-			),
-		[values.course, courseSlug],
-	);
-
-	const filteredSection = useMemo(
-		() => sections?.filter((section) => section.course === selectedCourse?.id),
-		[sections, selectedCourse],
-	);
-
-	const defaultSection = useMemo(
-		() =>
-			sectionId
-				? filteredSection?.find((section) => section.id == sectionId)
-				: sections![0],
-		[sectionId, sections],
-	);
 
 	const handleChangeCourse = (ev: ChangeEvent<HTMLSelectElement>) => {
+		const { value } = ev.target;
+
+		setFieldValue("course", value);
+
+		const section = sections?.filter(
+			(section) => section.course == value,
+		) as ISectionDoc[];
+
+		setFieldValue("section", section[0]?.id ?? "");
+
 		if (searchParam.get("q")) {
 			const params = new URLSearchParams(searchParam.toString());
-			params.set("q", ev.target.value);
+			params.set("q", value);
 			params.delete("section");
 			router.push(`${pathname}?${params}`);
 		}
 	};
 
-	useEffect(() => {
-		if (state?.success) {
-			toast.success(lession?.id ? "Lession updated" : "Lession added");
-		}
-	}, [state, router, lession]);
+	const filteredSections = useMemo(
+		() => sections?.filter((section) => section.course === values.course),
+		[sections, values],
+	);
 
-	console.log(values, filteredSection);
+	useEffect(() => {
+		if (!values.section) {
+			const section = filteredSections?.find(
+				(section) => section.course === values.course,
+			);
+			setFieldValue("section", section?.id);
+		}
+	}, [filteredSections, values.section]);
+
+	const course = useMemo(
+		() => courses?.find((course) => course.id === values.course),
+		[values.course],
+	);
+
 	return (
 		<Form onSubmit={handleSubmit}>
 			<Grid size={12} gap={6}>
@@ -125,28 +137,27 @@ export default function LessionForm({
 						className="p-3"
 						options={courses!}
 						getOptionLabel={(option) => option.title}
-						defaultValue={JSON.stringify(selectedCourse)}
-						onChange={({ target }) =>
-							setFieldValue("course", JSON.parse(target.value))
-						}
+						onChange={handleChangeCourse}
+						defaultValue={values.course}
+						getValue={(course) => course.id}
 					/>
-					{!filteredSection?.length ? (
+					{!filteredSections?.length ? (
 						<NavLink
 							size="sm"
 							variant="text"
 							className="text-sm"
-							href={"/admin/courses/" + selectedCourse?.slug + "/section/add"}>
+							href={"/admin/courses/" + course?.slug + "/section/add"}>
 							<PlusIcon size={16} className="mr-1.5" /> {AppContent.addSection}
 						</NavLink>
 					) : (
 						<Select
+							name="section"
 							className="p-3"
 							label="Course section"
-							options={filteredSection!}
+							options={filteredSections!}
 							getOptionLabel={(option) => option.title}
-							name="section"
-							defaultValue={defaultSection?.slug ?? ""}
-							getValue={(option) => option.id}
+							defaultValue={values.section}
+							getValue={(section) => section.id}
 							onChange={({ target }) => setFieldValue("section", target.value)}
 						/>
 					)}

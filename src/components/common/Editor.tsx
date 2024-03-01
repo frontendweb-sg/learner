@@ -1,10 +1,11 @@
 "use client";
 
+import { useState } from "react";
+
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import type { Editor as IEditor } from "@ckeditor/ckeditor5-core";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import type { EventInfo } from "@ckeditor/ckeditor5-utils";
-import { useState } from "react";
 
 type EditorProps = React.InputHTMLAttributes<HTMLTextAreaElement> & {
 	label?: string;
@@ -36,9 +37,6 @@ export default function Editor({
 			<CKEditor
 				editor={ClassicEditor}
 				data={(defaultValue as string) ?? (data as string)}
-				onReady={(editor: any) => {
-					console.log("CKEditor5 React Component is ready to use!", editor);
-				}}
 				onChange={handleChange}
 			/>
 		</>

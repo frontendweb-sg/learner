@@ -24,8 +24,8 @@ export default async function Page() {
 					headingProps={{
 						className: "text-rose-600",
 					}}
-					title="Add course"
-					subtitle="You can create course...">
+					title="Add Lession"
+					subtitle="You can create lession...">
 					<NavLink variant="text" size="sm" href="/admin/courses">
 						<ArrowLeftSquareIcon size={16} className="mr-2" /> Back
 					</NavLink>

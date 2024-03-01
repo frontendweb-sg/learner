@@ -9,6 +9,7 @@ export type SelectProps<T> = React.SelectHTMLAttributes<HTMLSelectElement> & {
 	options: T[];
 	getOptionLabel?: (option: T) => string;
 	getValue?: (option: T) => string;
+	placeholder?: string;
 };
 
 type IOption = {
@@ -23,6 +24,7 @@ function Select<T>({
 	options,
 	getOptionLabel,
 	getValue,
+	placeholder,
 	className,
 	...rest
 }: SelectProps<T>) {
@@ -52,6 +54,11 @@ function Select<T>({
 						"placeholder:text-rose-600": error,
 					})}
 					{...rest}>
+					{placeholder && (
+						<option value="" id="" disabled>
+							placeholder
+						</option>
+					)}
 					{options.map((option: T) => (
 						<option
 							value={getValue ? getValue(option) : JSON.stringify(option)}
