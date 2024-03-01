@@ -1,9 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+
 import { ZodError, z } from "zod";
 
-import { ILessionDoc } from "@/app/api/models/lession";
+import { ILession, ILessionDoc } from "@/app/api/models/lession";
 
 import { ResponseResult, http } from "@/components/network/http";
 
@@ -40,15 +41,13 @@ const schema = z.object({
  * @param formData
  * @returns
  */
-export async function addLession(prevState: any, formData: FormData) {
-	const body = Object.fromEntries(formData.entries());
-
+export async function addLession(lession: any) {
 	try {
-		schema.parse(body);
+		// schema.parse(body);
 
 		const response = await http(API_URL, {
 			method: "POST",
-			body: JSON.stringify(body),
+			body: JSON.stringify(lession),
 		});
 
 		revalidatePath("/admin/lession");

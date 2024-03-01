@@ -1,6 +1,12 @@
 "use client";
 
-import { ChangeEvent, Suspense, useEffect, useMemo } from "react";
+import {
+	ChangeEvent,
+	Suspense,
+	useEffect,
+	useMemo,
+	useTransition,
+} from "react";
 
 import dynamic from "next/dynamic";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -10,10 +16,10 @@ import { useFormik } from "formik";
 import { PlusIcon } from "lucide-react";
 import { useFormState } from "react-dom";
 import { toast } from "react-toastify";
-import { z } from "zod";
+import { ZodError, z } from "zod";
 
 import { ICourseDoc } from "@/app/api/models/course";
-import { ILessionDoc } from "@/app/api/models/lession";
+import { ILession, ILessionDoc } from "@/app/api/models/lession";
 import { ISectionDoc } from "@/app/api/models/section";
 
 import CodeEditor from "@/components/common/CodeEditor";
@@ -28,6 +34,7 @@ import Input from "@/components/ui/Input";
 import Panel from "@/components/ui/Panel";
 import Select from "@/components/ui/Select";
 
+import { zodValidationError } from "@/utils/action-error";
 import { AppContent } from "@/utils/constants/content";
 import { Status } from "@/utils/enums";
 
@@ -38,9 +45,9 @@ const DynamicEditor = dynamic(() => import("@/components/common/Editor"), {
 });
 
 const userSchema = z.object({
-	name: z.string(),
-	email: z.string().email(),
-	age: z.number().min(0),
+	title: z.string().min(1, { message: "Title is required!" }),
+	course: z.string().min(1, { message: "Course is required!" }),
+	section: z.string().min(1, { message: "Course is required!" }),
 });
 
 /**
@@ -61,31 +68,46 @@ export default function LessionForm({
 	const queryCourse = searchParam.get("course");
 	const sectionId = searchParam.get("section");
 
-	const [state, formAction] = useFormState(
-		lession?.id ? updateLession : addLession,
-		null,
-	);
+	const [_pending, startTransition] = useTransition();
+	// const [state, formAction] = useFormState(
+	// 	lession?.id ? updateLession : addLession,
+	// 	null,
+	// );
 
-	const { values, handleChange, setFieldValue, handleSubmit } = useFormik({
-		initialValues: {
-			course: queryCourse
-				? courses?.find((course) => course.slug == queryCourse)?.id
-				: courses![0].id,
-			section: sectionId ?? "",
-			title: "",
-			content: "",
-			code: "",
-			hero: "",
-			video: "",
-			contents: [],
-			status: Status.Draft,
-			order: 0,
-		},
-		onSubmit(values, formikHelpers) {
-			console.log("values", values);
-			//toast.success(lession?.id ? "Lession updated" : "Lession added");
-		},
-	});
+	const { values, errors, handleChange, setFieldValue, handleSubmit } =
+		useFormik({
+			initialValues: {
+				course: queryCourse
+					? courses?.find((course) => course.slug == queryCourse)?.id
+					: courses![0].id,
+				section: sectionId ?? "",
+				title: "",
+				content: "",
+				code: "",
+				hero: "",
+				video: "",
+				contents: [],
+				status: Status.Draft,
+				order: 0,
+			},
+			onSubmit(values, { setErrors }) {
+				try {
+					const data = userSchema.parse(values);
+					startTransition(async () => {
+						if (lession?.id) {
+						} else {
+							const data = await addLession(values);
+						}
+						console.log("values", values);
+					});
+					//toast.success(lession?.id ? "Lession updated" : "Lession added");
+				} catch (error) {
+					if (error instanceof ZodError) {
+						setErrors(zodValidationError(error));
+					}
+				}
+			},
+		});
 	const router = useRouter();
 	const pathname = usePathname();
 
@@ -166,6 +188,7 @@ export default function LessionForm({
 						name="title"
 						placeholder="Lession name"
 						onChange={handleChange}
+						error={errors["title"]}
 					/>
 					<Suspense fallback={<h1>Loading</h1>}>
 						<DynamicEditor
