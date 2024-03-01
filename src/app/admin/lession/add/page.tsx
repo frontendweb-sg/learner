@@ -31,7 +31,7 @@ export default async function Page() {
 					</NavLink>
 				</PageTitle>
 				<Divider className="mb-7" />
-				<LessionForm courses={courses!} sections={sections!} />;
+				<LessionForm courses={courses!} sections={sections!} />
 			</Col>
 		</Grid>
 	);

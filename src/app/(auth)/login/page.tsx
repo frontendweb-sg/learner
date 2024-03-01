@@ -1,7 +1,13 @@
+import { Metadata } from "next";
+
 import Col from "@/components/ui/Col";
 import Grid from "@/components/ui/Grid";
+
 import LoginForm from "../components/form/LoginForm";
 
+export const metadata: Metadata = {
+	title: "Login page",
+};
 function Page() {
 	return (
 		<Grid

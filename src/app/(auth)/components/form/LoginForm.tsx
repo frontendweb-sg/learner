@@ -1,8 +1,9 @@
+import Link from "next/link";
+
 import SubmitButton from "@/components/common/SubmitButton";
 import Box from "@/components/ui/Box";
 import Form from "@/components/ui/Form";
 import Input from "@/components/ui/Input";
-import Link from "next/link";
 
 /**
  * Login form component

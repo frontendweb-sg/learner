@@ -23,15 +23,17 @@ function Select<T>({
 	options,
 	getOptionLabel,
 	getValue,
+	className,
 	...rest
 }: SelectProps<T>) {
 	let optionLabel = getOptionLabel ?? ((option: IOption) => option["label"]);
 
 	const clasess = classNames(
-		"bg-white flex  text-sm  item-center rounded-md p-3 relative border border-gray-200 hover:border-slate-300 focus:bg-slate-100",
+		"bg-white flex text-sm item-center rounded-md relative border border-gray-200 hover:border-slate-300 focus:bg-slate-100",
 		{
 			"border-rose-600 text-rose-600": error,
 		},
+		className,
 	);
 	let StartIcon = iconStart!;
 	let EndIcon = iconEnd!;

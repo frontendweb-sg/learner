@@ -26,7 +26,7 @@ export default function Editor({
 	};
 
 	return (
-		<div className="App">
+		<>
 			{label && (
 				<span className="block text-xs font-medium text-slate-500 mb-2">
 					{label}
@@ -41,6 +41,6 @@ export default function Editor({
 				}}
 				onChange={handleChange}
 			/>
-		</div>
+		</>
 	);
 }

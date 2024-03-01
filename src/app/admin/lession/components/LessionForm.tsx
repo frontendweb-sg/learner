@@ -13,14 +13,12 @@ import { ICourseDoc } from "@/app/api/models/course";
 import { ILessionDoc } from "@/app/api/models/lession";
 import { ISectionDoc } from "@/app/api/models/section";
 
+import CodeEditor from "@/components/common/CodeEditor";
 import NavLink from "@/components/common/NavLink";
-import PageTitle from "@/components/common/PageTitle";
 import SubmitButton from "@/components/common/SubmitButton";
 import Switch from "@/components/common/Switch";
 import Upload from "@/components/common/Upload";
-import Button from "@/components/ui/Button";
 import Col from "@/components/ui/Col";
-import Divider from "@/components/ui/Divider";
 import Form from "@/components/ui/Form";
 import Grid from "@/components/ui/Grid";
 import Input from "@/components/ui/Input";
@@ -124,6 +122,7 @@ export default function LessionForm({
 					<Select
 						label="Course"
 						name="course"
+						className="p-3"
 						options={courses!}
 						getOptionLabel={(option) => option.title}
 						defaultValue={JSON.stringify(selectedCourse)}
@@ -141,6 +140,7 @@ export default function LessionForm({
 						</NavLink>
 					) : (
 						<Select
+							className="p-3"
 							label="Course section"
 							options={filteredSection!}
 							getOptionLabel={(option) => option.title}
@@ -164,22 +164,20 @@ export default function LessionForm({
 							setValue={(data) => setFieldValue("content", data)}
 						/>
 					</Suspense>
-					<Divider className="mt-7 border-slate-200" />
-					<Button
-						variant="text"
-						color="secondary"
-						onClick={() => router.back()}>
-						{AppContent.cancel}
-					</Button>
+
+					<CodeEditor
+						defaultValue={values.code}
+						label="Code"
+						name="code"
+						onChange={(value) => setFieldValue("code", value)}
+					/>
 				</Col>
 				<Col span={4} className="space-y-4 mt-6">
 					<Panel>
 						<Panel.Title headingLabel="Publish" />
-
 						<div className="bg-slate-50/40 p-4 rounded-md mb-4">
 							<Switch prefixLabel="Status" />
 						</div>
-
 						<SubmitButton size="full" color="primary">
 							{lession?.id ? AppContent.update : AppContent.save}
 						</SubmitButton>
